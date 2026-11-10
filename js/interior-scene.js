@@ -20,64 +20,65 @@ const HOTSPOTS = [
   {
     id: 'spot-1',
     label: '1',
-    title: 'Vestíbulo Principal',
-    description: 'Punto de ingreso interior que conecta los corredores y galerías del palacio patrimonial.',
+    title: 'Ingreso a los 73 Ambientes',
+    image: './img/1.jpg',
+    description: 'El palacio que Simón I. Patiño prometió a su esposa Albina Rodríguez Ocampo tras vender sus joyas cuenta con 73 ambientes divididos por puertas acristaladas (modificadas tras pasar a COMIBOL en 1952).',
     position: { x: -7.85, y: 16.00, z: -10.26 }
   },
   {
     id: 'spot-2',
     label: '2',
-    title: 'Despacho Administrativo',
-    description: 'Espacio de trabajo utilizado durante el apogeo de la explotación minera en Uncía.',
+    title: 'Oficinas Administrativas de Miraflores',
+    description: 'Desde este despacho en la zona norte de Uncía se administró el complejo minero La Salvadora (1899-1905), donde Patiño consolidó su sociedad tras adquirir la propiedad de Sergio Ortiz.',
     position: { x: -6.07, y: 16.00, z: -3.49 }
   },
   {
     id: 'spot-3',
     label: '3',
-    title: 'Salón de Recepciones',
-    description: 'Ambiente diseñado para acoger a diplomáticos y empresarios que visitaban la residencia.',
+    title: 'Salón de Fiestas (Muros Rojo Guindo)',
+    description: 'Ambiente señorial cuyos muros de color rojo guindo contrastaban con el blanco de los arcos. Aquí resonaba el piano europeo que, según la leyenda local, aún se escucha tocar por las noches junto al sonido de un brindis.',
     position: { x: -4.78, y: 16.00, z: 7.80 }
   },
   {
     id: 'spot-4',
     label: '4',
-    title: 'Comedor Principal',
-    description: 'Sala de banquetes con acabados en madera de la época e iluminación señorial.',
+    title: 'Comedor y Techos de Cristal Veneciano',
+    description: 'Rodeado por majestuosas mesas y sillas oscuras. Originalmente sus techos lucían cristales italianos traídos de Venecia con murales románticos de sus canales, hoy protegidos con policarbonato de una pulgada.',
     position: { x: -9.70, y: 16.00, z: 13.16 }
   },
   {
     id: 'spot-5',
     label: '5',
-    title: 'Archivo y Documentación',
-    description: 'Sección destinada al resguardo de planos, correspondencia y registros de la empresa.',
+    title: 'Sala de Motores Diésel y Archivo (1901)',
+    description: 'Desde sus ventanas se divisan los galpones de los motores diésel alemanes instalados en 1901 —cuyos dos gemelos se hundieron en el Titanic en 1912— junto a las pesadas llaves inglesas que un solo hombre no podía levantar.',
     position: { x: -4.85, y: 16.00, z: 23.16 }
   },
   {
     id: 'spot-6',
     label: '6',
-    title: 'Dormitorio Principal',
-    description: 'Habitación privada de descanso con amueblado de conservación histórica.',
+    title: 'Dormitorio de Simón y Albina',
+    description: 'Durante los siete años que la familia habitó la casa (1899-1905), sus paredes estuvieron empapeladas con paisajes verdes de los jardines franceses de Bolonia.',
     position: { x: 3.85, y: 16.00, z: 6.89 }
   },
   {
     id: 'spot-7',
     label: '7',
-    title: 'Galería de Distribución',
-    description: 'Pasillo intermedio que conecta el sector público de la vivienda con las dependencias privadas.',
+    title: 'Galería Cosmopolita y Proyección',
+    description: 'Reflejo de la Uncía próspera donde se hablaban 15 idiomas (yugoslavos, italianos, belgas, españoles) y donde el1 de mayo de 1923 los 5.000 mineros marcharon para fundar el primer sindicato minero de Bolivia.',
     position: { x: 3.77, y: 16.00, z: -9.46 }
   },
   {
     id: 'spot-8',
     label: '8',
-    title: 'Oratorio Privado',
-    description: 'Espacio dedicado al recogimiento espiritual con altar y reliquias religiosas.',
+    title: 'Capilla Privada y Sala del Carruaje (1870)',
+    description: 'Capilla familiar que aún conserva sus bancos de madera. En la sala contigua descansa el carruaje inglés de 1870 en el que Patiño paseaba por Uncía junto a su esposa Albina.',
     position: { x: 0.19, y: 16.00, z: -23.99 }
   },
   {
     id: 'spot-9',
     label: '9',
-    title: 'Área de Servicios',
-    description: 'Zona reservada para la logística de cocina, almacén e insumos de la residencia.',
+    title: 'Farmacia Privada y Área de Servicios',
+    description: 'Patiño dotó a la residencia de su propia farmacia, cocina y almacenes logísticos antes de trasladar su centro de operaciones hacia Catavi en 1924.',
     position: { x: -7.61, y: 16.00, z: -24.82 }
   }
 ];
@@ -683,4 +684,5 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(wrap.clientWidth, wrap.clientHeight);
   labelRenderer.setSize(wrap.clientWidth, wrap.clientHeight);
-});
+})
+;

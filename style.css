@@ -730,3 +730,299 @@ model-viewer {
   text-align: center;
   background: var(--mahogany);
 } 
+/* ============================================================
+   ESTILOS DE LUJO EDITORIAL Y VISOR 3D PROFUNDO (HISTORIA)
+   ============================================================ */
+
+.history-hero {
+  position: relative;
+  padding: clamp(120px, 16vw, 170px) 24px 70px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(201, 128, 63, 0.22) 0%, transparent 65%),
+    linear-gradient(180deg, #120d09 0%, var(--ink) 100%);
+  border-bottom: 1px solid rgba(201, 128, 63, 0.2);
+}
+
+.history-hero-content {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.history-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5.5vw, 4.1rem);
+  font-weight: 500;
+  line-height: 1.05;
+  margin: 10px 0 18px;
+  color: var(--parchment);
+}
+
+.history-hero .lead {
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.65;
+  color: var(--parchment-2);
+  max-width: 68ch;
+  margin: 0 0 42px;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 16px;
+}
+
+.stat-box {
+  background: rgba(46, 29, 16, 0.55);
+  border: 1px solid rgba(201, 128, 63, 0.28);
+  border-left: 3px solid var(--copper-2);
+  padding: 16px 18px;
+  border-radius: 6px;
+}
+
+.stat-num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--copper-2);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  color: var(--tin);
+  line-height: 1.4;
+}
+
+/* Capítulos y citas */
+.chapter-block {
+  margin-bottom: 72px;
+}
+
+.chapter-num {
+  display: inline-block;
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--copper-2);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.chapter-block h2,
+.showcase-header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.6vw, 2.4rem);
+  font-weight: 500;
+  color: var(--parchment);
+  margin: 0 0 22px;
+  line-height: 1.15;
+}
+
+.historical-quote {
+  margin: 32px 0;
+  padding: 24px 28px;
+  background: rgba(46, 29, 16, 0.6);
+  border-left: 4px solid var(--copper-2);
+  border-radius: 0 8px 8px 0;
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  line-height: 1.65;
+  color: var(--parchment);
+}
+
+.historical-quote cite {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  color: var(--copper-2);
+  font-style: normal;
+}
+
+/* Cuadrícula de los 73 ambientes */
+.arch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.arch-card {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(201, 128, 63, 0.22);
+  border-radius: 10px;
+  padding: 22px;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.arch-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--copper-2);
+}
+
+.arch-tag {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--copper-2);
+  font-weight: 600;
+}
+
+.arch-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  margin: 6px 0 10px;
+  color: var(--parchment);
+}
+
+.arch-card p {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--parchment-2);
+  margin: 0;
+}
+
+/* Visor 3D profundo estilo Showcase / Obsidian */
+.showcase-section {
+  margin: 80px 0;
+}
+
+.showcase-header {
+  margin-bottom: 36px;
+}
+
+.showcase-header p {
+  color: var(--tin);
+  margin: 0;
+}
+
+.historical-item {
+  background: linear-gradient(145deg, rgba(32, 22, 15, 0.85) 0%, rgba(16, 12, 8, 0.95) 100%);
+  border: 1px solid rgba(201, 128, 63, 0.25);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+}
+
+.item-model {
+  background:
+    radial-gradient(circle at 50% 42%, rgba(212, 165, 95, 0.28) 0%, rgba(46, 29, 16, 0.45) 45%, #0c0906 85%);
+  border: 1px solid rgba(212, 175, 55, 0.28);
+}
+
+.viewer-badge {
+  position: absolute;
+  top: 12px;
+  left: 14px;
+  z-index: 3;
+  background: rgba(12, 9, 6, 0.78);
+  border: 1px solid rgba(201, 128, 63, 0.4);
+  color: var(--parchment-2);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.viewer-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 12px;
+  background: rgba(12, 9, 6, 0.9);
+  border-top: 1px solid rgba(201, 128, 63, 0.2);
+  justify-content: center;
+}
+
+.viewer-controls button {
+  background: rgba(46, 29, 16, 0.85);
+  border: 1px solid rgba(201, 128, 63, 0.45);
+  color: var(--parchment);
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  padding: 5px 11px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.viewer-controls button:hover {
+  background: var(--copper);
+  border-color: var(--parchment);
+}
+
+.item-code {
+  display: inline-block;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  color: var(--copper-2);
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 0.82rem;
+  color: var(--tin);
+}
+
+.spec-grid strong {
+  color: var(--parchment);
+}
+
+/* Lista histórica y Línea de tiempo */
+.historical-list {
+  margin: 18px 0 24px;
+  padding-left: 22px;
+  color: var(--parchment-2);
+  line-height: 1.75;
+}
+
+.historical-list li {
+  margin-bottom: 8px;
+}
+
+.timeline {
+  position: relative;
+  border-left: 2px solid var(--copper-2);
+  margin: 26px 0 10px 10px;
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.timeline-item {
+  position: relative;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -31px;
+  top: 5px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--copper-2);
+  border: 2px solid var(--ink);
+}
+
+.tl-year {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--copper-2);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.tl-body {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--parchment-2);
+}

@@ -1,73 +1,1846 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Casa de Simón I. Patiño — Uncía</title>
-  <meta name="description" content="Explora en 3D la casa que Simón I. Patiño construyó en Uncía, Potosí — su exterior, su historia y su interior.">
-  <link rel="stylesheet" href="./style.css">
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>PALACIO PATIÑO · UNCÍA — Experiencia Digital Inmersiva</title>
+  <meta name="description" content="Reconstrucción digital interactiva del Palacio de Simón I. Patiño en Uncía, Potosí. Scrollytelling, arquitectura de 73 ambientes y patrimonio minero." />
+
+  <!-- Tipografías Display & Técnica (Syne + Space Grotesk + Plus Jakarta Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       VARIABLES Y SISTEMA DE TEMAS DINÁMICOS (AWWWARDS DARK MODE)
+       ============================================================ */
+    :root {
+      --bg-deep: #050505;
+      --bg-card: rgba(14, 14, 18, 0.72);
+      --text-pure: #FFFFFF;
+      --text-metal: #A1A1AA;
+      --text-dim: #71717A;
+
+      /* Colores de acento por defecto (Púrpura Eléctrico + Cian Neón del prompt) */
+      --accent-primary: #8B5CF6;
+      --accent-secondary: #06B6D4;
+      --accent-rgb: 139, 92, 246;
+      --accent-sec-rgb: 6, 182, 212;
+
+      --font-display: 'Syne', 'Space Grotesk', sans-serif;
+      --font-tech: 'Space Grotesk', monospace;
+      --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+
+      --border-glass: rgba(255, 255, 255, 0.09);
+      --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
     }
-  }
-  </script>
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-deep);
+      color: var(--text-pure);
+      font-family: var(--font-body);
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-pure);
+      overflow-x: hidden;
+      selection-background-color: var(--accent-primary);
+    }
+
+    ::selection {
+      background: var(--accent-primary);
+      color: var(--text-pure);
+    }
+
+    @media (pointer: fine) {
+      body, a, button {
+        cursor: none;
+      }
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ============================================================
+       PRE-LOADER CINEMATOGRÁFICO (0% -> 100%)
+       ============================================================ */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      background: #050505;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.85s var(--transition-smooth), visibility 0.85s;
+    }
+
+    #preloader.loaded {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .loader-brand {
+      font-family: var(--font-tech);
+      font-size: 0.78rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--text-metal);
+      margin-bottom: 18px;
+    }
+
+    .loader-counter {
+      font-family: var(--font-display);
+      font-size: clamp(3.5rem, 9vw, 6.5rem);
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--accent-primary) 60%, var(--accent-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 24px;
+    }
+
+    .loader-bar-wrap {
+      width: min(320px, 75vw);
+      height: 3px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .loader-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+      box-shadow: 0 0 20px var(--accent-primary);
+      transition: width 0.1s linear;
+    }
+
+    /* ============================================================
+       CURSOR PERSONALIZADO CON LERP
+       ============================================================ */
+    .cursor-dot,
+    .cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+    }
+
+    .cursor-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--accent-secondary);
+      box-shadow: 0 0 12px var(--accent-secondary);
+    }
+
+    .cursor-ring {
+      width: 38px;
+      height: 38px;
+      border: 1.5px solid rgba(var(--accent-rgb), 0.65);
+      background: rgba(var(--accent-rgb), 0.04);
+      transition: width 0.3s var(--transition-smooth),
+                  height 0.3s var(--transition-smooth),
+                  background 0.3s ease,
+                  border-color 0.3s ease;
+    }
+
+    .cursor-ring.hovered {
+      width: 68px;
+      height: 68px;
+      border-color: var(--accent-secondary);
+      background: rgba(var(--accent-sec-rgb), 0.12);
+    }
+
+    @media (pointer: coarse) {
+      .cursor-dot, .cursor-ring { display: none; }
+    }
+
+    /* ============================================================
+       CANVAS DE PARTÍCULAS Y NEBLINA LUMINOSA (FONDO FIJO)
+       ============================================================ */
+    #ambient-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       NAVBAR STICKY (HUD GLASSMORPHISM)
+       ============================================================ */
+    .hud-navbar {
+      position: fixed;
+      top: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1320px, 94vw);
+      height: 64px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      background: rgba(10, 10, 14, 0.62);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-glass);
+      border-radius: 999px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+      transition: border-color 0.4s ease;
+    }
+
+    .hud-logo {
+      font-family: var(--font-tech);
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.12em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hud-logo-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent-primary);
+      box-shadow: 0 0 12px var(--accent-primary);
+    }
+
+    .hud-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(16px, 2.5vw, 32px);
+      list-style: none;
+    }
+
+    .hud-links a {
+      font-family: var(--font-tech);
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-metal);
+      transition: color 0.25s ease;
+    }
+
+    .hud-links a:hover {
+      color: var(--text-pure);
+    }
+
+    .hud-nav-cta {
+      font-family: var(--font-tech);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      color: #fff;
+      box-shadow: 0 0 22px rgba(var(--accent-rgb), 0.45);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .hud-nav-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 32px rgba(var(--accent-sec-rgb), 0.75);
+    }
+
+    /* ============================================================
+       HERO SCROLLYTELLING (100% VIEWPORT PINNED SECTION)
+       ============================================================ */
+    .hero-scroll-track {
+      position: relative;
+      height: 300vh; /* Pinned scroll duration */
+      width: 100%;
+      z-index: 2;
+    }
+
+    .hero-sticky {
+      position: sticky;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 1. Eje Central Sagrado (100% Centrado) */
+    .sacred-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Halo volumétrico reactivo al scroll */
+    .core-glow {
+      position: absolute;
+      width: min(560px, 75vw);
+      height: min(560px, 75vw);
+      border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(var(--accent-rgb), 0.35) 0%,
+        rgba(var(--accent-sec-rgb), 0.18) 45%,
+        transparent 72%);
+      filter: blur(45px);
+      transform: scale(1);
+      transition: background 0.5s ease;
+    }
+
+    /* Anillos orbitales HUD en el eje central */
+    .orbital-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: border-color 0.4s ease;
+    }
+
+    .ring-1 {
+      width: min(440px, 68vw);
+      height: min(440px, 68vw);
+      border-top-color: var(--accent-primary);
+      border-bottom-color: var(--accent-secondary);
+      animation: floatPulse 6s ease-in-out infinite;
+    }
+
+    .ring-2 {
+      width: min(540px, 82vw);
+      height: min(540px, 82vw);
+      border: 1px dashed rgba(var(--accent-sec-rgb), 0.28);
+    }
+
+    @keyframes floatPulse {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-12px) scale(1.02); }
+    }
+
+    /* Contenedor visual central (Póster estático -> Secuencia activa al hacer scroll) */
+    .visual-core-frame {
+      position: relative;
+      width: min(390px, 62vw);
+      height: min(470px, 56vh);
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: #0b0b10;
+      box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.85),
+        0 0 50px rgba(var(--accent-rgb), 0.25);
+      transform-style: preserve-3d;
+      will-change: transform, filter;
+    }
+
+    .core-media {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.4s ease, filter 0.4s ease;
+    }
+
+    /* Capa activa de animación/energía que despierta con el scroll */
+    .core-active-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 35%, rgba(var(--accent-sec-rgb), 0.42), transparent 65%),
+        linear-gradient(180deg, transparent 30%, rgba(5, 5, 5, 0.9) 100%);
+      opacity: 0;
+      mix-blend-mode: screen;
+    }
+
+    .core-hud-telemetry {
+      position: absolute;
+      inset: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 14px 16px;
+      font-family: var(--font-tech);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      color: var(--text-metal);
+      background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, transparent 35%, rgba(0,0,0,0.75) 100%);
+    }
+
+    .telemetry-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .telemetry-status {
+      color: var(--accent-secondary);
+      font-weight: 600;
+    }
+
+    /* Barra de energía que se llena con el scroll */
+    .energy-charge-wrap {
+      width: 100%;
+    }
+
+    .energy-charge-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 0.68rem;
+      color: var(--text-pure);
+    }
+
+    .energy-bar-track {
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.14);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .energy-bar-fill {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+      box-shadow: 0 0 16px var(--accent-secondary);
+    }
+
+    /* 2. Composición Tipográfica Dividida (Split Layout sin tapar el centro) */
+    .hero-split-layout {
+      position: relative;
+      z-index: 3;
+      width: min(1420px, 92vw);
+      height: 100%;
+      display: grid;
+      grid-template-columns: 1fr minmax(280px, 420px) 1fr;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .hero-left {
+      text-align: left;
+      padding-right: 20px;
+      will-change: transform;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-tech);
+      font-size: 0.78rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent-secondary);
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 5.2vw, 5.4rem);
+      font-weight: 800;
+      line-height: 0.96;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: var(--text-pure);
+      text-shadow: 0 0 40px rgba(var(--accent-rgb), 0.35);
+    }
+
+    .hero-title .stroke-text {
+      display: block;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.75);
+    }
+
+    .hero-right {
+      grid-column: 3;
+      text-align: right;
+      padding-left: 20px;
+      justify-self: end;
+      max-width: 360px;
+      will-change: transform;
+    }
+
+    .hero-subtitle {
+      font-family: var(--font-tech);
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      font-weight: 600;
+      color: var(--accent-primary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      text-shadow: 0 0 20px rgba(var(--accent-rgb), 0.45);
+    }
+
+    .hero-desc {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--text-metal);
+    }
+
+    /* 3. Centro Inferior y Botones Flotantes en las Esquinas (HUD Style) */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-tech);
+      font-size: 0.68rem;
+      letter-spacing: 0.24em;
+      color: var(--text-metal);
+      text-align: center;
+    }
+
+    .scroll-line {
+      width: 2px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .scroll-line::after {
+      content: "";
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, transparent, var(--accent-secondary), var(--accent-primary));
+      animation: pulseLine 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes pulseLine {
+      0% { top: -100%; }
+      100% { top: 100%; }
+    }
+
+    .hud-corner-left {
+      position: absolute;
+      bottom: 34px;
+      left: clamp(20px, 4vw, 56px);
+      z-index: 5;
+    }
+
+    .hud-corner-right {
+      position: absolute;
+      bottom: 34px;
+      right: clamp(20px, 4vw, 56px);
+      z-index: 5;
+    }
+
+    /* Botón Ghost con barrido de luz (CTA 1) */
+    .btn-hud-ghost {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-tech);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 15px 28px;
+      border-radius: 999px;
+      color: var(--text-pure);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .btn-hud-ghost::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -120%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+      transition: left 0.55s ease;
+    }
+
+    .btn-hud-ghost:hover {
+      border-color: var(--accent-secondary);
+      transform: translateY(-2px);
+    }
+
+    .btn-hud-ghost:hover::before {
+      left: 120%;
+    }
+
+    /* Botón Sólido Neón con Micro-interacción Magnética (CTA 2) */
+    .btn-hud-neon {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-tech);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 16px 30px;
+      border-radius: 999px;
+      color: #050505;
+      background: linear-gradient(135deg, #FFFFFF 0%, var(--accent-secondary) 100%);
+      box-shadow:
+        0 0 25px rgba(var(--accent-sec-rgb), 0.55),
+        0 0 55px rgba(var(--accent-rgb), 0.35);
+      transition: box-shadow 0.3s ease, transform 0.15s linear;
+      will-change: transform;
+    }
+
+    .btn-hud-neon:hover {
+      box-shadow:
+        0 0 38px rgba(var(--accent-sec-rgb), 0.9),
+        0 0 75px rgba(var(--accent-rgb), 0.65);
+    }
+
+    /* ============================================================
+       SECCIÓN 1: CINTA DINÁMICA (INFINITE MARQUEE)
+       ============================================================ */
+    .marquee-section {
+      position: relative;
+      z-index: 3;
+      padding: 22px 0;
+      background: rgba(10, 10, 14, 0.9);
+      border-top: 1px solid var(--border-glass);
+      border-bottom: 1px solid var(--border-glass);
+      overflow: hidden;
+      display: flex;
+    }
+
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: scrollMarquee 28s linear infinite;
+    }
+
+    .marquee-item {
+      font-family: var(--font-display);
+      font-size: clamp(1.1rem, 2.2vw, 1.65rem);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-pure);
+      padding: 0 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .marquee-item span.sep {
+      color: var(--accent-primary);
+      text-shadow: 0 0 14px var(--accent-primary);
+    }
+
+    @keyframes scrollMarquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ============================================================
+       ESTILOS GENERALES DE SECCIONES Y REVEAL ON SCROLL
+       ============================================================ */
+    .content-section {
+      position: relative;
+      z-index: 3;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: clamp(90px, 12vw, 150px) 24px;
+    }
+
+    .section-header {
+      max-width: 680px;
+      margin-bottom: 56px;
+    }
+
+    .section-tag {
+      font-family: var(--font-tech);
+      font-size: 0.76rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent-secondary);
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 4.2vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      color: var(--text-metal);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.85s var(--transition-smooth),
+                  transform 0.85s var(--transition-smooth);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================================
+       SECCIÓN 2: BENTO GRID CON TILT 3D, SPOTLIGHT Y CONTADORES
+       ============================================================ */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 22px;
+      perspective: 1200px;
+    }
+
+    .bento-card {
+      position: relative;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 24px;
+      padding: 36px 32px;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      transition: transform 0.18s ease-out, border-color 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 290px;
+    }
+
+    /* Destello radial (Spotlight) siguiendo al cursor */
+    .bento-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        520px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(var(--accent-rgb), 0.18),
+        rgba(var(--accent-sec-rgb), 0.06) 40%,
+        transparent 70%
+      );
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
+
+    .bento-card:hover::before {
+      opacity: 1;
+    }
+
+    .bento-card:hover {
+      border-color: rgba(var(--accent-rgb), 0.45);
+    }
+
+    .bento-span-7 { grid-column: span 7; }
+    .bento-span-5 { grid-column: span 5; }
+
+    .bento-stat {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 5vw, 4.4rem);
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #FFFFFF 20%, var(--accent-secondary) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 14px;
+    }
+
+    .bento-card h3 {
+      font-family: var(--font-tech);
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-pure);
+    }
+
+    .bento-card p {
+      color: var(--text-metal);
+      font-size: 0.94rem;
+      line-height: 1.65;
+    }
+
+    .bento-badge {
+      align-self: flex-start;
+      font-family: var(--font-tech);
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      padding: 6px 12px;
+      border-radius: 99px;
+      background: rgba(var(--accent-rgb), 0.14);
+      border: 1px solid rgba(var(--accent-rgb), 0.35);
+      color: var(--accent-secondary);
+      margin-bottom: 22px;
+    }
+
+    /* ============================================================
+       SECCIÓN 3: SELECTOR INTERACTIVO DE VARIANTES / MODOS (THEME SWITCHER)
+       ============================================================ */
+    .mode-switcher-wrap {
+      background: linear-gradient(145deg, rgba(16, 16, 22, 0.85), rgba(8, 8, 12, 0.95));
+      border: 1px solid var(--border-glass);
+      border-radius: 28px;
+      padding: clamp(28px, 5vw, 56px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .mode-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .mode-btn {
+      text-align: left;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-glass);
+      border-radius: 16px;
+      padding: 20px 24px;
+      color: var(--text-pure);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+    }
+
+    .mode-btn.active {
+      background: rgba(var(--accent-rgb), 0.14);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.25);
+    }
+
+    .mode-btn-info h4 {
+      font-family: var(--font-tech);
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+
+    .mode-btn-info span {
+      font-size: 0.84rem;
+      color: var(--text-metal);
+    }
+
+    .mode-swatches {
+      display: flex;
+      gap: 8px;
+    }
+
+    .swatch {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .mode-preview-display {
+      position: relative;
+      min-height: 300px;
+      border-radius: 20px;
+      border: 1px solid rgba(var(--accent-rgb), 0.35);
+      background:
+        radial-gradient(circle at 50% 35%, rgba(var(--accent-rgb), 0.32), transparent 65%),
+        #07070a;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: inset 0 0 40px rgba(var(--accent-sec-rgb), 0.12);
+      transition: all 0.4s ease;
+    }
+
+    .mode-preview-display h3 {
+      font-family: var(--font-display);
+      font-size: 1.9rem;
+      margin-bottom: 10px;
+    }
+
+    .mode-preview-display p {
+      color: var(--text-metal);
+      line-height: 1.65;
+      font-size: 0.95rem;
+    }
+
+    /* ============================================================
+       SECCIÓN 4: DESGLOSE TÉCNICO CON HOTSPOTS INTERACTIVOS
+       ============================================================ */
+    .blueprint-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .blueprint-stage {
+      position: relative;
+      min-height: 460px;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border-glass);
+      background:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+        #08080c;
+      background-size: 36px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .blueprint-stage img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.55;
+      filter: contrast(115%) saturate(85%);
+    }
+
+    .bp-hotspot {
+      position: absolute;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(5, 5, 5, 0.85);
+      border: 2px solid var(--accent-secondary);
+      color: var(--text-pure);
+      font-family: var(--font-tech);
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 8px rgba(var(--accent-sec-rgb), 0.2);
+      animation: bpPulse 2.2s infinite;
+      transition: background 0.25s ease, transform 0.25s ease;
+      z-index: 4;
+    }
+
+    .bp-hotspot.active,
+    .bp-hotspot:hover {
+      background: var(--accent-primary);
+      border-color: #fff;
+      transform: translate(-50%, -50%) scale(1.18);
+    }
+
+    @keyframes bpPulse {
+      0%, 100% { box-shadow: 0 0 0 6px rgba(var(--accent-sec-rgb), 0.22); }
+      50% { box-shadow: 0 0 0 14px rgba(var(--accent-rgb), 0.08); }
+    }
+
+    .blueprint-detail-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(var(--accent-rgb), 0.35);
+      border-radius: 24px;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .bp-spec-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .bp-bar-item label {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-tech);
+      font-size: 0.78rem;
+      color: var(--text-metal);
+      margin-bottom: 6px;
+    }
+
+    .bp-bar-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .bp-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 99px;
+      transition: width 0.6s var(--transition-smooth);
+    }
+
+    /* ============================================================
+       SECCIÓN 5: PREGUNTAS FRECUENTES (ACORDEÓN FLUIDO)
+       ============================================================ */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-width: 880px;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: 18px;
+      overflow: hidden;
+      transition: border-color 0.3s ease;
+    }
+
+    .faq-item.open {
+      border-color: rgba(var(--accent-rgb), 0.5);
+    }
+
+    .faq-trigger {
+      width: 100%;
+      padding: 24px 28px;
+      background: none;
+      border: none;
+      color: var(--text-pure);
+      font-family: var(--font-tech);
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .faq-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: var(--accent-secondary);
+      transition: transform 0.35s var(--transition-smooth), background 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+      background: rgba(var(--accent-rgb), 0.2);
+    }
+
+    .faq-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s var(--transition-smooth);
+    }
+
+    .faq-content p {
+      padding: 0 28px 24px;
+      color: var(--text-metal);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    /* ============================================================
+       FOOTER MONUMENTAL
+       ============================================================ */
+    .monumental-footer {
+      position: relative;
+      z-index: 3;
+      border-top: 1px solid var(--border-glass);
+      padding: 70px 24px 36px;
+      background: linear-gradient(180deg, transparent 0%, rgba(var(--accent-rgb), 0.07) 100%);
+      overflow: hidden;
+    }
+
+    .footer-top {
+      max-width: 1320px;
+      margin: 0 auto 40px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 24px;
+      color: var(--text-metal);
+      font-family: var(--font-tech);
+      font-size: 0.85rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-secondary);
+    }
+
+    .footer-giant-brand {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 13.5vw, 13rem);
+      font-weight: 800;
+      line-height: 0.88;
+      text-align: center;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.08) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      user-select: none;
+      margin: 10px 0 24px;
+    }
+
+    /* ============================================================
+       DISEÑO 100% RESPONSIVO (MÓVIL Y TABLET)
+       ============================================================ */
+    @media (max-width: 960px) {
+      .hud-links { display: none; }
+
+      .hero-split-layout {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        padding: 96px 0 110px;
+        text-align: center;
+      }
+
+      .hero-left {
+        padding-right: 0;
+        text-align: center;
+      }
+
+      .hero-right {
+        grid-column: 1;
+        text-align: center;
+        justify-self: center;
+        padding-left: 0;
+      }
+
+      .visual-core-frame {
+        width: min(310px, 78vw);
+        height: min(340px, 42vh);
+      }
+
+      .bento-span-7, .bento-span-5 {
+        grid-column: span 12;
+      }
+
+      .mode-switcher-wrap,
+      .blueprint-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hud-corner-left, .hud-corner-right {
+        bottom: 18px;
+      }
+
+      .btn-hud-ghost, .btn-hud-neon {
+        padding: 12px 18px;
+        font-size: 0.7rem;
+      }
+
+      .scroll-indicator {
+        display: none;
+      }
+    }
+  </style>
 </head>
 <body>
 
-<nav class="site-nav">
-  <a href="./index.html" class="brand">Casa Patiño <span>· Uncía</span></a>
-  <ul>
-    <li><a href="./index.html" class="link active">Inicio</a></li>
-    <li><a href="./historia.html" class="link">Historia</a></li>
-    <li><a href="./interior.html" class="link">Interior</a></li>
-  </ul>
-  <button class="nav-toggle" aria-label="Abrir menú">☰</button>
-</nav>
-
-<div class="scene-wrap" id="scene-exterior">
-  <div class="scene-loading">
-    <div class="ring"></div>
-    <p>Cargando el modelo 3D…</p>
-  </div>
-
-  <div class="model-note" hidden>
-    <button aria-label="Cerrar aviso">✕</button>
-    Aún no se encontró <code>models/casa-exterior.glb</code>, así que ves una
-    casa de reemplazo. Coloca ahí tu archivo real para verla en su lugar.
-  </div>
-
-  <div class="hero-overlay">
-    <p class="hero-eyebrow">Uncía · Potosí, Bolivia</p>
-    <h1>La Casa de Simón I. Patiño</h1>
-    <p class="sub">La primera residencia que el Rey del Estaño levantó en el pueblo donde comenzó su fortuna. Recórrela en tres dimensiones, tal como se conserva hoy.</p>
-    <div class="cta-row">
-      <a href="./historia.html" class="btn btn-primary">Conoce su historia</a>
-      <a href="./interior.html" class="btn btn-ghost">Recorre el interior</a>
-    </div>
-    <div class="hero-controls-hint">
-      <span><span class="key">arrastra</span> para mirar alrededor</span>
-      <span><span class="key">rueda</span> para acercarte</span>
+  <!-- PRE-LOADER CINEMATOGRÁFICO -->
+  <div id="preloader">
+    <div class="loader-brand">PALACIO SIMÓN I. PATIÑO · UNCÍA</div>
+    <div class="loader-counter" id="loader-counter">0%</div>
+    <div class="loader-bar-wrap">
+      <div class="loader-bar-fill" id="loader-bar"></div>
     </div>
   </div>
-</div>
 
-<section class="editorial editorial-home">
-  <p class="kicker">Sobre este sitio</p>
-  <p>Este espacio digital reconstruye en tres dimensiones la casa que Simón I. Patiño construyó en Uncía para su esposa, antes de que su fortuna minera lo llevara a levantar residencias mucho más grandes en Oruro, Cochabamba y Europa. Aquí puedes recorrer el exterior del inmueble tal como se conserva hoy, entrar a sus ambientes interiores y conocer la historia detrás de los objetos y espacios que lo componen.</p>
-  <div class="cta-row">
-    <a href="./interior.html" class="btn btn-primary">Entrar a la casa</a>
-    <a href="./historia.html" class="btn btn-ghost">Leer la historia completa</a>
+  <!-- CURSOR PERSONALIZADO -->
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- CANVAS HTML5 DE PARTÍCULAS Y NEBLINA LUMINOSA -->
+  <canvas id="ambient-canvas"></canvas>
+
+  <!-- NAVBAR STICKY (HUD STYLE) -->
+  <nav class="hud-navbar">
+    <a href="./index.html" class="hud-logo">
+      <span class="hud-logo-dot"></span>
+      <span>CASA PATIÑO · UNCÍA</span>
+    </a>
+    <ul class="hud-links">
+      <li><a href="#origen">Origen</a></li>
+      <li><a href="#especificaciones">Especificaciones</a></li>
+      <li><a href="#modos">Atmósfera</a></li>
+      <li><a href="#arquitectura">Hotspots</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="./historia.html">Galería 3D</a></li>
+    </ul>
+    <a href="./interior.html" class="hud-nav-cta">Recorrido 3D →</a>
+  </nav>
+
+  <!-- HERO SCROLLYTELLING (100% VIEWPORT PINNED) -->
+  <section class="hero-scroll-track" id="origen">
+    <div class="hero-sticky">
+
+      <!-- 1. EJE CENTRAL SAGRADO (100% CENTRADO) -->
+      <div class="sacred-center">
+        <div class="core-glow" id="core-glow"></div>
+        <div class="orbital-ring ring-1" id="ring-1"></div>
+        <div class="orbital-ring ring-2" id="ring-2"></div>
+
+        <div class="visual-core-frame" id="visual-core">
+          <!-- Imagen Base / Poster + Transición controlada por Scroll -->
+          <img
+            id="core-poster"
+            class="core-media"
+            src="./img/1.jpg"
+            onerror="this.src='https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1000&q=85'"
+            alt="Palacio de Simón I. Patiño en Uncía"
+          />
+          <div class="core-active-overlay" id="core-active-overlay"></div>
+
+          <!-- HUD de Telemetría y Barra de Energía por Scroll -->
+          <div class="core-hud-telemetry">
+            <div class="telemetry-top">
+              <span>LAT 18°28'S · POTOSÍ</span>
+              <span class="telemetry-status" id="telemetry-state">ESTADO: REPOSO</span>
+            </div>
+
+            <div class="energy-charge-wrap">
+              <div class="energy-charge-header">
+                <span>MEMORIA PATRIMONIAL</span>
+                <span id="charge-percent">0%</span>
+              </div>
+              <div class="energy-bar-track">
+                <div class="energy-bar-fill" id="charge-bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. COMPOSICIÓN TIPOGRÁFICA DIVIDIDA (SPLIT LAYOUT) -->
+      <div class="hero-split-layout">
+        <div class="hero-left" id="parallax-left">
+          <span class="hero-eyebrow">MIRAFLORES · UNCÍA (1899 – 1905)</span>
+          <h1 class="hero-title">
+            PALACIO
+            <span class="stroke-text">PATIÑO</span>
+          </h1>
+        </div>
+
+        <div class="hero-right" id="parallax-right">
+          <h2 class="hero-subtitle">EL IMPERIO DEL ESTAÑO EN ALTA DEFINICIÓN</h2>
+          <p class="hero-desc">
+            La primera residencia de 73 ambientes que el Rey del Estaño levantó en Uncía. Cristales de Venecia, jardines de Bolonia y los motores gemelos del Titanic.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3. INDICADOR CENTRAL Y BOTONES FLOTANTES EN ESQUINAS -->
+      <div class="scroll-indicator">
+        <span>SCROLL TO CHARGE / DESLIZA PARA ACTIVAR</span>
+        <div class="scroll-line"></div>
+      </div>
+
+      <div class="hud-corner-left">
+        <a href="./historia.html" class="btn-hud-ghost">Archivo y Modelos 3D</a>
+      </div>
+
+      <div class="hud-corner-right">
+        <a href="./interior.html" class="btn-hud-neon" id="magnetic-cta">Entrar al Palacio ↗</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECCIÓN 1: CINTA DINÁMICA (INFINITE MARQUEE) -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <div class="marquee-item">SIMÓN I. PATIÑO <span class="sep">✦</span> 73 AMBIENTES DE LUJO <span class="sep">✦</span> MOTORES GEMELOS DEL TITANIC (1901) <span class="sep">✦</span> CRISTALES DE VENECIA <span class="sep">✦</span> CUNA DEL SINDICALISMO MINERO (1923) <span class="sep">✦</span> UNCÍA · NORTE DE POTOSÍ <span class="sep">✦</span></div>
+      <div class="marquee-item">SIMÓN I. PATIÑO <span class="sep">✦</span> 73 AMBIENTES DE LUJO <span class="sep">✦</span> MOTORES GEMELOS DEL TITANIC (1901) <span class="sep">✦</span> CRISTALES DE VENECIA <span class="sep">✦</span> CUNA DEL SINDICALISMO MINERO (1923) <span class="sep">✦</span> UNCÍA · NORTE DE POTOSÍ <span class="sep">✦</span></div>
+    </div>
   </div>
-</section>
 
-<footer class="site-footer">
-  Casa de Simón I. Patiño · Uncía, Potosí — sitio construido con Three.js
-</footer>
+  <!-- SECCIÓN 2: BENTO GRID CON TILT 3D, SPOTLIGHT Y CONTADORES -->
+  <section class="content-section" id="especificaciones">
+    <div class="section-header reveal">
+      <span class="section-tag">01 // DIMENSIONES HISTÓRICAS</span>
+      <h2 class="section-title">Arquitectura e Ingeniería sin Precedentes en los Andes</h2>
+      <p class="section-desc">Pasa el cursor sobre cada módulo para inspeccionar en perspectiva 3D las cifras que transformaron a Uncía en una metrópoli cosmopolita.</p>
+    </div>
 
-<script src="./js/nav.js" defer></script>
-<script type="module" src="./js/exterior-scene.js"></script>
+    <div class="bento-grid">
+      <div class="bento-card bento-span-7 reveal" data-tilt>
+        <span class="bento-badge">ARQUITECTURA PALACIEGA</span>
+        <div>
+          <div class="bento-stat"><span class="counter" data-target="73">0</span></div>
+          <h3>Ambientes Conectados</h3>
+          <p>Desde el salón de fiestas en tono rojo guindo con arcos blancos y techos de cristal veneciano hasta capilla privada, farmacia, despacho en Miraflores y sala de carruaje inglés de 1870.</p>
+        </div>
+      </div>
+
+      <div class="bento-card bento-span-5 reveal" data-tilt>
+        <span class="bento-badge">ENERGÍA INDUSTRIAL</span>
+        <div>
+          <div class="bento-stat"><span class="counter" data-target="1901">0</span></div>
+          <h3>Motores Alemanes del Titanic</h3>
+          <p>Año en que se instalaron junto al palacio los generadores diésel traídos de Alemania, cuyos dos únicos gemelos naufragaron en el Atlántico bajo el casco del Titanic en 1912.</p>
+        </div>
+      </div>
+
+      <div class="bento-card bento-span-5 reveal" data-tilt>
+        <span class="bento-badge">AUGE COSMOPOLITA</span>
+        <div>
+          <div class="bento-stat">+<span class="counter" data-target="15">0</span></div>
+          <h3>Idiomas en las Calles de Uncía</h3>
+          <p>Bolivianos, yugoslavos, italianos, españoles y belgas regentaban casas importadoras de pianos europeos, automóviles, sastrerías y proyectores de cine.</p>
+        </div>
+      </div>
+
+      <div class="bento-card bento-span-7 reveal" data-tilt>
+        <span class="bento-badge">GESTA HISTÓRICA · 1 DE MAYO DE 1923</span>
+        <div>
+          <div class="bento-stat"><span class="counter" data-target="5000">0</span></div>
+          <h3>Mineros en la Cuna del Sindicalismo</h3>
+          <p>Trabajadores de La Salvadora que marcharon hasta la plaza Alonso de Ibáñez para fundar el primer sindicato minero de Bolivia exigiendo la jornada laboral de 8 horas.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 3: SELECTOR INTERACTIVO DE VARIANTES / MODOS (COLOR THEME SWITCHER) -->
+  <section class="content-section" id="modos">
+    <div class="section-header reveal">
+      <span class="section-tag">02 // ATMÓSFERA CROMÁTICA REACTIVA</span>
+      <h2 class="section-title">Selector de Modos de Iluminación</h2>
+      <p class="section-desc">Cambia la frecuencia lumínica de toda la interfaz, los bordes holográficos y las partículas del Canvas en tiempo real.</p>
+    </div>
+
+    <div class="mode-switcher-wrap reveal">
+      <div class="mode-buttons">
+        <button class="mode-btn active"
+          data-primary="#8B5CF6"
+          data-secondary="#06B6D4"
+          data-rgb="139, 92, 246"
+          data-sec-rgb="6, 182, 212"
+          data-title="Modo 01 · Nocturno Cyber-Museo"
+          data-desc="Inspirado en la leyenda nocturna de Uncía: cuando las luces del palacio parecen encenderse a medianoche y se escucha la melodía del piano europeo y el tintineo de un brindis.">
+          <div class="mode-btn-info">
+            <h4>01. Nocturno Cyber-Museo</h4>
+            <span>Púrpura Eléctrico #8B5CF6 · Cian Neón #06B6D4</span>
+          </div>
+          <div class="mode-swatches">
+            <span class="swatch" style="background:#8B5CF6"></span>
+            <span class="swatch" style="background:#06B6D4"></span>
+          </div>
+        </button>
+
+        <button class="mode-btn"
+          data-primary="#F59E0B"
+          data-secondary="#EA580C"
+          data-rgb="245, 158, 11"
+          data-sec-rgb="234, 88, 12"
+          data-title="Modo 02 · Fiebre del Estaño 1901"
+          data-desc="Evoca el dorado imperial de los salones europeos, la fachada mostaza con torre escocesa y el calor de las fundiciones e ingenios de Miraflores y La Salvadora.">
+          <div class="mode-btn-info">
+            <h4>02. Fiebre del Estaño 1901</h4>
+            <span>Oro Imperial #F59E0B · Cobre Minero #EA580C</span>
+          </div>
+          <div class="mode-swatches">
+            <span class="swatch" style="background:#F59E0B"></span>
+            <span class="swatch" style="background:#EA580C"></span>
+          </div>
+        </button>
+
+        <button class="mode-btn"
+          data-primary="#10B981"
+          data-secondary="#3B82F6"
+          data-rgb="16, 185, 129"
+          data-sec-rgb="59, 130, 246"
+          data-title="Modo 03 · Jardines de Bolonia & Venecia"
+          data-desc="Recrea los tonos esmeralda de los tapices franceses de Bolonia que cubrían las habitaciones de Albina Rodríguez y el reflejo de los cristales venecianos del techo.">
+          <div class="mode-btn-info">
+            <h4>03. Jardines de Bolonia & Venecia</h4>
+            <span>Esmeralda #10B981 · Cristal Veneciano #3B82F6</span>
+          </div>
+          <div class="mode-swatches">
+            <span class="swatch" style="background:#10B981"></span>
+            <span class="swatch" style="background:#3B82F6"></span>
+          </div>
+        </button>
+      </div>
+
+      <div class="mode-preview-display">
+        <span class="section-tag">PREVISUALIZACIÓN DE SISTEMA ACTIVO</span>
+        <div>
+          <h3 id="mode-title">Modo 01 · Nocturno Cyber-Museo</h3>
+          <p id="mode-desc">Inspirado en la leyenda nocturna de Uncía: cuando las luces del palacio parecen encenderse a medianoche y se escucha la melodía del piano europeo y el tintineo de un brindis.</p>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
+          <a href="./interior.html" class="btn-hud-ghost">Abrir Recorrido 3D</a>
+          <a href="./historia.html" class="btn-hud-Ghost btn-hud-ghost">Ver Colección GLB</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 4: DESGLOSE TÉCNICO CON HOTSPOTS INTERACTIVOS -->
+  <section class="content-section" id="arquitectura">
+    <div class="section-header reveal">
+      <span class="section-tag">03 // ESCÁNER ARQUITECTÓNICO</span>
+      <h2 class="section-title">Desglose Técnico por Puntos de Interés</h2>
+      <p class="section-desc">Selecciona cualquiera de los 4 nodos pulsantes para analizar la estructura del complejo patrimonial de Miraflores.</p>
+    </div>
+
+    <div class="blueprint-grid reveal">
+      <div class="blueprint-stage">
+        <img
+          src="./img/1.jpg"
+          onerror="this.src='https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80'"
+          alt="Plano visual del Palacio de Patiño"
+        />
+        <button class="bp-hotspot active" style="top: 26%; left: 32%;"
+          data-title="01. Torre de Estilo Escocés y Fachada"
+          data-desc="Corona la fachada color mostaza del palacio prometido por Simón I. Patiño a su esposa Albina Rodríguez Ocampo tras vender sus alhajas en los inicios de La Salvadora."
+          data-b1="95" data-b2="98" data-b3="90">01</button>
+
+        <button class="bp-hotspot" style="top: 48%; left: 54%;"
+          data-title="02. Salón de Fiestas y Cristales de Venecia"
+          data-desc="Muros en rojo guindo contrastados con arcos blancos. Sus techos exhibían cristales italianos de Venecia con murales de canales, hoy resguardados con policarbonato de una pulgada."
+          data-b1="88" data-b2="100" data-b3="96">02</button>
+
+        <button class="bp-hotspot" style="top: 68%; left: 38%;"
+          data-title="03. Capilla Privada y Carruaje Inglés (1870)"
+          data-desc="Junto a la capilla de bancos de madera se conserva el carruaje inglés rehabilitado de 1870 en el que la familia Patiño recorría Uncía antes del ferrocarril."
+          data-b1="92" data-b2="96" data-b3="85">03</button>
+
+        <button class="bp-hotspot" style="top: 38%; left: 76%;"
+          data-title="04. Galpones de la Planta Diésel Miraflores"
+          data-desc="Visibles desde los ventanales del palacio: albergan los motores alemanes de 1901 y las gigantescas llaves inglesas que un solo hombre no podía levantar."
+          data-b1="84" data-b2="100" data-b3="99">04</button>
+      </div>
+
+      <div class="blueprint-detail-card">
+        <div>
+          <span class="bento-badge">TELEMETRÍA DE NODO SELECCIONADO</span>
+          <h3 id="bp-title" style="font-family:var(--font-display); font-size:1.65rem; margin-bottom:12px;">
+            01. Torre de Estilo Escocés y Fachada
+          </h3>
+          <p id="bp-desc" style="color:var(--text-metal); line-height:1.65; font-size:0.95rem;">
+            Corona la fachada color mostaza del palacio prometido por Simón I. Patiño a su esposa Albina Rodríguez Ocampo tras vender sus alhajas en los inicios de La Salvadora.
+          </p>
+
+          <div class="bp-spec-bars">
+            <div class="bp-bar-item">
+              <label><span>INTEGRIDAD ESTRUCTURAL</span><span id="bp-val-1">95%</span></label>
+              <div class="bp-bar-track"><div class="bp-bar-fill" id="bp-bar-1" style="width:95%"></div></div>
+            </div>
+            <div class="bp-bar-item">
+              <label><span>VALOR HISTÓRICO PATRIMONIAL</span><span id="bp-val-2">98%</span></label>
+              <div class="bp-bar-track"><div class="bp-bar-fill" id="bp-bar-2" style="width:98%"></div></div>
+            </div>
+            <div class="bp-bar-item">
+              <label><span>COMPLEJIDAD ARQUITECTÓNICA</span><span id="bp-val-3">90%</span></label>
+              <div class="bp-bar-track"><div class="bp-bar-fill" id="bp-bar-3" style="width:90%"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <a href="./interior.html" class="btn-hud-ghost" style="justify-content:center;">
+          Inspeccionar Ambiente en Primera Persona →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 5: PREGUNTAS FRECUENTES (ACORDEÓN FLUIDO) -->
+  <section class="content-section" id="faq">
+    <div class="section-header reveal">
+      <span class="section-tag">04 // ARCHIVO DOCUMENTAL</span>
+      <h2 class="section-title">Preguntas Frecuentes sobre el Palacio</h2>
+    </div>
+
+    <div class="faq-list reveal">
+      <div class="faq-item open">
+        <button class="faq-trigger">
+          <span>¿Por qué Simón I. Patiño construyó su primer palacio en Uncía?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-content" style="max-height: 240px;">
+          <p>Cuando Patiño vivía junto a la bocamina en el cerro Llallagua, su esposa Albina Rodríguez Ocampo vendió sus joyas en Oruro para acompañarlo. Conmovido, Patiño le prometió construirle un palacio. Entre 1899 y 1905 habitaron esta mansión de 73 ambientes en la zona de Miraflores.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-trigger">
+          <span>¿Qué relación tienen los motores de Uncía con el Titanic?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-content">
+          <p>En 1901 Patiño importó desde Alemania motores diésel de última generación para dar electricidad a La Salvadora y al pueblo de Uncía. Sus dos motores gemelos de fábrica fueron instalados en el transatlántico Titanic, hundiéndose en el Atlántico en 1912.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-trigger">
+          <span>¿Cómo puedo explorar los modelos 3D (.glb) del interior y las reliquias?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-content">
+          <p>Desde los botones superiores e inferiores puedes acceder directamente a la sección «Historia / Galería 3D» (donde se exhiben el carruaje inglés, el piano, los motores de Miraflores y el Tío de la Mina) y a «Interior» para caminar en primera persona con WASD por los ambientes de la casa.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER MONUMENTAL -->
+  <footer class="monumental-footer">
+    <div class="footer-top">
+      <div>UNCÍA · PROVINCIA RAFAEL BUSTILLO · POTOSÍ, BOLIVIA</div>
+      <div class="footer-links">
+        <a href="#origen">Inicio</a>
+        <a href="./historia.html">Galería 3D (.GLB)</a>
+        <a href="./interior.html">Recorrido Interior 3D</a>
+        <a href="#especificaciones">Especificaciones</a>
+      </div>
+    </div>
+    <div class="footer-giant-brand">CASA PATIÑO</div>
+  </footer>
+
+  <!-- ============================================================
+       LÓGICA INTERACTIVA (SCROLLYTELLING, CANVAS, TILT 3D, LERP)
+       ============================================================ -->
+  <script>
+    // 1. Pre-loader Cinematográfico (0% a 100%)
+    (function initPreloader() {
+      const preloader = document.getElementById('preloader');
+      const counterEl = document.getElementById('loader-counter');
+      const barEl = document.getElementById('loader-bar');
+      let progress = 0;
+
+      const timer = setInterval(() => {
+        progress += Math.floor(Math.random() * 14) + 6;
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(timer);
+          setTimeout(() => preloader.classList.add('loaded'), 280);
+        }
+        counterEl.textContent = progress + '%';
+        barEl.style.width = progress + '%';
+      }, 65);
+    })();
+
+    // 2. Cursor Personalizado con Interpolación (Lerp) y Expansión
+    const dot = document.getElementById('cursor-dot');
+    const ring = document.getElementById('cursor-ring');
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let ringX = mouseX, ringY = mouseY;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left = mouseX + 'px';
+      dot.style.top = mouseY + 'px';
+    });
+
+    function animateCursor() {
+      ringX += (mouseX - ringX) * 0.16;
+      ringY += (mouseY - ringY) * 0.16;
+      ring.style.left = ringX + 'px';
+      ring.style.top = ringY + 'px';
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    document.querySelectorAll('a, button, .bento-card').forEach((el) => {
+      el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
+    });
+
+    // Micro-interacción magnética en CTA 2
+    const magBtn = document.getElementById('magnetic-cta');
+    if (magBtn) {
+      magBtn.addEventListener('mousemove', (e) => {
+        const rect = magBtn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        magBtn.style.transform = `translate(${x * 0.28}px, ${y * 0.28}px)`;
+      });
+      magBtn.addEventListener('mouseleave', () => {
+        magBtn.style.transform = 'translate(0px, 0px)';
+      });
+    }
+
+    // 3. Canvas HTML5 de Fondo: Partículas Reactivas + Neblina Bokeh
+    const canvas = document.getElementById('ambient-canvas');
+    const ctx = canvas.getContext('2d');
+    let accentRGB = '139, 92, 246';
+    let secRGB = '6, 182, 212';
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    for (let i = 0; i < 55; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 2.2 + 0.6,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+        alpha: Math.random() * 0.55 + 0.15
+      });
+    }
+
+    function drawCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Neblina bokeh siguiendo suavemente al cursor
+      const grad = ctx.createRadialGradient(ringX, ringY, 10, ringX, ringY, 380);
+      grad.addColorStop(0, `rgba(${accentRGB}, 0.11)`);
+      grad.addColorStop(0.5, `rgba(${secRGB}, 0.04)`);
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        // Repulsión suave al cursor
+        const dx = p.x - mouseX;
+        const dy = p.y - mouseY;
+        const dist = Math.hypot(dx, dy);
+        if (dist < 130) {
+          p.x += (dx / dist) * 1.2;
+          p.y += (dy / dist) * 1.2;
+        }
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${secRGB}, ${p.alpha})`;
+        ctx.fill();
+      });
+
+      requestAnimationFrame(drawCanvas);
+    }
+    drawCanvas();
+
+    // 4. Scrollytelling del Hero (Pinned Track + Barra de Carga + Morph)
+    const heroTrack = document.querySelector('.hero-scroll-track');
+    const visualCore = document.getElementById('visual-core');
+    const activeOverlay = document.getElementById('core-active-overlay');
+    const chargeBar = document.getElementById('charge-bar');
+    const chargePercent = document.getElementById('charge-percent');
+    const telemetryState = document.getElementById('telemetry-state');
+    const ring1 = document.getElementById('ring-1');
+    const ring2 = document.getElementById('ring-2');
+    const coreGlow = document.getElementById('core-glow');
+    const parallaxLeft = document.getElementById('parallax-left');
+    const parallaxRight = document.getElementById('parallax-right');
+
+    window.addEventListener('scroll', () => {
+      const rect = heroTrack.getBoundingClientRect();
+      const scrollable = heroTrack.offsetHeight - window.innerHeight;
+      const scrolled = Math.min(Math.max(-rect.top, 0), scrollable);
+      const progress = scrollable > 0 ? scrolled / scrollable : 0;
+      const pct = Math.round(progress * 100);
+
+      // Actualizar barra de energía
+      chargeBar.style.width = pct + '%';
+      chargePercent.textContent = pct + '%';
+
+      // Transformación del eje central según el scroll
+      const scale = 1 + progress * 0.18;
+      const rotZ = progress * 4;
+      visualCore.style.transform = `scale(${scale}) rotateZ(${rotZ}deg)`;
+      activeOverlay.style.opacity = (progress * 0.9).toFixed(2);
+      ring1.style.transform = `rotate(${progress * 180}deg) scale(${1 + progress * 0.12})`;
+      ring2.style.transform = `rotate(-${progress * 140}deg) scale(${1 + progress * 0.2})`;
+      coreGlow.style.transform = `scale(${1 + progress * 0.55})`;
+
+      if (pct === 0) {
+        telemetryState.textContent = 'ESTADO: REPOSO';
+      } else if (pct < 95) {
+        telemetryState.textContent = 'ACTIVANDO SECUENCIA: ' + pct + '%';
+      } else {
+        telemetryState.textContent = 'MEMORIA 100% SINCRONIZADA';
+      }
+    }, { passive: true });
+
+    // Parallax del título dividido al mover el ratón
+    window.addEventListener('mousemove', (e) => {
+      const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+      parallaxLeft.style.transform = `translate3d(${nx * -14}px, ${ny * -10}px, 0)`;
+      parallaxRight.style.transform = `translate3d(${nx * 14}px, ${ny * 10}px, 0)`;
+    });
+
+    // 5. Efecto Tilt 3D y Spotlight en tarjetas del Bento Grid
+    document.querySelectorAll('[data-tilt]').forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rotY = ((x / rect.width) - 0.5) * 14;
+        const rotX = ((y / rect.height) - 0.5) * -14;
+
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+        card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.015, 1.015, 1.015)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+      });
+    });
+
+    // 6. IntersectionObserver para Reveal y Contadores Animados
+    const countersStarted = new WeakSet();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          entry.target.querySelectorAll('.counter').forEach((counter) => {
+            if (countersStarted.has(counter)) return;
+            countersStarted.add(counter);
+            const target = parseInt(counter.dataset.target, 10);
+            let current = 0;
+            const step = Math.max(1, Math.ceil(target / 55));
+            const update = () => {
+              current = Math.min(current + step, target);
+              counter.textContent = current;
+              if (current < target) requestAnimationFrame(update);
+            };
+            update();
+          });
+        }
+      });
+    }, { threshold: 0.18 });
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+    // 7. Selector Interactivo de Variantes / Modos (Color Theme Switcher)
+    const modeBtns = document.querySelectorAll('.mode-btn');
+    const modeTitle = document.getElementById('mode-title');
+    const modeDesc = document.getElementById('mode-desc');
+
+    modeBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        modeBtns.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const root = document.documentElement;
+        root.style.setProperty('--accent-primary', btn.dataset.primary);
+        root.style.setProperty('--accent-secondary', btn.dataset.secondary);
+        root.style.setProperty('--accent-rgb', btn.dataset.rgb);
+        root.style.setProperty('--accent-sec-rgb', btn.dataset.secRgb);
+
+        accentRGB = btn.dataset.rgb;
+        secRGB = btn.dataset.secRgb;
+
+        modeTitle.textContent = btn.dataset.title;
+        modeDesc.textContent = btn.dataset.desc;
+      });
+    });
+
+    // 8. Hotspots Interactivos del Desglose Técnico
+    const hotspots = document.querySelectorAll('.bp-hotspot');
+    const bpTitle = document.getElementById('bp-title');
+    const bpDesc = document.getElementById('bp-desc');
+    const bpBar1 = document.getElementById('bp-bar-1');
+    const bpBar2 = document.getElementById('bp-bar-2');
+    const bpBar3 = document.getElementById('bp-bar-3');
+    const bpVal1 = document.getElementById('bp-val-1');
+    const bpVal2 = document.getElementById('bp-val-2');
+    const bpVal3 = document.getElementById('bp-val-3');
+
+    hotspots.forEach((spot) => {
+      const activateSpot = () => {
+        hotspots.forEach((s) => s.classList.remove('active'));
+        spot.classList.add('active');
+        bpTitle.textContent = spot.dataset.title;
+        bpDesc.textContent = spot.dataset.desc;
+
+        bpBar1.style.width = spot.dataset.b1 + '%';
+        bpVal1.textContent = spot.dataset.b1 + '%';
+        bpBar2.style.width = spot.dataset.b2 + '%';
+        bpVal2.textContent = spot.dataset.b2 + '%';
+        bpBar3.style.width = spot.dataset.b3 + '%';
+        bpVal3.textContent = spot.dataset.b3 + '%';
+      };
+      spot.addEventListener('click', activateSpot);
+      spot.addEventListener('mouseenter', activateSpot);
+    });
+
+    // 9. Acordeón Fluido de Preguntas Frecuentes
+    document.querySelectorAll('.faq-trigger').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.parentElement;
+        const content = item.querySelector('.faq-content');
+        const isOpen = item.classList.contains('open');
+
+        document.querySelectorAll('.faq-item').forEach((other) => {
+          other.classList.remove('open');
+          other.querySelector('.faq-content').style.maxHeight = null;
+        });
+
+        if (!isOpen) {
+          item.classList.add('open');
+          content.style.maxHeight = content.scrollHeight + 'px';
+        }
+      });
+    });
+  </script>
 </body>
 </html>

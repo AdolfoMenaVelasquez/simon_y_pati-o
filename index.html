@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Casa de Simón I. Patiño — Uncía</title>
+  <meta name="description" content="Explora en 3D la casa que Simón I. Patiño construyó en Uncía, Potosí — su exterior, su historia y su interior.">
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="./index.html" class="brand">Casa Patiño <span>· Uncía</span></a>
+  <ul>
+    <li><a href="./index.html" class="link active">Inicio</a></li>
+    <li><a href="./historia.html" class="link">Historia</a></li>
+    <li><a href="./interior.html" class="link">Interior</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Abrir menú">☰</button>
+</nav>
+
+<div class="scene-wrap" id="scene-exterior">
+  <div class="scene-loading">
+    <div class="ring"></div>
+    <p>Cargando el modelo 3D…</p>
+  </div>
+
+  <div class="model-note" hidden>
+    <button aria-label="Cerrar aviso">✕</button>
+    Aún no se encontró <code>models/casa-exterior.glb</code>, así que ves una
+    casa de reemplazo. Coloca ahí tu archivo real para verla en su lugar.
+  </div>
+
+  <div class="hero-overlay">
+    <p class="hero-eyebrow">Uncía · Potosí, Bolivia</p>
+    <h1>La Casa de Simón I. Patiño</h1>
+    <p class="sub">La primera residencia que el Rey del Estaño levantó en el pueblo donde comenzó su fortuna. Recórrela en tres dimensiones, tal como se conserva hoy.</p>
+    <div class="cta-row">
+      <a href="./historia.html" class="btn btn-primary">Conoce su historia</a>
+      <a href="./interior.html" class="btn btn-ghost">Recorre el interior</a>
+    </div>
+    <div class="hero-controls-hint">
+      <span><span class="key">arrastra</span> para mirar alrededor</span>
+      <span><span class="key">rueda</span> para acercarte</span>
+    </div>
+  </div>
+</div>
+
+<section class="editorial editorial-home">
+  <p class="kicker">Sobre este sitio</p>
+  <p>Este espacio digital reconstruye en tres dimensiones la casa que Simón I. Patiño construyó en Uncía para su esposa, antes de que su fortuna minera lo llevara a levantar residencias mucho más grandes en Oruro, Cochabamba y Europa. Aquí puedes recorrer el exterior del inmueble tal como se conserva hoy, entrar a sus ambientes interiores y conocer la historia detrás de los objetos y espacios que lo componen.</p>
+  <div class="cta-row">
+    <a href="./interior.html" class="btn btn-primary">Entrar a la casa</a>
+    <a href="./historia.html" class="btn btn-ghost">Leer la historia completa</a>
+  </div>
+</section>
+
+<footer class="site-footer">
+  Casa de Simón I. Patiño · Uncía, Potosí — sitio construido con Three.js
+</footer>
+
+<script src="./js/nav.js" defer></script>
+<script type="module" src="./js/exterior-scene.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Interior — Casa de Simón I. Patiño, Uncía</title>
+  <meta name="description" content="Camina en primera persona por el interior de la Casa de Simón I. Patiño en Uncía y descubre la historia de sus ambientes.">
+  <link rel="stylesheet" href="./style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="./index.html" class="brand">Casa Patiño <span>· Uncía</span></a>
+  <ul>
+    <li><a href="./index.html" class="link">Inicio</a></li>
+    <li><a href="./historia.html" class="link">Historia</a></li>
+    <li><a href="./interior.html" class="link active">Interior</a></li>
+  </ul>
+  <button class="nav-toggle" aria-label="Abrir menú">☰</button>
+</nav>
+
+<div class="scene-wrap" id="scene-interior">
+  <div class="scene-loading">
+    <div class="ring"></div>
+    <p>Cargando el interior…</p>
+  </div>
+
+  <div class="model-note" hidden>
+    <button aria-label="Cerrar aviso">✕</button>
+    Aún no se encontró <code>models/casa-interior.glb</code>, así que ves una
+    habitación de reemplazo. Coloca ahí tu archivo real para verla en su lugar.
+    Los puntos de interés ya funcionan sobre este modelo de prueba.
+  </div>
+
+  <div class="crosshair"></div>
+
+  <div class="enter-prompt" id="enter-prompt">
+    <div class="card">
+      <h2>Entra a la casa</h2>
+      <p>Haz click para caminar con <strong>WASD</strong> y mirar con el mouse.<br>
+      Presiona <strong>ESC</strong> para salir en cualquier momento.</p>
+    </div>
+  </div>
+
+  <div class="coord-debug" id="coord-debug">x: 0.00 · y: 0.00 · z: 0.00</div>
+
+  <!-- Aviso flotante de proximidad (Tecla E / Tocar) -->
+  <div class="interact-hud" id="interact-hud"></div>
+
+  <!-- Panel de Control de Iluminación -->
+  <div class="light-control-panel" id="light-control-panel">
+    <div class="light-panel-header">
+      <span>Control de Luces</span>
+      <button id="toggle-light-panel" aria-label="Minimizar panel">−</button>
+    </div>
+    <div id="light-panel-content" class="light-panel-content">
+      <label>
+        <span>Intensidad Focos: <strong id="val-point">12</strong></span>
+        <input type="range" id="range-point" min="0" max="35" step="0.5" value="12">
+      </label>
+      <label>
+        <span>Luz Ambiental: <strong id="val-ambient">0.35</strong></span>
+        <input type="range" id="range-ambient" min="0" max="2" step="0.05" value="0.35">
+      </label>
+    </div>
+  </div>
+
+  <div class="interior-hud">
+    <div class="pill">Toca los puntos brillantes o acércate y presiona <strong>E</strong></div>
+  </div>
+
+  <!-- Controles para dispositivos táctiles -->
+  <div class="touch-controls">
+    <div class="dpad">
+      <button id="btn-forward" class="btn-touch" aria-label="Avanzar">▲</button>
+      <div class="row">
+        <button id="btn-left" class="btn-touch" aria-label="Izquierda">◄</button>
+        <button id="btn-back" class="btn-touch" aria-label="Retroceder">▼</button>
+        <button id="btn-right" class="btn-touch" aria-label="Derecha">►</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Panel lateral de detalle de hotspots -->
+<div class="detail-panel" id="detail-panel">
+  <button class="close-btn" aria-label="Cerrar">✕</button>
+  <p class="tag">Punto de interés</p>
+  <h3 id="panel-title">Título</h3>
+  <img id="panel-img" src="" alt="Imagen del ambiente" hidden />
+  <p id="panel-desc">Descripción.</p>
+</div>
+
+<script src="./js/nav.js" defer></script>
+<script type="module" src="./js/interior-scene.js"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+Coloca aquí tus dos archivos .glb con estos nombres exactos:
+
+  models/casa-exterior.glb   → modelo del exterior (página de inicio)
+  models/casa-interior.glb   → modelo del interior (recorrido en primera persona)
+
+Mientras estos archivos no existan, el sitio muestra automáticamente una
+casa y una habitación de reemplazo (placeholder) para que puedas probar
+la navegación, los controles y los puntos de interés.
+
+Recomendaciones para tus archivos .glb:
+- Formato .glb (binario), no .gltf suelto ni .blend.
+- Escala en metros reales (1 unidad = 1 metro) para que la altura de
+  cámara (1.65 m) y la velocidad de caminata se sientan correctas.
+- Para el interior: exporta con las normales hacia adentro de las
+  paredes y con la geometría "cerrada" para que la detección de
+  colisiones y el ajuste al piso funcionen bien.
+- Tamaño de archivo: intenta comprimir texturas y usar Draco si el
+  archivo pesa mucho (Blender: casilla "Draco mesh compression" al
+  exportar). Si usas Draco, avísame para agregar el decodificador.

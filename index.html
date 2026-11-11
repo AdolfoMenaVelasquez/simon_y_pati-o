@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Palacio de SimÃ³n I. PatiÃ±o â€” UncÃ­a Â· Edificio Patrimonial (1899â€“1905)</title>
-  <meta name="description" content="Explora en 3D el exterior del Palacio de SimÃ³n I. PatiÃ±o en UncÃ­a, PotosÃ­. Recorrido por la entrada, la torre escocesa, la Planta DiÃ©sel Miraflores y vista general." />
+  <title>Palacio de Sim&oacute;n I. Pati&ntilde;o - Unc&iacute;a (1899-1905)</title>
+  <meta name="description" content="Explora en 3D el exterior del Palacio de Sim&oacute;n I. Pati&ntilde;o en Unc&iacute;a, Potos&iacute;. Recorrido por la entrada, la torre escocesa, la Planta Di&eacute;sel Miraflores y vista general." />
 
-  <!-- TipografÃ­as ClÃ¡sicas de Ã‰poca -->
+  <!-- Tipografias Clasicas de Epoca -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -22,9 +22,6 @@
   </script>
 
   <style>
-    /* ============================================================
-       DIRECCIÃ“N DE ARTE: ESTÃ‰TICA DE Ã‰POCA / VINTAGE PATRIMONIAL
-       ============================================================ */
     :root {
       --bg-mahogany: #120D08;
       --bg-charcoal: #1C150E;
@@ -68,7 +65,6 @@
     ::selection { background: var(--gold-vintage); color: var(--bg-mahogany); }
     a { color: inherit; text-decoration: none; }
 
-    /* Grano de pelÃ­cula sepia y viÃ±eta */
     .vintage-film-overlay {
       position: fixed;
       inset: 0;
@@ -79,7 +75,7 @@
         repeating-linear-gradient(0deg, rgba(197, 160, 89, 0.012) 0px, rgba(197, 160, 89, 0.012) 1px, transparent 1px, transparent 3px);
     }
 
-    /* Pre-loader de Ã‰poca */
+    /* Pre-loader */
     #vintage-preloader {
       position: fixed;
       inset: 0;
@@ -151,7 +147,7 @@
       color: var(--text-sepia);
     }
 
-    /* NavegaciÃ³n Superior Ornamental */
+    /* Navegacion Superior */
     .vintage-nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -200,7 +196,7 @@
     }
     .nav-actions { display: flex; gap: 10px; align-items: center; }
 
-    /* Botones de Ã‰poca */
+    /* Botones */
     .btn-vintage {
       position: relative;
       display: inline-flex; align-items: center; justify-content: center;
@@ -234,9 +230,7 @@
     }
     .btn-sm { padding: 8px 14px; font-size: 0.66rem; letter-spacing: 0.13em; }
 
-    /* ============================================================
-       HERO 3D VIEWPORT (100VW, 100VH)
-       ============================================================ */
+    /* Hero 3D Viewport */
     .hero-stage-3d {
       position: relative;
       width: 100vw;
@@ -280,7 +274,6 @@
     .cf-bl { bottom: 4px; left: 4px; transform: scaleY(-1); }
     .cf-br { bottom: 4px; right: 4px; transform: scale(-1, -1); }
 
-    /* Aviso superior de controles libres */
     .free-roam-hint {
       position: absolute;
       top: 90px;
@@ -299,7 +292,7 @@
       text-align: center;
     }
 
-    /* PresentaciÃ³n Lateral Izquierda */
+    /* Presentacion Lateral Izquierda */
     .hero-left-banner {
       position: absolute;
       left: clamp(26px, 4.5vw, 60px);
@@ -307,7 +300,7 @@
       max-width: 450px;
       z-index: 14;
       pointer-events: none;
-      background: linear-gradient(90deg, rgba(18, 13, 8, 0.86) 0%, rgba(18, 13, 8, 0.48) 85%, transparent 100%);
+      background: linear-gradient(90deg, rgba(18, 13, 8, 0.88) 0%, rgba(18, 13, 8, 0.55) 85%, transparent 100%);
       padding: 22px 26px;
       border-left: 3px double var(--gold-vintage);
       transition: opacity 0.45s ease, transform 0.45s ease;
@@ -350,7 +343,7 @@
       flex-wrap: wrap;
     }
 
-    /* Placa de Bronce de EstaciÃ³n Activa (con soporte para imagen) */
+    /* Placa de Bronce de Estacion Activa */
     .tour-plaque-card {
       position: absolute;
       bottom: 112px;
@@ -386,24 +379,18 @@
     }
     .plaque-close {
       background: none;
-      border: none;
+      border: 1px solid rgba(197, 160, 89, 0.4);
       color: var(--gold-bright);
       cursor: pointer;
-      font-size: 0.95rem;
+      font-family: var(--font-label);
+      font-size: 0.65rem;
+      padding: 2px 7px;
     }
     .tour-plaque-card h3 {
       font-family: var(--font-monumental);
       font-size: 1.35rem;
       color: var(--text-ivory);
       margin-bottom: 8px;
-    }
-    #plaque-img {
-      width: 100%;
-      max-height: 155px;
-      object-fit: cover;
-      border: 2px double var(--gold-vintage);
-      margin-bottom: 10px;
-      display: none;
     }
     .tour-plaque-card p {
       font-size: 1.05rem;
@@ -472,7 +459,7 @@
     }
     .seal-hotspot:hover .seal-tooltip { opacity: 1; }
 
-    /* Barra Inferior de Estaciones y AtmÃ³sfera 3D */
+    /* Barra Inferior de Estaciones y Atmosfera 3D */
     .vintage-compass-dock {
       position: absolute;
       bottom: 20px;
@@ -529,9 +516,7 @@
       color: var(--gold-bright);
     }
 
-    /* ============================================================
-       PANEL EDITOR DE ÃNGULOS, PUNTOS Y MODELOS .GLB (TECLA P)
-       ============================================================ */
+    /* Panel Editor de Angulos y Puntos (Tecla P) */
     .editor-toggle-btn {
       position: absolute;
       top: 88px;
@@ -562,8 +547,8 @@
       border: 3px double var(--gold-vintage);
       padding: 16px;
       color: var(--text-ivory);
-      font-family: var(--font-body, sans-serif);
-      font-size: 0.78rem;
+      font-family: var(--font-label);
+      font-size: 0.72rem;
       box-shadow: 0 18px 50px rgba(0,0,0,0.9);
     }
     .editor-section-title {
@@ -584,7 +569,7 @@
       color: var(--text-ivory);
       border: 1px solid rgba(197, 160, 89, 0.45);
       padding: 5px 7px;
-      font-size: 0.76rem;
+      font-size: 0.74rem;
       margin-top: 3px;
     }
     .editor-drawer input[type="range"] {
@@ -593,9 +578,7 @@
       cursor: pointer;
     }
 
-    /* ============================================================
-       SECCIONES INFERIORES DE LA PÃGINA (POST-SCROLL)
-       ============================================================ */
+    /* Secciones Inferiores */
     .vintage-marquee {
       position: relative;
       z-index: 20;
@@ -619,7 +602,13 @@
       padding: 0 28px;
       display: inline-flex; align-items: center; gap: 28px;
     }
-    .vintage-marquee-item .fleuron { color: var(--gold-vintage); font-style: normal; }
+    .vintage-marquee-item .sep-diamond {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: var(--gold-vintage);
+      transform: rotate(45deg);
+    }
     @keyframes classicMarquee {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
@@ -659,7 +648,13 @@
     }
     .ornament-divider {
       display: flex; align-items: center; justify-content: center;
-      gap: 14px; margin: 16px auto 0; color: var(--gold-vintage);
+      gap: 14px; margin: 16px auto 0;
+    }
+    .ornament-divider span {
+      width: 8px; height: 8px;
+      border: 1px solid var(--gold-vintage);
+      transform: rotate(45deg);
+      display: inline-block;
     }
     .ornament-divider::before, .ornament-divider::after {
       content: ""; width: 80px; height: 1px;
@@ -720,6 +715,8 @@
       border: 2px solid #120D08;
       box-shadow: 0 0 0 2px var(--gold-vintage), 0 6px 20px rgba(0,0,0,0.8);
       color: #120D08; font-weight: 700;
+      font-family: var(--font-label);
+      font-size: 0.75rem;
       display: flex; align-items: center; justify-content: center;
     }
 
@@ -765,7 +762,7 @@
       font-size: 0.68rem; letter-spacing: 0.14em; color: var(--text-muted);
     }
 
-    /* LÃ­nea del Tiempo */
+    /* Linea del Tiempo */
     .chronicle-timeline {
       position: relative; max-width: 960px; margin: 0 auto; padding: 20px 0;
     }
@@ -845,7 +842,7 @@
 </head>
 <body>
 
-  <!-- OVERLAY DE PELÃCULA SEPIA Y VIÃ‘ETA -->
+  <!-- OVERLAY DE PELICULA SEPIA Y VINETA -->
   <div class="vintage-film-overlay"></div>
 
   <!-- FILIGRANA SVG REUTILIZABLE -->
@@ -859,7 +856,7 @@
     </defs>
   </svg>
 
-  <!-- PRE-LOADER DE Ã‰POCA -->
+  <!-- PRE-LOADER DE EPOCA -->
   <div id="vintage-preloader">
     <div class="preloader-crest">
       <svg viewBox="0 0 64 64">
@@ -868,32 +865,32 @@
         <circle cx="32" cy="32" r="6" stroke-width="1.5"/>
       </svg>
     </div>
-    <p class="preloader-eyebrow">Patrimonio HistÃ³rico ArquitectÃ³nico Â· UncÃ­a, PotosÃ­</p>
-    <h1 class="preloader-title">PALACIO DE SIMÃ“N I. PATIÃ‘O</h1>
+    <p class="preloader-eyebrow">Patrimonio Hist&oacute;rico Arquitect&oacute;nico - Unc&iacute;a, Potos&iacute;</p>
+    <h1 class="preloader-title">PALACIO DE SIM&Oacute;N I. PATI&Ntilde;O</h1>
     <div class="preloader-pct" id="preloader-pct">0%</div>
     <div class="preloader-track">
       <div class="preloader-fill" id="preloader-fill"></div>
     </div>
-    <p class="preloader-status" id="preloader-status">Cargando arquitectura 3D (casa-exterior.glb)â€¦</p>
+    <p class="preloader-status" id="preloader-status">Cargando arquitectura 3D (casa-exterior.glb)...</p>
   </div>
 
-  <!-- NAVEGACIÃ“N SUPERIOR ORNAMENTAL -->
+  <!-- NAVEGACION SUPERIOR -->
   <nav class="vintage-nav">
     <a href="./index.html" class="nav-brand">
       <span class="nav-brand-emblem"><span>SP</span></span>
-      <span>PALACIO PATIÃ‘O Â· UNCÃA</span>
+      <span>PALACIO PATI&Ntilde;O - UNC&Iacute;A</span>
     </a>
 
     <ul class="nav-links">
       <li><a href="#visor-exterior" class="active">Exterior 3D</a></li>
-      <li><a href="#plano-comparador">Plano y RestauraciÃ³n</a></li>
+      <li><a href="#plano-comparador">Plano y Restauraci&oacute;n</a></li>
       <li><a href="#detalles-arquitectura">Arquitectura</a></li>
-      <li><a href="#cronica-historica">CrÃ³nica (1892â€“1952)</a></li>
-      <li><a href="./historia.html">ColecciÃ³n 3D (.GLB)</a></li>
+      <li><a href="#cronica-historica">Cr&oacute;nica (1892-1952)</a></li>
+      <li><a href="./historia.html">Colecci&oacute;n 3D (.GLB)</a></li>
     </ul>
 
     <div class="nav-actions">
-      <a href="./interior.html" class="btn-vintage btn-sm">Entrar a los 73 Ambientes â†’</a>
+      <a href="./interior.html" class="btn-vintage btn-sm">Entrar a los 73 Ambientes</a>
     </div>
   </nav>
 
@@ -914,16 +911,16 @@
     </div>
 
     <div class="free-roam-hint">
-      Arrastra para girar Â· Rueda para acercar Â· WASD / Flechas / Q / E para moverte libremente Â· Toca los sellos 1 â€“ 4
+      Arrastra para girar - Rueda para acercar - WASD / Flechas / Q / E para moverte libremente - Toca los sellos 1 al 4
     </div>
 
-    <!-- BOTÃ“N Y PANEL EDITOR DE ÃNGULOS, PUNTOS Y MODELOS (TECLA P) -->
+    <!-- BOTON Y PANEL EDITOR DE ANGULOS Y PUNTOS (SIN EMOJIS) -->
     <button type="button" class="editor-toggle-btn" id="btn-toggle-editor">
-      ðŸ› ï¸ Ãngulos y Puntos (P)
+      Configurar &Aacute;ngulos y Puntos (P)
     </button>
 
     <div class="editor-drawer" id="editor-drawer" hidden>
-      <div class="editor-section-title" style="margin-top:0;">1. Editar Punto de EstaciÃ³n (1 al 4) y Ãngulo</div>
+      <div class="editor-section-title" style="margin-top:0;">1. Editar Punto de Estaci&oacute;n (1 al 4) y &Aacute;ngulo</div>
 
       <label style="display:block; margin-bottom:6px;">
         <span>Seleccionar Punto:</span>
@@ -932,35 +929,35 @@
 
       <div style="display:flex; gap:6px; margin-bottom:8px;">
         <button type="button" class="dock-btn" id="ed-btn-click-seal" style="flex:1; border-style:dashed;">
-          ðŸ“ Mover sello con clic en 3D
+          Mover sello con clic en 3D
         </button>
         <button type="button" class="dock-btn active" id="ed-btn-capture-cam" style="flex:1;">
-          ðŸ“¸ Guardar mi Ãngulo Actual
+          Guardar &Aacute;ngulo Actual
         </button>
       </div>
 
       <label style="display:block; margin-bottom:5px;">
-        <span>Giro Horizontal / Yaw (<strong id="ed-lbl-yaw">0Â°</strong>):</span>
+        <span>Giro Horizontal / Yaw (<strong id="ed-lbl-yaw">0&deg;</strong>):</span>
         <input type="range" id="ed-rng-yaw" min="-180" max="180" step="1" value="0">
       </label>
 
       <label style="display:block; margin-bottom:5px;">
-        <span>Picado Vertical / Pitch (<strong id="ed-lbl-pitch">12Â°</strong>):</span>
+        <span>Picado Vertical / Pitch (<strong id="ed-lbl-pitch">12&deg;</strong>):</span>
         <input type="range" id="ed-rng-pitch" min="-15" max="80" step="1" value="12">
       </label>
 
       <label style="display:block; margin-bottom:5px;">
-        <span>Distancia de CÃ¡mara (<strong id="ed-lbl-dist">5.0m</strong>):</span>
+        <span>Distancia de C&aacute;mara (<strong id="ed-lbl-dist">5.0m</strong>):</span>
         <input type="range" id="ed-rng-dist" min="1.2" max="24" step="0.2" value="5.0">
       </label>
 
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
         <label>
-          <span>Lente FOV (<strong id="ed-lbl-fov">42Â°</strong>):</span>
+          <span>Lente FOV (<strong id="ed-lbl-fov">42&deg;</strong>):</span>
           <input type="range" id="ed-rng-fov" min="22" max="75" step="1" value="42">
         </label>
         <label>
-          <span>InclinaciÃ³n Roll (<strong id="ed-lbl-roll">0Â°</strong>):</span>
+          <span>Inclinaci&oacute;n Roll (<strong id="ed-lbl-roll">0&deg;</strong>):</span>
           <input type="range" id="ed-rng-roll" min="-20" max="20" step="1" value="0">
         </label>
       </div>
@@ -968,7 +965,7 @@
       <div class="editor-section-title">2. Vista de Inicio Fija</div>
       <div style="display:flex; gap:6px; margin-bottom:8px;">
         <button type="button" class="dock-btn" id="ed-btn-save-home" style="flex:1;">
-          ðŸ“Œ Fijar Vista Actual como Inicio
+          Fijar Vista Actual como Inicio
         </button>
         <button type="button" class="dock-btn" id="ed-btn-reset">
           Restaurar
@@ -984,76 +981,75 @@
         <span>Mostrar este modelo en el exterior</span>
       </label>
       <button type="button" class="dock-btn" id="ed-btn-click-prop" style="width:100%; margin-bottom:8px; border-style:dashed;">
-        ðŸ“ Ubicar modelo haciendo clic en el mapa
+        Ubicar modelo con clic en el mapa
       </button>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
         <label>
-          <span>RotaciÃ³n (<strong id="ed-lbl-prot">0Â°</strong>):</span>
+          <span>Rotaci&oacute;n (<strong id="ed-lbl-prot">0&deg;</strong>):</span>
           <input type="range" id="ed-rng-prot" min="-180" max="180" step="5" value="0">
         </label>
         <label>
-          <span>TamaÃ±o (<strong id="ed-lbl-pscale">2.5m</strong>):</span>
+          <span>Tama&ntilde;o (<strong id="ed-lbl-pscale">2.5m</strong>):</span>
           <input type="range" id="ed-rng-pscale" min="0.5" max="10" step="0.1" value="2.5">
         </label>
       </div>
 
       <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="ed-btn-copy" style="width:100%;">
-        ðŸ“‹ Copiar ConfiguraciÃ³n para el CÃ³digo
+        Copiar Configuraci&oacute;n para el C&oacute;digo
       </button>
       <p id="ed-msg" style="text-align:center; color:var(--gold-bright); font-size:0.72rem; margin-top:6px;"></p>
     </div>
 
-    <!-- PRESENTACIÃ“N IZQUIERDA EN VISTA DE INICIO -->
+    <!-- PRESENTACION IZQUIERDA EN VISTA DE INICIO -->
     <div class="hero-left-banner" id="hero-left-banner">
-      <span class="eyebrow">UncÃ­a Â· PotosÃ­, Bolivia (1899 â€“ 1905)</span>
-      <h1>La Casa de SimÃ³n I. PatiÃ±o</h1>
+      <span class="eyebrow">Unc&iacute;a - Potos&iacute;, Bolivia (1899 - 1905)</span>
+      <h1>La Casa de Sim&oacute;n I. Pati&ntilde;o</h1>
       <p>
-        La primera residencia que el Rey del EstaÃ±o levantÃ³ en el pueblo donde comenzÃ³ su fortuna. RecÃ³rrela libremente o explora sus 4 estaciones patrimoniales.
+        La primera residencia que el Rey del Esta&ntilde;o levant&oacute; en el pueblo donde comenz&oacute; su fortuna. Rec&oacute;rrela libremente o explora sus 4 estaciones patrimoniales.
       </p>
       <div class="hero-left-actions">
         <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="btn-start-tour">
-          â–¶ Iniciar Recorrido (1 â€“ 4)
+          Iniciar Recorrido (1 al 4)
         </button>
         <a href="./historia.html" class="btn-vintage btn-sm">Conoce su Historia</a>
         <a href="./interior.html" class="btn-vintage btn-sm">Recorre el Interior</a>
       </div>
     </div>
 
-    <!-- PLACA DE BRONCE DE CADA ESTACIÃ“N (CON SOPORTE PARA IMAGEN OPCIONAL) -->
+    <!-- PLACA DE BRONCE DE CADA ESTACION -->
     <div class="tour-plaque-card" id="tour-plaque">
       <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
       <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
       <div class="plaque-header">
-        <span id="plaque-step">PUNTO DE INTERACCIÃ“N 1 DE 4</span>
-        <button type="button" class="plaque-close" id="btn-close-plaque" title="Cerrar placa">âœ•</button>
+        <span id="plaque-step">PUNTO DE INTERACCI&Oacute;N 1 DE 4</span>
+        <button type="button" class="plaque-close" id="btn-close-plaque" title="Cerrar placa">Cerrar</button>
       </div>
       <h3 id="plaque-title">1. Entrada Principal y Letrero Azul</h3>
-      <img id="plaque-img" src="" alt="FotografÃ­a de estaciÃ³n exterior" onerror="this.style.display='none'" />
-      <p id="plaque-desc">DescripciÃ³n histÃ³rica de la estaciÃ³n.</p>
+      <p id="plaque-desc">Descripci&oacute;n hist&oacute;rica de la estaci&oacute;n.</p>
       <div class="plaque-controls">
-        <button type="button" class="btn-vintage btn-sm" id="btn-prev-stop">â† Anterior</button>
+        <button type="button" class="btn-vintage btn-sm" id="btn-prev-stop">Anterior</button>
         <button type="button" class="btn-vintage btn-sm" id="btn-home-view">Vista Inicio</button>
-        <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="btn-next-stop">Siguiente Punto â†’</button>
+        <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="btn-next-stop">Siguiente Punto</button>
       </div>
     </div>
 
-    <!-- BARRA INFERIOR CON ACCESO DIRECTO A LOS 4 PUNTOS Y ATMÃ“SFERAS -->
+    <!-- BARRA INFERIOR CON ACCESO DIRECTO A LOS 4 PUNTOS Y ATMOSFERAS (SIN EMOJIS) -->
     <div class="vintage-compass-dock">
       <div class="dock-group">
         <span class="dock-label">Estaciones:</span>
-        <button type="button" class="dock-btn active" id="dock-home">ðŸ  Inicio</button>
+        <button type="button" class="dock-btn active" id="dock-home">Inicio</button>
         <button type="button" class="dock-btn" data-goto-stop="0">1. Entrada</button>
         <button type="button" class="dock-btn" data-goto-stop="1">2. La Torre</button>
-        <button type="button" class="dock-btn" data-goto-stop="2">3. Planta DiÃ©sel</button>
+        <button type="button" class="dock-btn" data-goto-stop="2">3. Planta Di&eacute;sel</button>
         <button type="button" class="dock-btn" data-goto-stop="3">4. Vista General</button>
-        <button type="button" class="dock-btn" id="dock-tour">â–¶ Recorrido Guiado</button>
+        <button type="button" class="dock-btn" id="dock-tour">Recorrido Guiado</button>
       </div>
 
       <div class="dock-divider"></div>
 
       <div class="dock-group">
-        <span class="dock-label">AtmÃ³sfera 3D:</span>
-        <button type="button" class="dock-btn active" data-weather="day">Luz de DÃ­a ClÃ¡sica</button>
+        <span class="dock-label">Atm&oacute;sfera 3D:</span>
+        <button type="button" class="dock-btn active" data-weather="day">Luz de D&iacute;a Cl&aacute;sica</button>
         <button type="button" class="dock-btn" data-weather="sunset">Atardecer Sepia</button>
         <button type="button" class="dock-btn" data-weather="night">Noche de Faroles</button>
       </div>
@@ -1061,67 +1057,66 @@
 
   </section>
 
-  <!-- CINTA HISTÃ“RICA -->
+  <!-- CINTA HISTORICA -->
   <div class="vintage-marquee">
     <div class="vintage-marquee-track">
       <div class="vintage-marquee-item">
-        <span>Edificado entre 1899 y 1905 en Miraflores, UncÃ­a</span> <span class="fleuron">âšœ</span>
-        <span>73 Ambientes con Cristales de Venecia y Tapices de Bolonia</span> <span class="fleuron">âšœ</span>
-        <span>Motores DiÃ©sel Alemanes de 1901 Â· Gemelos del Titanic</span> <span class="fleuron">âšœ</span>
-        <span>Carruaje InglÃ©s de 1870 y Capilla Privada</span> <span class="fleuron">âšœ</span>
-        <span>Cuna del Primer Sindicato Minero de Bolivia (1 de Mayo de 1923)</span> <span class="fleuron">âšœ</span>
+        <span>Edificado entre 1899 y 1905 en Miraflores, Unc&iacute;a</span> <span class="sep-diamond"></span>
+        <span>73 Ambientes con Cristales de Venecia y Tapices de Bolonia</span> <span class="sep-diamond"></span>
+        <span>Motores Di&eacute;sel Alemanes de 1901 - Gemelos del Titanic</span> <span class="sep-diamond"></span>
+        <span>Carruaje Ingl&eacute;s de 1870 y Capilla Privada</span> <span class="sep-diamond"></span>
+        <span>Cuna del Primer Sindicato Minero de Bolivia (1 de Mayo de 1923)</span> <span class="sep-diamond"></span>
       </div>
       <div class="vintage-marquee-item">
-        <span>Edificado entre 1899 y 1905 en Miraflores, UncÃ­a</span> <span class="fleuron">âšœ</span>
-        <span>73 Ambientes con Cristales de Venecia y Tapices de Bolonia</span> <span class="fleuron">âšœ</span>
-        <span>Motores DiÃ©sel Alemanes de 1901 Â· Gemelos del Titanic</span> <span class="fleuron">âšœ</span>
-        <span>Carruaje InglÃ©s de 1870 y Capilla Privada</span> <span class="fleuron">âšœ</span>
-        <span>Cuna del Primer Sindicato Minero de Bolivia (1 de Mayo de 1923)</span> <span class="fleuron">âšœ</span>
+        <span>Edificado entre 1899 y 1905 en Miraflores, Unc&iacute;a</span> <span class="sep-diamond"></span>
+        <span>73 Ambientes con Cristales de Venecia y Tapices de Bolonia</span> <span class="sep-diamond"></span>
+        <span>Motores Di&eacute;sel Alemanes de 1901 - Gemelos del Titanic</span> <span class="sep-diamond"></span>
+        <span>Carruaje Ingl&eacute;s de 1870 y Capilla Privada</span> <span class="sep-diamond"></span>
+        <span>Cuna del Primer Sindicato Minero de Bolivia (1 de Mayo de 1923)</span> <span class="sep-diamond"></span>
       </div>
     </div>
   </div>
 
-  <!-- SECCIÃ“N COMPARADOR PLANO VS. ARQUITECTURA (CONECTADO A NUEVAS IMÃGENES CON FALLBACK A 1.JPG) -->
+  <!-- SECCION COMPARADOR PLANO VS. ARQUITECTURA (SIN ERRORES 404) -->
   <section class="patrimonial-section" id="plano-comparador">
     <div class="section-ornament-header">
-      <span class="eyebrow">Archivo de RestauraciÃ³n Â· AECI & Municipio de UncÃ­a</span>
-      <h2>Trazo ArquitectÃ³nico vs. ConservaciÃ³n Patrimonial</h2>
-      <p>Arrastra el medallÃ³n central para contrastar el grabado arquitectÃ³nico de Ã©poca con la estructura del inmueble en Miraflores.</p>
-      <div class="ornament-divider">âšœ</div>
+      <span class="eyebrow">Archivo de Restauraci&oacute;n - AECI y Municipio de Unc&iacute;a</span>
+      <h2>Trazo Arquitect&oacute;nico vs. Conservaci&oacute;n Patrimonial</h2>
+      <p>Arrastra el medall&oacute;n central para contrastar el grabado arquitect&oacute;nico de &eacute;poca con la estructura del inmueble en Miraflores.</p>
+      <div class="ornament-divider"><span></span></div>
     </div>
 
     <div class="comparator-frame" id="comparator-frame">
-      <!-- Lado Derecho: FotografÃ­a Actual (fachada-actual.jpg o respaldo 1.jpg) -->
       <div class="comp-layer comp-after">
         <img
-          id="comp-after-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700' viewBox='0 0 1200 700'><rect width='1200' height='700' fill='%2318110b'/><g stroke='%23c5a059' stroke-width='1.5' fill='none' opacity='0.55'><rect x='60' y='60' width='1080' height='580'/><rect x='72' y='72' width='1056' height='556'/><line x1='60' y1='520' x2='1140' y2='520'/><rect x='340' y='300' width='520' height='220'/><rect x='760' y='170' width='140' height='350'/><polygon points='745,170 830,95 915,170'/><polygon points='320,300 550,220 760,300'/><rect x='140' y='340' width='180' height='180'/></g></svg>"
-          alt="Vista restaurada del Palacio de SimÃ³n I. PatiÃ±o"
+          id="comp-after-img"
+          src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700' viewBox='0 0 1200 700'><rect width='1200' height='700' fill='%2318110b'/><g stroke='%23c5a059' stroke-width='1.5' fill='none' opacity='0.55'><rect x='60' y='60' width='1080' height='580'/><rect x='72' y='72' width='1056' height='556'/><line x1='60' y1='520' x2='1140' y2='520'/><rect x='340' y='300' width='520' height='220'/><rect x='760' y='170' width='140' height='350'/><polygon points='745,170 830,95 915,170'/><polygon points='320,300 550,220 760,300'/><rect x='140' y='340' width='180' height='180'/></g></svg>"
+          alt="Vista restaurada del Palacio de Sim&oacute;n I. Pati&ntilde;o"
         />
       </div>
-      <!-- Lado Izquierdo: Plano/Foto de 1899 (plano-1899.jpg o respaldo 1.jpg) -->
       <div class="comp-layer comp-before" id="comp-before">
         <img
           id="comp-before-img"
           src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700' viewBox='0 0 1200 700'><rect width='1200' height='700' fill='%2318110b'/><g stroke='%23c5a059' stroke-width='1.5' fill='none' opacity='0.55'><rect x='60' y='60' width='1080' height='580'/><rect x='72' y='72' width='1056' height='556'/><line x1='60' y1='520' x2='1140' y2='520'/><rect x='340' y='300' width='520' height='220'/><rect x='760' y='170' width='140' height='350'/><polygon points='745,170 830,95 915,170'/><polygon points='320,300 550,220 760,300'/><rect x='140' y='340' width='180' height='180'/></g></svg>"
-          alt="Plano y grabado de Ã©poca del Palacio"
+          alt="Plano y grabado de &eacute;poca del Palacio"
         />
         <div class="blueprint-grid-overlay"></div>
       </div>
-      <span class="comp-badge left">Grabado y Trazo de Ã‰poca (1899)</span>
+      <span class="comp-badge left">Grabado y Trazo de &Eacute;poca (1899)</span>
       <span class="comp-badge right">Registro Patrimonial Actual</span>
       <div class="comp-handle" id="comp-handle">
-        <div class="comp-handle-medallion">â†”</div>
+        <div class="comp-handle-medallion">&lt; &gt;</div>
       </div>
     </div>
   </section>
 
-  <!-- SECCIÃ“N DETALLES ARQUITECTÃ“NICOS -->
+  <!-- SECCION DETALLES ARQUITECTONICOS -->
   <section class="patrimonial-section" id="detalles-arquitectura">
     <div class="section-ornament-header">
-      <span class="eyebrow">InspecciÃ³n de Elementos Constructivos</span>
-      <h2>Detalles ArquitectÃ³nicos del Palacio</h2>
-      <p>Cuatro registros monumentales que definieron el esplendor europeo en medio de la serranÃ­a minera del norte de PotosÃ­.</p>
-      <div class="ornament-divider">âšœ</div>
+      <span class="eyebrow">Inspecci&oacute;n de Elementos Constructivos</span>
+      <h2>Detalles Arquitect&oacute;nicos del Palacio</h2>
+      <p>Cuatro registros monumentales que definieron el esplendor europeo en medio de la serran&iacute;a minera del norte de Potos&iacute;.</p>
+      <div class="ornament-divider"><span></span></div>
     </div>
 
     <div class="brass-cards-grid">
@@ -1129,20 +1124,20 @@
         <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
         <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
         <div>
-          <span class="card-catalog-num">Registro N.Âº 01 Â· Fachada y TorreÃ³n</span>
-          <h3>Torre de Estilo EscocÃ©s y Muros Mostaza</h3>
-          <p>La volumetrÃ­a exterior destaca por su fachada en tono mostaza coronada por una torre de inspiraciÃ³n escocesa, desde la cual se dominaba el paisaje industrial del ingenio Miraflores.</p>
+          <span class="card-catalog-num">Registro N.&deg; 01 - Fachada y Torre&oacute;n</span>
+          <h3>Torre de Estilo Escoc&eacute;s y Muros Mostaza</h3>
+          <p>La volumetr&iacute;a exterior destaca por su fachada en tono mostaza coronada por una torre de inspiraci&oacute;n escocesa, desde la cual se dominaba el paisaje industrial del ingenio Miraflores.</p>
         </div>
-        <div class="brass-card-footer"><span>Sector: Miraflores Norte</span><span>Ã‰poca: 1899 â€“ 1905</span></div>
+        <div class="brass-card-footer"><span>Sector: Miraflores Norte</span><span>&Eacute;poca: 1899 - 1905</span></div>
       </article>
 
       <article class="brass-card brass-span-6" data-brass-tilt>
         <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
         <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
         <div>
-          <span class="card-catalog-num">Registro N.Âº 02 Â· Cielos Rasos e IluminaciÃ³n</span>
-          <h3>Cristales de Venecia y SalÃ³n Rojo Guindo</h3>
-          <p>Los techos estuvieron cubiertos por cristales italianos procedentes de Venecia con murales de sus canales, iluminando el salÃ³n de fiestas cuyos muros rojo guindo contrastaban con arcos blancos.</p>
+          <span class="card-catalog-num">Registro N.&deg; 02 - Cielos Rasos e Iluminaci&oacute;n</span>
+          <h3>Cristales de Venecia y Sal&oacute;n Rojo Guindo</h3>
+          <p>Los techos estuvieron cubiertos por cristales italianos procedentes de Venecia con murales de sus canales, iluminando el sal&oacute;n de fiestas cuyos muros rojo guindo contrastaban con arcos blancos.</p>
         </div>
         <div class="brass-card-footer"><span>Origen: Venecia, Italia</span><span>Ambientes: 73 Salas</span></div>
       </article>
@@ -1151,33 +1146,33 @@
         <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
         <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
         <div>
-          <span class="card-catalog-num">Registro N.Âº 03 Â· Reliquias de Transporte</span>
-          <h3>El Carruaje InglÃ©s de 1870 y la Capilla</h3>
-          <p>En una sala contigua a la capilla privada descansa el carruaje inglÃ©s rehabilitado de 1870 en el que SimÃ³n I. PatiÃ±o paseaba por UncÃ­a junto a su esposa Albina.</p>
+          <span class="card-catalog-num">Registro N.&deg; 03 - Reliquias de Transporte</span>
+          <h3>El Carruaje Ingl&eacute;s de 1870 y la Capilla</h3>
+          <p>En una sala contigua a la capilla privada descansa el carruaje ingl&eacute;s rehabilitado de 1870 en el que Sim&oacute;n I. Pati&ntilde;o paseaba por Unc&iacute;a junto a su esposa Albina.</p>
         </div>
-        <div class="brass-card-footer"><span>Manufactura: Inglaterra, 1870</span><span>ColecciÃ³n 3D: historia.html</span></div>
+        <div class="brass-card-footer"><span>Manufactura: Inglaterra, 1870</span><span>Colecci&oacute;n 3D: historia.html</span></div>
       </article>
 
       <article class="brass-card brass-span-6" data-brass-tilt>
         <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
         <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
         <div>
-          <span class="card-catalog-num">Registro N.Âº 04 Â· Complejo EnergÃ©tico</span>
+          <span class="card-catalog-num">Registro N.&deg; 04 - Complejo Energ&eacute;tico</span>
           <h3>Los Motores Alemanes Gemelos del Titanic</h3>
-          <p>Junto al palacio se levanta la Planta DiÃ©sel Miraflores, donde en 1901 se instalaron los motores alemanes que electrificaron UncÃ­a; sus dos Ãºnicos gemelos reposan bajo el casco del Titanic desde 1912.</p>
+          <p>Junto al palacio se levanta la Planta Di&eacute;sel Miraflores, donde en 1901 se instalaron los motores alemanes que electrificaron Unc&iacute;a; sus dos &uacute;nicos gemelos reposan bajo el casco del Titanic desde 1912.</p>
         </div>
-        <div class="brass-card-footer"><span>InstalaciÃ³n: AÃ±o 1901</span><span>Origen: Casa Diesel, Alemania</span></div>
+        <div class="brass-card-footer"><span>Instalaci&oacute;n: A&ntilde;o 1901</span><span>Origen: Casa Diesel, Alemania</span></div>
       </article>
     </div>
   </section>
 
-  <!-- SECCIÃ“N CRÃ“NICA HISTÃ“RICA -->
+  <!-- SECCION CRONICA HISTORICA -->
   <section class="patrimonial-section" id="cronica-historica">
     <div class="section-ornament-header">
-      <span class="eyebrow">CrÃ³nica Documental Â· Siglos XVI al XX</span>
-      <h2>EfemÃ©rides del Palacio y de UncÃ­a</h2>
+      <span class="eyebrow">Cr&oacute;nica Documental - Siglos XVI al XX</span>
+      <h2>Efem&eacute;rides del Palacio y de Unc&iacute;a</h2>
       <p>De la promesa junto a una bocamina en el monte Llallagua al nacimiento del sindicalismo minero boliviano.</p>
-      <div class="ornament-divider">âšœ</div>
+      <div class="ornament-divider"><span></span></div>
     </div>
 
     <div class="chronicle-timeline" id="chronicle-timeline">
@@ -1186,42 +1181,42 @@
       <div class="chronicle-entry">
         <div class="chronicle-node"></div>
         <div class="chronicle-card">
-          <span class="chronicle-year">AÃ±o 1564 Â· Bautizo Colonial</span>
-          <h3>Juan del Valle y la Moneda de Â«Ãnfimo ValorÂ»</h3>
-          <p>El espaÃ±ol Juan del Valle explora los cerros buscando plata superficial. Al no hallarla, nombra al paraje Â«UncÃ­aÂ» (moneda romana de mÃ­nimo valor).</p>
+          <span class="chronicle-year">A&ntilde;o 1564 - Bautizo Colonial</span>
+          <h3>Juan del Valle y la Moneda de &laquo;&Iacute;nfimo Valor&raquo;</h3>
+          <p>El espa&ntilde;ol Juan del Valle explora los cerros buscando plata superficial. Al no hallarla, nombra al paraje &laquo;Unc&iacute;a&raquo; (moneda romana de m&iacute;nimo valor).</p>
         </div>
       </div>
 
       <div class="chronicle-entry">
         <div class="chronicle-node"></div>
         <div class="chronicle-card">
-          <span class="chronicle-year">1892 â€“ 1898 Â· La Promesa en la Bocamina</span>
-          <h3>Albina RodrÃ­guez Vende sus Alhajas</h3>
-          <p>PatiÃ±o recibe en la cima del cerro a su esposa Albina, quien vendiÃ³ sus joyas en Oruro para apoyarlo. Conmovido, le promete: Â«Â¡AlgÃºn dÃ­a te construirÃ© un palacio!Â».</p>
+          <span class="chronicle-year">1892 - 1898 - La Promesa en la Bocamina</span>
+          <h3>Albina Rodr&iacute;guez Vende sus Alhajas</h3>
+          <p>Pati&ntilde;o recibe en la cima del cerro a su esposa Albina, quien vendi&oacute; sus joyas en Oruro para apoyarlo. Conmovido, le promete: &laquo;&iexcl;Alg&uacute;n d&iacute;a te construir&eacute; un palacio!&raquo;.</p>
         </div>
       </div>
 
       <div class="chronicle-entry">
         <div class="chronicle-node"></div>
         <div class="chronicle-card">
-          <span class="chronicle-year">1899 â€“ 1905 Â· Esplendor en Miraflores</span>
-          <h3>Los Siete AÃ±os de Residencia de la Familia PatiÃ±o</h3>
-          <p>Se levanta el palacio de 73 ambientes con capilla, farmacia, salÃ³n de fiestas y jardines franceses de Bolonia, junto a los motores diÃ©sel alemanes de 1901.</p>
+          <span class="chronicle-year">1899 - 1905 - Esplendor en Miraflores</span>
+          <h3>Los Siete A&ntilde;os de Residencia de la Familia Pati&ntilde;o</h3>
+          <p>Se levanta el palacio de 73 ambientes con capilla, farmacia, sal&oacute;n de fiestas y jardines franceses de Bolonia, junto a los motores di&eacute;sel alemanes de 1901.</p>
         </div>
       </div>
 
       <div class="chronicle-entry">
         <div class="chronicle-node"></div>
         <div class="chronicle-card">
-          <span class="chronicle-year">1 de Mayo de 1923 Â· Gesta Obrera</span>
+          <span class="chronicle-year">1 de Mayo de 1923 - Gesta Obrera</span>
           <h3>Cuna del Sindicalismo Minero en Bolivia</h3>
-          <p>En una UncÃ­a cosmopolita donde se hablaban 15 idiomas, 5.000 mineros marchan a la plaza Alonso de IbÃ¡Ã±ez y fundan el primer sindicato minero del paÃ­s.</p>
+          <p>En una Unc&iacute;a cosmopolita donde se hablaban 15 idiomas, 5.000 mineros marchan a la plaza Alonso de Ib&aacute;&ntilde;ez y fundan el primer sindicato minero del pa&iacute;s.</p>
         </div>
       </div>
     </div>
 
     <div style="text-align:center; margin-top:32px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
-      <a href="./interior.html" class="btn-vintage btn-vintage-gold">Caminar por el Interior 3D (WASD) â†’</a>
+      <a href="./interior.html" class="btn-vintage btn-vintage-gold">Caminar por el Interior 3D (WASD)</a>
       <a href="./historia.html" class="btn-vintage">Inspeccionar Reliquias 3D en Detalle</a>
     </div>
   </section>
@@ -1229,21 +1224,21 @@
   <!-- FOOTER MONUMENTAL -->
   <footer class="vintage-footer">
     <div class="footer-nav-row">
-      <span>UNCÃA Â· PROVINCIA RAFAEL BUSTILLO Â· POTOSÃ, BOLIVIA</span>
+      <span>UNC&Iacute;A - PROVINCIA RAFAEL BUSTILLO - POTOS&Iacute;, BOLIVIA</span>
       <div style="display:flex; gap:24px; flex-wrap:wrap;">
         <a href="#visor-exterior">Visor Exterior 3D</a>
         <a href="./interior.html">Recorrido Interior</a>
-        <a href="./historia.html">GalerÃ­a de Modelos GLB</a>
+        <a href="./historia.html">Galer&iacute;a de Modelos GLB</a>
       </div>
     </div>
-    <div class="footer-engraved-title">PALACIO PATIÃ‘O</div>
+    <div class="footer-engraved-title">PALACIO PATI&Ntilde;O</div>
     <p class="footer-credits">
-      ReconstrucciÃ³n Patrimonial Tridimensional Â· Casa Museo de SimÃ³n I. PatiÃ±o en UncÃ­a
+      Reconstrucci&oacute;n Patrimonial Tridimensional - Casa Museo de Sim&oacute;n I. Pati&ntilde;o en Unc&iacute;a
     </p>
   </footer>
 
   <!-- ============================================================
-       MOTOR THREE.JS: VISTA FIJA + 4 ESTACIONES CON FOTOS + CATÃLOGO GLB
+       MOTOR THREE.JS: TEXTOS CON UNICODE SEGURO Y CERO EMOJIS
        ============================================================ -->
   <script type="module">
     import * as THREE from 'three';
@@ -1255,9 +1250,12 @@
     const HOUSE_GLB_URL = new URL('./models/casa-exterior.glb', import.meta.url).href;
     const HOUSE_TARGET_SIZE = 14;
 
-    // ============================================================
-    // 1. VISTA INICIAL FIJA (ENTRADA DEL LETRERO AZUL + TORRE ESCOCESA)
-    // ============================================================
+    // Limpiar versiones viejas de localStorage que pudieran haber guardado caracteres corruptos
+    try {
+      localStorage.removeItem('patino_vintage_stops_v3');
+    } catch (_) {}
+
+    // 1. VISTA INICIAL FIJA (ENCUADRE ENTRADA LETRERO AZUL + TORRE)
     let INITIAL_VIEW = {
       position: { x: 1.95, y: 1.55, z: 6.15 },
       target:   { x: 2.35, y: 1.50, z: 1.20 },
@@ -1265,17 +1263,15 @@
       rollDeg: 0
     };
 
-    // ============================================================
-    // 2. LOS 4 PUNTOS DE INTERACCIÃ“N CON FOTOS OPCIONALES
-    // ============================================================
+    // 2. LOS 4 PUNTOS DE INTERACCION (CON CODIFICACION UNICODE INMUNE A FALLOS)
     let TOUR_STOPS = [
       {
         id: 'stop-1',
         number: '1',
-        shortLabel: '1. Entrada Â· Letrero Azul',
-        step: 'ESTACIÃ“N I DE IV Â· INGRESO PRINCIPAL',
-        title: '1. Entrada Principal â€” Letrero Â«Casa SimÃ³n PatiÃ±oÂ»',
-        desc: 'Punto de acceso principal al recinto amurallado del palacio en la zona de Miraflores, donde se conserva la seÃ±alÃ©tica patrimonial de ingreso junto a la reja perimetral.',
+        shortLabel: '1. Entrada - Letrero Azul',
+        step: 'ESTACI\u00d3N I DE IV - INGRESO PRINCIPAL',
+        title: '1. Entrada Principal - Casa Sim\u00f3n Pati\u00f1o',
+        desc: 'Punto de acceso principal al recinto amurallado del palacio en la zona de Miraflores, donde se conserva el letrero azul de ingreso junto a la reja perimetral.',
         target: { x: 3.35, y: 1.15, z: 2.35 },
         yawDeg: -10,
         pitchDeg: 6,
@@ -1287,9 +1283,9 @@
         id: 'stop-2',
         number: '2',
         shortLabel: '2. Torre Escocesa',
-        step: 'ESTACIÃ“N II DE IV Â· TORREÃ“N Y ARQUERÃA',
-        title: '2. La Torre de Estilo EscocÃ©s y GalerÃ­a',
-        desc: 'Coronando la fachada color mostaza se alza la torre de inspiraciÃ³n escocesa y la galerÃ­a de ventanales arqueados que iluminaban los 73 ambientes y los techos de cristal veneciano.',
+        step: 'ESTACI\u00d3N II DE IV - TORRE\u00d3N Y ARQUER\u00cdA',
+        title: '2. La Torre de Estilo Escoc\u00e9s y Galer\u00eda',
+        desc: 'Coronando la fachada color mostaza se alza la torre de inspiraci\u00f3n escocesa y la galer\u00eda de ventanales arqueados que iluminaban los 73 ambientes y los techos de cristal veneciano.',
         target: { x: 2.55, y: 2.35, z: 0.95 },
         yawDeg: -8,
         pitchDeg: 4,
@@ -1300,10 +1296,10 @@
       {
         id: 'stop-3',
         number: '3',
-        shortLabel: '3. Planta DiÃ©sel Miraflores',
-        step: 'ESTACIÃ“N III DE IV Â· COMPLEJO ENERGÃ‰TICO (1901)',
-        title: '3. Planta DiÃ©sel Miraflores (Motores del Titanic)',
-        desc: 'Edificio industrial contiguo al palacio donde en 1901 se instalaron los motores alemanes que electrificaron La Salvadora y UncÃ­a; sus dos Ãºnicos motores gemelos naufragaron en el Titanic en 1912.',
+        shortLabel: '3. Planta Di\u00e9sel Miraflores',
+        step: 'ESTACI\u00d3N III DE IV - COMPLEJO ENERG\u00c9TICO (1901)',
+        title: '3. Planta Di\u00e9sel Miraflores (Motores del Titanic)',
+        desc: 'Edificio industrial contiguo al palacio donde en 1901 se instalaron los motores alemanes que electrificaron La Salvadora y Unc\u00eda; sus dos \u00fanicos motores gemelos naufragaron en el Titanic en 1912.',
         target: { x: -4.15, y: 1.35, z: -0.55 },
         yawDeg: -26,
         pitchDeg: 10,
@@ -1315,9 +1311,9 @@
         id: 'stop-4',
         number: '4',
         shortLabel: '4. Vista General Completa',
-        step: 'ESTACIÃ“N IV DE IV Â· PANORÃMICA DEL COMPLEJO',
+        step: 'ESTACI\u00d3N IV DE IV - PANOR\u00c1MICA DEL COMPLEJO',
         title: '4. Vista General del Palacio y Planta Miraflores',
-        desc: 'Perspectiva integral del conjunto histÃ³rico en el sector norte de UncÃ­a: a la izquierda la Planta DiÃ©sel Miraflores, al centro los salones del palacio y a la derecha la torre escocesa y la entrada.',
+        desc: 'Perspectiva integral del conjunto hist\u00f3rico en el sector norte de Unc\u00eda: a la izquierda la Planta Di\u00e9sel Miraflores, al centro los salones del palacio y a la derecha la torre escocesa y la entrada.',
         target: { x: -0.25, y: 1.65, z: 0.50 },
         yawDeg: 0,
         pitchDeg: 11,
@@ -1327,32 +1323,26 @@
       }
     ];
 
-    // ============================================================
-    // 3. CATÃLOGO DE MODELOS .GLB (ACTUALES + NUEVOS RECOMENDADOS)
-    // ============================================================
+    // 3. CATALOGO DE MODELOS .GLB
     let EXTERIOR_PROPS = [
-      { id: 'carruaje',              name: 'Carruaje InglÃ©s (1870)',       file: 'carruaje.glb',              enabled: false, position: { x: 5.2,  y: 0, z: 3.2 }, rotationDeg: -45, scale: 2.4 },
-      { id: 'planta_miraflores',     name: 'Planta DiÃ©sel (Detalle)',      file: 'planta_miraflores.glb',     enabled: false, position: { x: -6.5, y: 0, z: 2.5 }, rotationDeg: 0,   scale: 3.0 },
-      { id: 'el_tio',                name: 'El TÃ­o de la Mina',            file: 'el_tio.glb',                enabled: false, position: { x: 2.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.5 },
-      { id: 'traje_patino',          name: 'Traje de SimÃ³n I. PatiÃ±o',     file: 'traje_patino.glb',          enabled: false, position: { x: 1.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.7 },
-      { id: 'camara_cine',           name: 'CÃ¡mara de Cine',               file: 'camara_cine.glb',           enabled: false, position: { x: 3.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.4 },
-      { id: 'piano_antiguo',         name: 'Piano Antiguo',                file: 'piano_antiguo.glb',         enabled: false, position: { x: 0.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.6 },
-      { id: 'farol_colonial',        name: 'Farol Colonial de Hierro',     file: 'farol_colonial.glb',        enabled: false, position: { x: 3.6,  y: 0, z: 3.0 }, rotationDeg: 0,   scale: 2.2 },
-      { id: 'motor_diesel_1901',     name: 'Motor DiÃ©sel AlemÃ¡n (1901)',   file: 'motor_diesel_1901.glb',     enabled: false, position: { x: -4.5, y: 0, z: 2.5 }, rotationDeg: 0,   scale: 2.5 },
-      { id: 'llave_gigante_mineral', name: 'Llave Gigante / Casiterita',   file: 'llave_gigante_mineral.glb', enabled: false, position: { x: -3.0, y: 0, z: 3.0 }, rotationDeg: 0,   scale: 1.2 }
+      { id: 'carruaje',              name: 'Carruaje Ingl\u00e9s (1870)',       file: 'carruaje.glb',              enabled: false, position: { x: 5.2,  y: 0, z: 3.2 }, rotationDeg: -45, scale: 2.4 },
+      { id: 'planta_miraflores',     name: 'Planta Di\u00e9sel (Detalle)',      file: 'planta_miraflores.glb',     enabled: false, position: { x: -6.5, y: 0, z: 2.5 }, rotationDeg: 0,   scale: 3.0 },
+      { id: 'el_tio',                name: 'El T\u00edo de la Mina',            file: 'el_tio.glb',                enabled: false, position: { x: 2.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.5 },
+      { id: 'traje_patino',          name: 'Traje de Sim\u00f3n I. Pati\u00f1o', file: 'traje_patino.glb',          enabled: false, position: { x: 1.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.7 },
+      { id: 'camara_cine',           name: 'C\u00e1mara de Cine',               file: 'camara_cine.glb',           enabled: false, position: { x: 3.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.4 },
+      { id: 'piano_antiguo',         name: 'Piano Antiguo',                     file: 'piano_antiguo.glb',         enabled: false, position: { x: 0.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.6 }
     ];
 
     try {
-      const savedHome = JSON.parse(localStorage.getItem('patino_vintage_home_v3'));
+      const savedHome = JSON.parse(localStorage.getItem('patino_vintage_home_v4'));
       if (savedHome) INITIAL_VIEW = savedHome;
-      const savedStops = JSON.parse(localStorage.getItem('patino_vintage_stops_v3'));
+      const savedStops = JSON.parse(localStorage.getItem('patino_vintage_stops_v4'));
       if (Array.isArray(savedStops) && savedStops.length === 4) TOUR_STOPS = savedStops;
     } catch (_) {}
 
-    // Referencias DOM
-    const preloaderEl     = document.getElementById('vintage-preloader');
-    const preloaderPct    = document.getElementById('preloader-pct');
-    const preloaderFill   = document.getElementById('preloader-fill');
+    const preloaderEl   = document.getElementById('vintage-preloader');
+    const preloaderPct  = document.getElementById('preloader-pct');
+    const preloaderFill = document.getElementById('preloader-fill');
 
     const container      = document.getElementById('exterior-canvas-container');
     const hotspotsLayer  = document.getElementById('hotspots-layer');
@@ -1360,17 +1350,16 @@
     const tourPlaque     = document.getElementById('tour-plaque');
     const plaqueStep     = document.getElementById('plaque-step');
     const plaqueTitle    = document.getElementById('plaque-title');
-    const plaqueImg      = document.getElementById('plaque-img');
     const plaqueDesc     = document.getElementById('plaque-desc');
 
-    // ---------- Escena, CÃ¡mara y Renderizador ----------
+    // Escena, Camara y Renderizador
     const scene = new THREE.Scene();
     scene.background = makeSkyGradient('#2B3540', '#B89360');
     scene.fog = new THREE.Fog(0x6e583f, 24, 110);
 
     const camera = new THREE.PerspectiveCamera(INITIAL_VIEW.fov || 42, window.innerWidth / window.innerHeight, 0.1, 400);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance', preserveDrawingBuffer: true });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
@@ -1380,7 +1369,6 @@
     renderer.toneMappingExposure = 1.05;
     container.appendChild(renderer.domElement);
 
-    // ---------- Controles Libres ----------
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.06;
@@ -1401,15 +1389,7 @@
       currentRollDeg = INITIAL_VIEW.rollDeg || 0;
       controls.update();
     }
-            applyInitialViewInstant();
-        renderer.render(scene, camera);
-        try {
-          const snap = renderer.domElement.toDataURL('image/jpeg', 0.92);
-          const afterImg = document.getElementById('comp-after-img');
-          const beforeImg = document.getElementById('comp-before-img');
-          if (afterImg) afterImg.src = snap;
-          if (beforeImg) beforeImg.src = snap;
-        } catch (_) {}
+    applyInitialViewInstant();
 
     function computePosFromAngles(target, yawDeg, pitchDeg, distance) {
       const yaw = THREE.MathUtils.degToRad(yawDeg);
@@ -1434,7 +1414,7 @@
       };
     }
 
-    // ---------- IluminaciÃ³n y Terreno ----------
+    // Iluminacion y Terreno
     const ambientLight = new THREE.AmbientLight(0xffe8c2, 0.7);
     scene.add(ambientLight);
 
@@ -1495,7 +1475,7 @@
       scene.add(hill);
     }
 
-    // ---------- Cargador GLTF con Draco y Meshopt ----------
+    // Cargador GLTF con Draco y Meshopt
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/draco/');
     const gltfLoader = new GLTFLoader();
@@ -1535,15 +1515,16 @@
       });
     }
 
-    // Cargar Ãºnicamente casa-exterior.glb al inicio (sin el carruaje)
     gltfLoader.load(
       HOUSE_GLB_URL,
       (gltf) => {
         const palace = gltf.scene;
         normalizeAndCenterModel(palace, HOUSE_TARGET_SIZE);
         scene.add(palace);
-                applyInitialViewInstant();
+        applyInitialViewInstant();
         renderer.render(scene, camera);
+
+        // Capturar imagen automatica del modelo 3D para el comparador inferior (sin errores 404)
         try {
           const snap = renderer.domElement.toDataURL('image/jpeg', 0.92);
           const afterImg = document.getElementById('comp-after-img');
@@ -1551,6 +1532,7 @@
           if (afterImg) afterImg.src = snap;
           if (beforeImg) beforeImg.src = snap;
         } catch (_) {}
+
         preloaderPct.textContent = '100%';
         preloaderFill.style.width = '100%';
         setTimeout(() => preloaderEl.classList.add('curtain-open'), 300);
@@ -1584,8 +1566,7 @@
           scene.add(holder);
           entry = { holder, raw };
           loadedProps.set(def.id, entry);
-        } catch (err) {
-          console.warn(`El archivo models/${def.file} aÃºn no estÃ¡ en la carpeta models/.`);
+        } catch (_) {
           return;
         }
       }
@@ -1597,9 +1578,7 @@
       entry.holder.rotation.y = THREE.MathUtils.degToRad(def.rotationDeg || 0);
     }
 
-    // ============================================================
-    // SELLOS DORADOS (1, 2, 3, 4) Y VUELO DINÃMICO DE CÃMARA
-    // ============================================================
+    // Sellos Dorados (1, 2, 3, 4) y Vuelo Dinamico
     let activeStopIndex = -1;
     let autoTourInterval = null;
     let camTween = null;
@@ -1656,16 +1635,6 @@
       plaqueStep.textContent = stop.step;
       plaqueTitle.textContent = stop.title;
       plaqueDesc.textContent = stop.desc;
-
-      if (plaqueImg) {
-        if (stop.image) {
-          plaqueImg.style.display = 'block';
-          plaqueImg.src = stop.image;
-        } else {
-          plaqueImg.style.display = 'none';
-        }
-      }
-
       tourPlaque.classList.add('active');
 
       const targetVec = new THREE.Vector3(stop.target.x, stop.target.y, stop.target.z);
@@ -1701,7 +1670,7 @@
         return;
       }
       document.getElementById('dock-tour').classList.add('active');
-      document.getElementById('dock-tour').textContent = 'â¸ Pausar Recorrido';
+      document.getElementById('dock-tour').textContent = 'Pausar Recorrido';
       goToStation(0);
       autoTourInterval = setInterval(() => {
         const next = (activeStopIndex + 1) % TOUR_STOPS.length;
@@ -1717,7 +1686,7 @@
       const tBtn = document.getElementById('dock-tour');
       if (tBtn) {
         tBtn.classList.remove('active');
-        tBtn.textContent = 'â–¶ Recorrido Guiado';
+        tBtn.textContent = 'Recorrido Guiado';
       }
     }
 
@@ -1745,9 +1714,7 @@
       });
     });
 
-    // ============================================================
-    // MOVIMIENTO LIBRE CON TECLADO (WASD / FLECHAS / Q / E / SHIFT)
-    // ============================================================
+    // Movimiento Libre con Teclado
     const keyState = { w: false, a: false, s: false, d: false, up: false, down: false, fast: false };
 
     window.addEventListener('keydown', (e) => {
@@ -1775,9 +1742,7 @@
       if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') keyState.fast = false;
     });
 
-    // ============================================================
-    // LÃ“GICA DEL EDITOR DE ÃNGULOS Y PUNTOS (TECLA P)
-    // ============================================================
+    // Editor de Angulos y Puntos (Sin Emojis)
     const editorDrawer     = document.getElementById('editor-drawer');
     const btnToggleEditor  = document.getElementById('btn-toggle-editor');
     const edSelectStop     = document.getElementById('ed-select-stop');
@@ -1833,11 +1798,11 @@
       edRngFov.value = st.fov || 40;
       edRngRoll.value = st.rollDeg || 0;
 
-      edLblYaw.textContent = `${st.yawDeg}Â°`;
-      edLblPitch.textContent = `${st.pitchDeg}Â°`;
+      edLblYaw.textContent = `${st.yawDeg}\u00b0`;
+      edLblPitch.textContent = `${st.pitchDeg}\u00b0`;
       edLblDist.textContent = `${st.distance}m`;
-      edLblFov.textContent = `${st.fov || 40}Â°`;
-      edLblRoll.textContent = `${st.rollDeg || 0}Â°`;
+      edLblFov.textContent = `${st.fov || 40}\u00b0`;
+      edLblRoll.textContent = `${st.rollDeg || 0}\u00b0`;
     }
     syncEditorStopUI();
 
@@ -1869,7 +1834,7 @@
       currentRollDeg = st.rollDeg;
       controls.update();
 
-      localStorage.setItem('patino_vintage_stops_v3', JSON.stringify(TOUR_STOPS));
+      localStorage.setItem('patino_vintage_stops_v4', JSON.stringify(TOUR_STOPS));
       updateActiveButtonsUI();
     }
 
@@ -1885,8 +1850,8 @@
       st.pitchDeg = angles.pitchDeg;
       st.distance = angles.distance;
       syncEditorStopUI();
-      localStorage.setItem('patino_vintage_stops_v3', JSON.stringify(TOUR_STOPS));
-      flashMsg(`Â¡Ãngulo guardado en Punto ${st.number}!`);
+      localStorage.setItem('patino_vintage_stops_v4', JSON.stringify(TOUR_STOPS));
+      flashMsg(`Angulo guardado en Punto ${st.number}`);
     });
 
     EXTERIOR_PROPS.forEach((p) => {
@@ -1905,7 +1870,7 @@
       edChkProp.checked = p.enabled;
       edRngProt.value = p.rotationDeg;
       edRngPscale.value = p.scale;
-      edLblProt.textContent = `${p.rotationDeg}Â°`;
+      edLblProt.textContent = `${p.rotationDeg}\u00b0`;
       edLblPscale.textContent = `${p.scale}m`;
     }
     syncEditorPropUI();
@@ -1925,15 +1890,15 @@
     edBtnClickSeal.addEventListener('click', () => {
       clickTargetMode = clickTargetMode === 'SEAL' ? null : 'SEAL';
       edBtnClickSeal.textContent = clickTargetMode === 'SEAL'
-        ? 'ðŸŽ¯ Haz clic sobre el modelo 3Dâ€¦'
-        : 'ðŸ“ Mover sello con clic en 3D';
+        ? 'Haz clic sobre el modelo 3D...'
+        : 'Mover sello con clic en 3D';
     });
 
     edBtnClickProp.addEventListener('click', () => {
       clickTargetMode = clickTargetMode === 'PROP' ? null : 'PROP';
       edBtnClickProp.textContent = clickTargetMode === 'PROP'
-        ? 'ðŸŽ¯ Haz clic donde colocar el modeloâ€¦'
-        : 'ðŸ“ Ubicar modelo haciendo clic en el mapa';
+        ? 'Haz clic donde colocar el modelo...'
+        : 'Ubicar modelo con clic en el mapa';
     });
 
     renderer.domElement.addEventListener('pointerdown', (e) => {
@@ -1955,9 +1920,9 @@
           st.pitchDeg = angles.pitchDeg;
           st.distance = angles.distance;
           syncEditorStopUI();
-          localStorage.setItem('patino_vintage_stops_v3', JSON.stringify(TOUR_STOPS));
+          localStorage.setItem('patino_vintage_stops_v4', JSON.stringify(TOUR_STOPS));
           goToStation(idx, 0.8);
-          flashMsg(`Sello ${st.number} movido a (${st.target.x}, ${st.target.y}, ${st.target.z})`);
+          flashMsg(`Punto ${st.number} actualizado.`);
         } else if (clickTargetMode === 'PROP') {
           const p = getSelectedProp();
           p.enabled = true;
@@ -1967,8 +1932,8 @@
           flashMsg(`${p.name} colocado.`);
         }
         clickTargetMode = null;
-        edBtnClickSeal.textContent = 'ðŸ“ Mover sello con clic en 3D';
-        edBtnClickProp.textContent = 'ðŸ“ Ubicar modelo haciendo clic en el mapa';
+        edBtnClickSeal.textContent = 'Mover sello con clic en 3D';
+        edBtnClickProp.textContent = 'Ubicar modelo con clic en el mapa';
       }
     });
 
@@ -1987,13 +1952,13 @@
         fov: Math.round(camera.fov),
         rollDeg: Math.round(currentRollDeg)
       };
-      localStorage.setItem('patino_vintage_home_v3', JSON.stringify(INITIAL_VIEW));
-      flashMsg('Â¡Vista actual fijada como Inicio!');
+      localStorage.setItem('patino_vintage_home_v4', JSON.stringify(INITIAL_VIEW));
+      flashMsg('Vista actual fijada como Inicio.');
     });
 
     document.getElementById('ed-btn-reset').addEventListener('click', () => {
-      localStorage.removeItem('patino_vintage_home_v3');
-      localStorage.removeItem('patino_vintage_stops_v3');
+      localStorage.removeItem('patino_vintage_home_v4');
+      localStorage.removeItem('patino_vintage_stops_v4');
       location.reload();
     });
 
@@ -2003,12 +1968,10 @@
         `let TOUR_STOPS = ${JSON.stringify(TOUR_STOPS, null, 2)};\n\n` +
         `let EXTERIOR_PROPS = ${JSON.stringify(EXTERIOR_PROPS, null, 2)};`;
       navigator.clipboard.writeText(code);
-      flashMsg('Â¡ConfiguraciÃ³n copiada al portapapeles!');
+      flashMsg('Configuracion copiada al portapapeles.');
     });
 
-    // ============================================================
-    // SELECTOR DE ATMÃ“SFERA 3D
-    // ============================================================
+    // Selector de Atmosfera 3D
     const weatherBtns = document.querySelectorAll('[data-weather]');
     weatherBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
@@ -2054,9 +2017,7 @@
       return tex;
     }
 
-    // ============================================================
-    // BUCLE PRINCIPAL Y PROYECCIÃ“N 2D DE LOS 4 SELLOS DORADOS
-    // ============================================================
+    // Bucle Principal
     const clock = new THREE.Clock();
     const projVec = new THREE.Vector3();
     const forwardVec = new THREE.Vector3();
@@ -2130,7 +2091,7 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    // Comparador Before/After, Tilt 3D y LÃ­nea de Tiempo
+    // Comparador, Tilt y Linea de Tiempo
     const compFrame = document.getElementById('comparator-frame');
     const compBefore = document.getElementById('comp-before');
     const compBeforeImg = document.getElementById('comp-before-img');

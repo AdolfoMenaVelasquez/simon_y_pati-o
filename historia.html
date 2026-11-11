@@ -3,27 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Crónica y Colección 3D — Palacio de Simón I. Patiño, Uncía (1899–1905)</title>
-  <meta name="description" content="Crónica histórica documental y catálogo interactivo de modelos 3D (.glb) del Palacio de Simón I. Patiño en Uncía, Potosí." />
+  <title>Crónica, Maquinaria Diésel y Colección 3D — Palacio de Simón I. Patiño, Uncía</title>
+  <meta name="description" content="Crónica histórica, archivo fotográfico y 11 modelos 3D interactivos (.glb) del Palacio de Simón I. Patiño y la Planta Diésel Miraflores en Uncía, Potosí." />
 
   <!-- Tipografías Clásicas de Época -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
 
-  <!-- Visor 3D de Google para los 6 modelos .glb patrimoniales -->
+  <!-- Visor 3D de Google para los 11 modelos .glb -->
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.3.0/model-viewer.min.js"></script>
 
   <style>
-    /* ============================================================
-       DIRECCIÓN DE ARTE: ESTÉTICA DE ÉPOCA / VINTAGE PATRIMONIAL
-       ============================================================ */
     :root {
       --bg-mahogany: #120D08;
       --bg-charcoal: #1C150E;
       --surface-leather: #261C14;
       --surface-parchment: rgba(244, 236, 216, 0.06);
-      --surface-plaque: rgba(22, 15, 10, 0.94);
+      --surface-plaque: rgba(20, 14, 9, 0.96);
 
       --gold-bright: #DFC07A;
       --gold-vintage: #C5A059;
@@ -38,8 +35,7 @@
       --font-chronicle: 'Cormorant Garamond', Georgia, serif;
       --font-label: 'Libre Baskerville', serif;
 
-      --border-double: 3px double rgba(197, 160, 89, 0.45);
-      --border-fine: 1px solid rgba(197, 160, 89, 0.3);
+      --border-double: 3px double rgba(197, 160, 89, 0.48);
       --ease-vintage: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
@@ -62,7 +58,6 @@
     ::selection { background: var(--gold-vintage); color: var(--bg-mahogany); }
     a { color: inherit; text-decoration: none; }
 
-    /* Grano de película antigua y viñeta */
     .vintage-film-overlay {
       position: fixed;
       inset: 0;
@@ -71,68 +66,6 @@
       background:
         radial-gradient(circle at 50% 50%, transparent 58%, rgba(8, 5, 3, 0.72) 100%),
         repeating-linear-gradient(0deg, rgba(197, 160, 89, 0.012) 0px, rgba(197, 160, 89, 0.012) 1px, transparent 1px, transparent 3px);
-    }
-
-    /* Pre-loader de Época */
-    #vintage-preloader {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: radial-gradient(circle at 50% 45%, #261C14 0%, #120D08 75%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      border: 12px double rgba(197, 160, 89, 0.25);
-      transition: opacity 0.9s var(--ease-vintage), visibility 0.9s;
-    }
-    #vintage-preloader.curtain-open {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-    }
-    .preloader-crest {
-      width: 86px; height: 86px;
-      border-radius: 50%;
-      border: var(--border-double);
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 20px;
-      background: rgba(18, 13, 8, 0.8);
-    }
-    .preloader-crest svg { width: 46px; height: 46px; stroke: var(--gold-vintage); fill: none; }
-    .preloader-eyebrow {
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-size: 0.75rem;
-      letter-spacing: 0.22em;
-      color: var(--gold-vintage);
-      margin-bottom: 8px;
-    }
-    .preloader-title {
-      font-family: var(--font-monumental);
-      font-size: clamp(1.5rem, 3vw, 2.2rem);
-      letter-spacing: 0.08em;
-      margin-bottom: 16px;
-      text-align: center;
-    }
-    .preloader-pct {
-      font-family: var(--font-editorial);
-      font-style: italic;
-      font-size: 2.4rem;
-      color: var(--gold-bright);
-      margin-bottom: 10px;
-    }
-    .preloader-track {
-      width: min(300px, 75vw);
-      height: 5px;
-      border: 1px solid var(--bronze-burnished);
-      padding: 1px;
-    }
-    .preloader-fill {
-      height: 100%; width: 0%;
-      background: linear-gradient(90deg, var(--bronze-burnished), var(--gold-bright));
-      transition: width 0.15s ease;
     }
 
     /* Navegación Ornamental */
@@ -145,14 +78,14 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 clamp(18px, 4vw, 48px);
-      background: linear-gradient(180deg, rgba(18, 13, 8, 0.96) 0%, rgba(18, 13, 8, 0.82) 85%, transparent 100%);
-      border-bottom: 1px solid rgba(197, 160, 89, 0.25);
+      background: linear-gradient(180deg, rgba(18, 13, 8, 0.96) 0%, rgba(18, 13, 8, 0.85) 85%, transparent 100%);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.28);
       backdrop-filter: blur(6px);
     }
     .nav-brand {
       display: flex; align-items: center; gap: 12px;
       font-family: var(--font-monumental);
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       letter-spacing: 0.1em;
       color: var(--text-ivory);
     }
@@ -167,13 +100,13 @@
     .nav-links {
       list-style: none;
       display: flex; align-items: center;
-      gap: clamp(16px, 2.5vw, 32px);
+      gap: clamp(14px, 2.2vw, 28px);
     }
     .nav-links a {
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.76rem;
-      letter-spacing: 0.16em;
+      font-size: 0.74rem;
+      letter-spacing: 0.15em;
       color: var(--text-sepia);
       padding-bottom: 4px;
       border-bottom: 1px solid transparent;
@@ -188,21 +121,21 @@
     .btn-vintage {
       position: relative;
       display: inline-flex; align-items: center; justify-content: center;
-      gap: 10px;
+      gap: 8px;
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      padding: 13px 26px;
+      font-size: 0.73rem;
+      letter-spacing: 0.16em;
+      padding: 12px 22px;
       color: var(--text-ivory);
-      background: rgba(38, 28, 20, 0.88);
+      background: rgba(38, 28, 20, 0.9);
       border: var(--border-double);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       text-transform: uppercase;
     }
     .btn-vintage:hover {
-      background: rgba(197, 160, 89, 0.18);
+      background: rgba(197, 160, 89, 0.22);
       border-color: var(--gold-bright);
       color: var(--gold-bright);
     }
@@ -217,9 +150,8 @@
       color: #120D08;
       transform: translateY(-2px);
     }
-    .btn-sm { padding: 9px 16px; font-size: 0.68rem; letter-spacing: 0.14em; }
+    .btn-sm { padding: 8px 14px; font-size: 0.66rem; letter-spacing: 0.13em; }
 
-    /* Filigranas de esquina */
     .corner-filigree {
       position: absolute;
       width: 26px; height: 26px;
@@ -234,239 +166,99 @@
     .cf-br { bottom: 6px; right: 6px; transform: scale(-1, -1); }
 
     /* ============================================================
-       CABECERA MONUMENTAL DEL ARCHIVO HISTÓRICO
+       HERO MONUMENTAL CON FOTO DE ARCHIVO Y AUTO-ESCRITURA
        ============================================================ */
     .archive-hero {
       position: relative;
-      padding: clamp(130px, 16vw, 180px) 24px 80px;
+      padding: clamp(125px, 15vw, 175px) 24px 80px;
       background:
-        radial-gradient(circle at 50% 15%, rgba(197, 160, 89, 0.16) 0%, transparent 65%),
-        linear-gradient(180deg, #0d0905 0%, var(--bg-mahogany) 100%);
+        linear-gradient(180deg, rgba(18, 13, 8, 0.86) 0%, rgba(18, 13, 8, 0.94) 75%, var(--bg-mahogany) 100%),
+        url('./img/foto_edificio_color.jpg') center/cover no-repeat;
       border-bottom: var(--border-double);
       text-align: center;
     }
-
-    .archive-hero-inner {
-      max-width: 980px;
-      margin: 0 auto;
-    }
-
+    .archive-hero-inner { max-width: 1020px; margin: 0 auto; }
     .archive-eyebrow {
       font-family: var(--font-label);
       font-variant: small-caps;
       font-size: 0.78rem;
       letter-spacing: 0.26em;
-      color: var(--gold-vintage);
+      color: var(--gold-bright);
       display: block;
       margin-bottom: 14px;
     }
-
     .archive-hero h1 {
       font-family: var(--font-monumental);
-      font-size: clamp(2.2rem, 5.2vw, 4rem);
+      font-size: clamp(2.2rem, 5vw, 4rem);
       font-weight: 700;
       line-height: 1.08;
       color: var(--text-ivory);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
+      text-shadow: 0 6px 28px rgba(0,0,0,0.95);
     }
-
     .archive-lead {
       font-family: var(--font-editorial);
       font-style: italic;
-      font-size: clamp(1.15rem, 2vw, 1.4rem);
+      font-size: clamp(1.15rem, 2vw, 1.38rem);
       color: var(--text-sepia);
-      max-width: 68ch;
-      margin: 0 auto 48px;
-      line-height: 1.6;
+      max-width: 72ch;
+      margin: 0 auto 44px;
+      min-height: 3.2em;
     }
-
     .archive-metrics {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 18px;
       text-align: left;
     }
-
     .metric-plaque {
       position: relative;
-      background: rgba(38, 28, 20, 0.65);
+      background: rgba(26, 18, 12, 0.85);
       border: var(--border-double);
       padding: 20px 22px;
+      backdrop-filter: blur(6px);
     }
-
     .metric-num {
       font-family: var(--font-monumental);
-      font-size: 2.2rem;
+      font-size: 2.1rem;
       color: var(--gold-bright);
       display: block;
       line-height: 1.1;
       margin-bottom: 6px;
     }
-
     .metric-label {
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       letter-spacing: 0.14em;
       color: var(--text-sepia);
       line-height: 1.45;
     }
 
-    /* Cinta Histórica Clásica */
-    .vintage-marquee {
-      background: var(--bg-charcoal);
-      border-bottom: var(--border-double);
-      padding: 16px 0;
-      overflow: hidden;
-      display: flex;
-    }
-    .vintage-marquee-track {
-      display: flex;
-      white-space: nowrap;
-      animation: classicMarquee 36s linear infinite;
-    }
-    .vintage-marquee-item {
-      font-family: var(--font-editorial);
-      font-style: italic;
-      font-size: 1.25rem;
-      color: var(--text-ivory);
-      padding: 0 28px;
-      display: inline-flex; align-items: center; gap: 28px;
-    }
-    .vintage-marquee-item .fleuron { color: var(--gold-vintage); font-style: normal; }
-    @keyframes classicMarquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* ============================================================
-       CAPÍTULOS EDITORIALES (ESTILO LIBRO ANTIGUO DE LUJO)
-       ============================================================ */
-    .chronicle-container {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 80px 24px 100px;
-    }
-
-    .chapter-paper {
-      position: relative;
-      background: var(--surface-parchment);
-      border: var(--border-double);
-      padding: clamp(32px, 5vw, 60px);
-      margin-bottom: 70px;
-      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.65);
-    }
-
-    .chapter-tag {
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-size: 0.74rem;
-      letter-spacing: 0.24em;
-      color: var(--gold-vintage);
-      display: block;
-      margin-bottom: 10px;
-    }
-
-    .chapter-paper h2 {
-      font-family: var(--font-monumental);
-      font-size: clamp(1.75rem, 3.4vw, 2.5rem);
-      color: var(--text-ivory);
-      margin-bottom: 24px;
-      line-height: 1.15;
-      border-bottom: 1px solid rgba(197, 160, 89, 0.25);
-      padding-bottom: 14px;
-    }
-
-    .chapter-columns {
-      column-count: 2;
-      column-gap: 42px;
-      column-rule: 1px solid rgba(197, 160, 89, 0.18);
-      font-size: 1.22rem;
-      color: var(--text-sepia);
-      text-align: justify;
-    }
-
-    .chapter-columns p {
-      margin-bottom: 20px;
-    }
-
-    .dropcap::first-letter {
-      font-family: var(--font-monumental);
-      font-size: 3.6em;
-      float: left;
-      line-height: 0.82;
-      padding: 0.04em 0.1em 0 0;
+    /* Cursor de auto-escritura tipo telégrafo antiguo */
+    .typewriter-cursor::after {
+      content: "▋";
       color: var(--gold-bright);
+      margin-left: 3px;
+      animation: blinkCaret 0.75s steps(1) infinite;
+    }
+    @keyframes blinkCaret {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
     }
 
-    .vintage-blockquote {
-      margin: 32px 0;
-      padding: 26px 32px;
-      background: rgba(18, 13, 8, 0.78);
-      border: 1px solid var(--gold-vintage);
-      border-left: 4px double var(--gold-bright);
-      font-family: var(--font-editorial);
-      font-style: italic;
-      font-size: 1.22rem;
-      color: var(--text-ivory);
-      line-height: 1.65;
+    /* Contenedor Principal */
+    .chronicle-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 70px 24px 100px;
     }
 
-    .vintage-blockquote cite {
-      display: block;
-      margin-top: 12px;
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-style: normal;
-      font-size: 0.74rem;
-      letter-spacing: 0.18em;
-      color: var(--gold-vintage);
-    }
-
-    /* Cuadrícula de los 73 ambientes */
-    .rooms-vintage-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-      gap: 20px;
-      margin-top: 30px;
-    }
-
-    .room-plaque {
-      background: rgba(18, 13, 8, 0.75);
-      border: 1px solid rgba(197, 160, 89, 0.35);
-      padding: 22px;
-    }
-
-    .room-plaque span {
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-size: 0.68rem;
-      letter-spacing: 0.18em;
-      color: var(--gold-vintage);
-    }
-
-    .room-plaque h3 {
-      font-family: var(--font-monumental);
-      font-size: 1.25rem;
-      margin: 8px 0 10px;
-      color: var(--text-ivory);
-    }
-
-    .room-plaque p {
-      font-size: 1.08rem;
-      color: var(--text-sepia);
-      line-height: 1.55;
-    }
-
-    /* ============================================================
-       COLECCIÓN DE VITRINAS 3D (.GLB) DE ÉPOCA CON ZOOM MACRO
-       ============================================================ */
     .section-ornament-header {
       text-align: center;
-      max-width: 760px;
-      margin: 80px auto 54px;
+      max-width: 780px;
+      margin: 70px auto 48px;
     }
-
     .section-ornament-header .eyebrow {
       font-family: var(--font-label);
       font-variant: small-caps;
@@ -476,14 +268,12 @@
       display: block;
       margin-bottom: 10px;
     }
-
     .section-ornament-header h2 {
       font-family: var(--font-monumental);
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: clamp(1.9rem, 3.8vw, 2.9rem);
       color: var(--text-ivory);
       margin-bottom: 12px;
     }
-
     .section-ornament-header p {
       font-family: var(--font-editorial);
       font-style: italic;
@@ -491,96 +281,267 @@
       color: var(--text-sepia);
     }
 
-    .museum-gallery {
+    /* ============================================================
+       FILTROS DE CATEGORÍA DE MODELOS 3D (.GLB)
+       ============================================================ */
+    .filter-bar {
       display: flex;
-      flex-direction: column;
-      gap: 56px;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 44px;
+    }
+    .filter-btn {
+      background: rgba(38, 28, 20, 0.8);
+      border: 1px solid rgba(197, 160, 89, 0.4);
+      color: var(--text-sepia);
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: linear-gradient(180deg, #D5B269 0%, #9A7B3E 100%);
+      color: #120D08;
+      border-color: #F5EFE6;
+      font-weight: 700;
+    }
+
+    /* ============================================================
+       CUADRÍCULA DE 11 VITRINAS 3D (.GLB) CON CLIC PARA AMPLIAR
+       ============================================================ */
+    .models-showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 30px;
       margin-bottom: 80px;
     }
 
-    .museum-vitrine {
+    .model-card-vintage {
       position: relative;
+      background: linear-gradient(155deg, rgba(38, 28, 20, 0.94) 0%, rgba(16, 11, 7, 0.98) 100%);
+      border: var(--border-double);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      transition: transform 0.3s var(--ease-vintage), border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .model-card-vintage:hover {
+      transform: translateY(-6px);
+      border-color: var(--gold-bright);
+      box-shadow: 0 28px 65px rgba(197, 160, 89, 0.22);
+    }
+
+    /* Destacar la tarjeta de casa.glb a ancho completo arriba */
+    .model-card-vintage.featured-wide {
+      grid-column: 1 / -1;
       display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 36px;
-      align-items: center;
-      background: linear-gradient(150deg, rgba(38, 28, 20, 0.92) 0%, rgba(18, 13, 8, 0.98) 100%);
-      border: var(--border-double);
-      padding: clamp(24px, 4vw, 40px);
-      box-shadow: 0 24px 65px rgba(0, 0, 0, 0.8);
+      grid-template-columns: 1.25fr 0.95fr;
     }
 
-    .museum-vitrine:nth-child(even) {
-      grid-template-columns: 0.85fr 1.15fr;
-    }
-    .museum-vitrine:nth-child(even) .vitrine-stage {
-      order: 2;
-    }
-    .museum-vitrine:nth-child(even) .vitrine-info {
-      order: 1;
-    }
-
-    .vitrine-stage {
+    .card-viewer-box {
       position: relative;
-      border: var(--border-double);
-      background:
-        radial-gradient(circle at 50% 42%, rgba(223, 192, 122, 0.26) 0%, rgba(38, 28, 20, 0.55) 48%, #090604 88%);
+      height: 330px;
+      background: radial-gradient(circle at 50% 42%, rgba(223, 192, 122, 0.26) 0%, rgba(38, 28, 20, 0.55) 48%, #090604 88%);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.3);
       overflow: hidden;
     }
 
-    .vitrine-seal-badge {
+    .model-card-vintage.featured-wide .card-viewer-box {
+      height: 440px;
+      border-bottom: none;
+      border-right: 1px solid rgba(197, 160, 89, 0.3);
+    }
+
+    .card-viewer-box model-viewer {
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+      filter: drop-shadow(0px 12px 22px rgba(0, 0, 0, 0.85));
+    }
+
+    .card-badge-top {
       position: absolute;
-      top: 14px; left: 14px;
+      top: 12px; left: 12px;
       z-index: 4;
-      background: rgba(18, 13, 8, 0.9);
+      background: rgba(14, 10, 6, 0.9);
       border: 1px solid var(--gold-vintage);
-      padding: 5px 12px;
+      padding: 4px 10px;
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.66rem;
-      letter-spacing: 0.16em;
+      font-size: 0.64rem;
+      letter-spacing: 0.14em;
       color: var(--gold-bright);
       pointer-events: none;
     }
 
-    model-viewer {
-      width: 100%;
-      height: 410px;
-      background-color: transparent;
-      filter: drop-shadow(0px 14px 24px rgba(0, 0, 0, 0.8)) contrast(106%);
-      --poster-color: transparent;
+    .card-expand-pill {
+      position: absolute;
+      bottom: 12px; right: 12px;
+      z-index: 5;
+      background: linear-gradient(180deg, #D5B269 0%, #9A7B3E 100%);
+      color: #120D08;
+      border: 2px double #F5EFE6;
+      padding: 6px 13px;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.85);
+      transition: transform 0.2s ease;
+    }
+    .card-expand-pill:hover {
+      transform: scale(1.06);
     }
 
-    .vitrine-toolbar {
+    .card-body-vintage {
+      padding: 24px 26px 22px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      padding: 12px 14px;
-      background: rgba(12, 8, 5, 0.94);
-      border-top: 1px solid rgba(197, 160, 89, 0.3);
-      justify-content: center;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
     }
 
-    .vitrine-btn {
-      background: rgba(38, 28, 20, 0.85);
-      border: 1px solid rgba(197, 160, 89, 0.45);
+    .card-cat-code {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      color: var(--gold-vintage);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .card-body-vintage h3 {
+      font-family: var(--font-monumental);
+      font-size: 1.4rem;
       color: var(--text-ivory);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .card-typewriter-text {
+      font-size: 1.12rem;
+      color: var(--text-sepia);
+      line-height: 1.62;
+      min-height: 4.8em;
+      margin-bottom: 16px;
+    }
+
+    .card-meta-footer {
+      padding-top: 12px;
+      border-top: 1px solid rgba(197, 160, 89, 0.25);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       font-family: var(--font-label);
       font-variant: small-caps;
       font-size: 0.66rem;
-      letter-spacing: 0.13em;
-      padding: 6px 12px;
-      cursor: pointer;
-      transition: all 0.2s ease;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
     }
 
-    .vitrine-btn:hover {
+    .card-meta-footer strong {
+      color: var(--gold-bright);
+    }
+
+    /* ============================================================
+       MODAL EN PANTALLA COMPLETA AL HACER CLIC EN UN MODELO .GLB
+       ============================================================ */
+    .glb-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 9500;
+      background: rgba(8, 5, 3, 0.92);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(14px, 3vw, 36px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s var(--ease-vintage), visibility 0.35s;
+    }
+
+    .glb-modal-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .glb-modal-window {
+      position: relative;
+      width: min(1320px, 96vw);
+      max-height: 92vh;
+      background: var(--surface-plaque);
+      border: 4px double var(--gold-vintage);
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.95);
+      display: grid;
+      grid-template-columns: 1.35fr 0.85fr;
+      overflow: hidden;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 14px; right: 16px;
+      z-index: 20;
+      width: 38px; height: 38px;
+      background: rgba(38, 28, 20, 0.95);
+      border: 2px double var(--gold-vintage);
+      color: var(--gold-bright);
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .modal-close-btn:hover {
       background: var(--gold-vintage);
       color: #120D08;
-      border-color: var(--gold-bright);
     }
 
-    .vitrine-info .catalog-code {
+    .modal-3d-stage {
+      position: relative;
+      height: 82vh;
+      min-height: 460px;
+      background: radial-gradient(circle at 50% 45%, rgba(223, 192, 122, 0.3) 0%, rgba(38, 28, 20, 0.6) 50%, #070503 90%);
+      border-right: 2px double rgba(197, 160, 89, 0.35);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-3d-stage model-viewer {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+    }
+
+    .modal-3d-controls {
+      padding: 12px 16px;
+      background: rgba(12, 8, 5, 0.95);
+      border-top: 1px solid rgba(197, 160, 89, 0.3);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .modal-info-panel {
+      padding: 34px 30px;
+      overflow-y: auto;
+      max-height: 82vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .modal-info-panel .modal-tag {
       font-family: var(--font-label);
       font-variant: small-caps;
       font-size: 0.72rem;
@@ -590,122 +551,165 @@
       margin-bottom: 8px;
     }
 
-    .vitrine-info h3 {
+    .modal-info-panel h2 {
       font-family: var(--font-monumental);
-      font-size: clamp(1.5rem, 2.6vw, 2rem);
+      font-size: clamp(1.5rem, 2.5vw, 2.1rem);
       color: var(--text-ivory);
-      margin-bottom: 16px;
-      line-height: 1.2;
+      line-height: 1.18;
+      margin-bottom: 14px;
+      border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+      padding-bottom: 12px;
     }
 
-    .vitrine-info p {
-      font-size: 1.16rem;
+    .modal-archive-photo {
+      width: 100%;
+      height: 175px;
+      object-fit: cover;
+      border: 2px double var(--gold-vintage);
+      margin-bottom: 14px;
+      filter: sepia(15%) contrast(106%);
+    }
+
+    .modal-typewriter-box {
+      font-size: 1.18rem;
       color: var(--text-sepia);
-      margin-bottom: 16px;
-      line-height: 1.65;
+      line-height: 1.68;
+      min-height: 120px;
     }
 
-    .vitrine-ledger {
-      margin-top: 20px;
+    .modal-specs-table {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
       padding-top: 14px;
       border-top: 1px solid rgba(197, 160, 89, 0.28);
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
       font-family: var(--font-label);
       font-variant: small-caps;
       font-size: 0.68rem;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       color: var(--text-muted);
     }
-
-    .vitrine-ledger strong {
+    .modal-specs-table strong {
       display: block;
       color: var(--gold-bright);
-      margin-bottom: 2px;
     }
 
-    /* Lista Sindical de 1923 */
-    .petitions-plaque {
-      margin: 26px 0;
-      padding: 24px 30px;
-      background: rgba(18, 13, 8, 0.8);
-      border: var(--border-double);
-      list-style: none;
-    }
-
-    .petitions-plaque li {
+    /* ============================================================
+       CAPÍTULOS HISTÓRICOS Y GALERÍA FOTOGRÁFICA PATRIMONIAL (IMG/)
+       ============================================================ */
+    .chapter-paper {
       position: relative;
-      padding-left: 28px;
-      margin-bottom: 12px;
-      font-size: 1.18rem;
-      color: var(--text-ivory);
+      background: var(--surface-parchment);
+      border: var(--border-double);
+      padding: clamp(28px, 4.5vw, 54px);
+      margin-bottom: 64px;
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.65);
     }
-
-    .petitions-plaque li::before {
-      content: "⚜";
-      position: absolute;
-      left: 0;
+    .chapter-tag {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.74rem;
+      letter-spacing: 0.22em;
       color: var(--gold-vintage);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .chapter-paper h2 {
+      font-family: var(--font-monumental);
+      font-size: clamp(1.7rem, 3.2vw, 2.4rem);
+      color: var(--text-ivory);
+      margin-bottom: 22px;
+      border-bottom: 1px solid rgba(197, 160, 89, 0.25);
+      padding-bottom: 12px;
+    }
+    .chapter-columns {
+      column-count: 2;
+      column-gap: 40px;
+      column-rule: 1px solid rgba(197, 160, 89, 0.18);
+      font-size: 1.2rem;
+      color: var(--text-sepia);
+      text-align: justify;
+    }
+    .chapter-columns p { margin-bottom: 18px; }
+    .dropcap::first-letter {
+      font-family: var(--font-monumental);
+      font-size: 3.4em;
+      float: left;
+      line-height: 0.82;
+      padding: 0.04em 0.1em 0 0;
+      color: var(--gold-bright);
     }
 
-    /* Footer Monumental */
+    /* Álbum Fotográfico de Época con tus 8 imágenes reales */
+    .photo-archive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 22px;
+      margin-top: 28px;
+    }
+    .photo-frame-card {
+      background: rgba(18, 13, 8, 0.88);
+      border: var(--border-double);
+      padding: 12px;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+    .photo-frame-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold-bright);
+    }
+    .photo-frame-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border: 1px solid rgba(197, 160, 89, 0.35);
+      margin-bottom: 10px;
+      display: block;
+    }
+    .photo-frame-card h4 {
+      font-family: var(--font-monumental);
+      font-size: 1.02rem;
+      color: var(--gold-bright);
+      margin-bottom: 4px;
+    }
+    .photo-frame-card p {
+      font-size: 0.98rem;
+      color: var(--text-sepia);
+      line-height: 1.45;
+    }
+
+    /* Footer */
     .vintage-footer {
       background: #0d0905;
       border-top: 4px double rgba(197, 160, 89, 0.4);
-      padding: 70px 24px 36px;
+      padding: 64px 24px 36px;
       text-align: center;
-      overflow: hidden;
-    }
-    .footer-nav-row {
-      max-width: 1140px;
-      margin: 0 auto 36px;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 20px;
-      border-bottom: 1px solid rgba(197, 160, 89, 0.2);
-      padding-bottom: 24px;
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      color: var(--text-sepia);
     }
     .footer-engraved-title {
       font-family: var(--font-monumental);
-      font-size: clamp(2.6rem, 11vw, 10rem);
+      font-size: clamp(2.5rem, 10vw, 9.5rem);
       font-weight: 800;
       line-height: 0.9;
-      letter-spacing: 0.04em;
       background: linear-gradient(180deg, rgba(223, 192, 122, 0.55) 0%, rgba(154, 123, 62, 0.08) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin: 12px 0 24px;
-      user-select: none;
-    }
-    .footer-credits {
-      font-size: 0.98rem;
-      color: var(--text-muted);
-      font-style: italic;
+      margin: 12px 0 20px;
     }
 
     @media (max-width: 960px) {
       .nav-links { display: none; }
       .chapter-columns { column-count: 1; }
-      .museum-vitrine,
-      .museum-vitrine:nth-child(even) {
-        grid-template-columns: 1fr;
-      }
-      .museum-vitrine:nth-child(even) .vitrine-stage { order: 1; }
-      .museum-vitrine:nth-child(even) .vitrine-info { order: 2; }
+      .model-card-vintage.featured-wide { grid-template-columns: 1fr; }
+      .glb-modal-window { grid-template-columns: 1fr; max-height: 94vh; overflow-y: auto; }
+      .modal-3d-stage { height: 46vh; min-height: 300px; border-right: none; border-bottom: 2px double rgba(197, 160, 89, 0.35); }
+      .modal-info-panel { max-height: none; }
     }
   </style>
 </head>
 <body>
 
-  <!-- OVERLAY DE PELÍCULA ANTIGUA Y VIÑETA -->
   <div class="vintage-film-overlay"></div>
 
-  <!-- FILIGRANA SVG REUTILIZABLE -->
+  <!-- FILIGRANA SVG -->
   <svg width="0" height="0" style="position:absolute">
     <defs>
       <g id="filigree-corner">
@@ -716,23 +720,7 @@
     </defs>
   </svg>
 
-  <!-- PRE-LOADER DE ÉPOCA -->
-  <div id="vintage-preloader">
-    <div class="preloader-crest">
-      <svg viewBox="0 0 64 64">
-        <polygon points="32,6 58,20 58,44 32,58 6,44 6,20" stroke-width="1.5"/>
-        <circle cx="32" cy="32" r="8" stroke-width="1.5"/>
-      </svg>
-    </div>
-    <p class="preloader-eyebrow">Archivo Documental y Colección Tridimensional</p>
-    <h1 class="preloader-title">CRÓNICA DEL PALACIO DE UNCÍA</h1>
-    <div class="preloader-pct" id="preloader-pct">0%</div>
-    <div class="preloader-track">
-      <div class="preloader-fill" id="preloader-fill"></div>
-    </div>
-  </div>
-
-  <!-- NAVEGACIÓN ORNAMENTAL -->
+  <!-- NAVEGACIÓN SUPERIOR -->
   <nav class="vintage-nav">
     <a href="./index.html" class="nav-brand">
       <span class="nav-brand-emblem"><span>SP</span></span>
@@ -740,9 +728,9 @@
     </a>
     <ul class="nav-links">
       <li><a href="./index.html">Exterior 3D</a></li>
-      <li><a href="./historia.html" class="active">Crónica y Reliquias 3D</a></li>
-      <li><a href="#coleccion-3d">Catálogo (.GLB)</a></li>
-      <li><a href="#sindicalismo">Gesta de 1923</a></li>
+      <li><a href="#catalogo-glb" class="active">11 Modelos 3D (.GLB)</a></li>
+      <li><a href="#planta-diesel-historia">Maquinaria Diésel (1901)</a></li>
+      <li><a href="#archivo-fotografico">Archivo Fotográfico</a></li>
       <li><a href="./interior.html">Interior 3D</a></li>
     </ul>
     <div>
@@ -750,510 +738,623 @@
     </div>
   </nav>
 
-  <!-- CABECERA DEL ARCHIVO HISTÓRICO -->
+  <!-- CABECERA CON AUTO-ESCRITURA -->
   <header class="archive-hero">
     <div class="archive-hero-inner">
-      <span class="archive-eyebrow">Registro Patrimonial · Provincia Rafael Bustillo, Potosí (1564 – 1924)</span>
-      <h1>El Palacio Prometido en la Cima del Estaño</h1>
-      <p class="archive-lead">
-        De un paraje colonial bautizado con el nombre de una moneda romana de «ínfimo valor» a la primera mansión de 73 ambientes que Simón I. Patiño edificó para su esposa Albina Rodríguez Ocampo.
+      <span class="archive-eyebrow">Museo Digital y Crónica Documental · Miraflores, Uncía (1892 – 1924)</span>
+      <h1>El Palacio de Patiño y la Maquinaria del Estaño</h1>
+      <p class="archive-lead typewriter-cursor" id="hero-typewriter"
+         data-text="Haz clic sobre cualquiera de los 11 modelos 3D (.glb) —incluyendo la maqueta casa.glb y las 4 maquinarias de la Planta Diésel Miraflores— para abrirlo en pantalla gigante con crónica auto-escrita.">
       </p>
 
       <div class="archive-metrics">
         <div class="metric-plaque">
           <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
-          <span class="metric-num">73</span>
-          <span class="metric-label">Ambientes señoriales con cristales de Venecia</span>
+          <span class="metric-num">11</span>
+          <span class="metric-label">Modelos 3D (.GLB) interactivos con inspección en pantalla grande</span>
         </div>
         <div class="metric-plaque">
           <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
           <span class="metric-num">1901</span>
-          <span class="metric-label">Instalación de los motores gemelos del Titanic</span>
+          <span class="metric-label">Motores alemanes de la Planta Diésel, gemelos del Titanic</span>
         </div>
         <div class="metric-plaque">
           <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
-          <span class="metric-num">15</span>
-          <span class="metric-label">Idiomas hablados durante el auge cosmopolita</span>
+          <span class="metric-num">73</span>
+          <span class="metric-label">Ambientes señoriales prometidos a Albina Rodríguez Ocampo</span>
         </div>
         <div class="metric-plaque">
           <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
           <span class="metric-num">1923</span>
-          <span class="metric-label">Fundación del primer sindicato minero de Bolivia</span>
+          <span class="metric-label">Cuna del primer sindicato minero de Bolivia en Uncía</span>
         </div>
       </div>
     </div>
   </header>
 
-  <!-- CINTA HISTÓRICA CLÁSICA -->
-  <div class="vintage-marquee">
-    <div class="vintage-marquee-track">
-      <div class="vintage-marquee-item">
-        <span>Mina La Salvadora (1892)</span> <span class="fleuron">⚜</span>
-        <span>Albina Rodríguez Ocampo y la Promesa del Palacio</span> <span class="fleuron">⚜</span>
-        <span>Jardines Franceses de Bolonia y Salón Rojo Guindo</span> <span class="fleuron">⚜</span>
-        <span>Motores Alemanes de la Casa Diesel (1901)</span> <span class="fleuron">⚜</span>
-        <span>Carruaje Inglés de 1870</span> <span class="fleuron">⚜</span>
-      </div>
-      <div class="vintage-marquee-item">
-        <span>Mina La Salvadora (1892)</span> <span class="fleuron">⚜</span>
-        <span>Albina Rodríguez Ocampo y la Promesa del Palacio</span> <span class="fleuron">⚜</span>
-        <span>Jardines Franceses de Bolonia y Salón Rojo Guindo</span> <span class="fleuron">⚜</span>
-        <span>Motores Alemanes de la Casa Diesel (1901)</span> <span class="fleuron">⚜</span>
-        <span>Carruaje Inglés de 1870</span> <span class="fleuron">⚜</span>
-      </div>
-    </div>
-  </div>
-
   <main class="chronicle-container">
 
-    <!-- CAPÍTULO I: LA PROMESA DE PATIÑO -->
-    <section class="chapter-paper">
-      <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
-      <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
-      <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
-      <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
-
-      <span class="chapter-tag">Capítulo Primero · Crónica de 1564 a 1905</span>
-      <h2>De «Ínfimo Valor» a la Promesa de un Palacio</h2>
-
-      <div class="chapter-columns">
-        <p class="dropcap">
-          En el año 1564, el explorador español Juan del Valle recorrió estas escarpadas montañas del norte de Potosí buscando yacimientos similares a los del Cerro Rico. Al no hallar plata superficial, se marchó bautizando el paraje como <em>«Uncía»</em>, antigua moneda romana que significa «ínfimo valor». Tres siglos más tarde, en 1892, una riquísima veta descubierta de la mano de Simón Iturri Patiño desmintió aquella ironía para siempre.
-        </p>
-        <p>
-          Cuatro años antes de su fortuna, el cochabambino Simón I. Patiño trabajaba en la compañía Licke, donde conoció a quien se convertiría en su socio, Sergio Ortiz, quien posteriormente le cedería la totalidad de la propiedad de la mina <em>La Salvadora</em>. Cuando aún vivían en la estrechez junto a una fría bocamina en la cima del monte Llallagua, su esposa, doña Albina Rodríguez Ocampo, abandonó la ciudad de Oruro para acompañarlo.
-        </p>
-      </div>
-
-      <blockquote class="vintage-blockquote">
-        «Un día el arriero volvió a Uncía trayendo sobre sus mulas una joven y sus tiernos hijos. Era Albina, quien había vendido las alhajas que poseía. Patiño se conmovió hasta las lágrimas. Así que le prometió: "¡Algún día te construiré un palacio!"»
-        <cite>— Roberto Querejazu Calvo · Crónica Histórica "Llallagua"</cite>
-      </blockquote>
-
-      <div class="chapter-columns">
-        <p>
-          Cruzando Uncía en dirección norte hacia la zona de Miraflores, se alza la residencia donde la familia Patiño vivió entre 1899 y 1905. Antes de levantar sus célebres palacios en Oruro, Cochabamba o Europa, Simón cumplió aquí su palabra.
-        </p>
-        <p>
-          Coronada por una torre de estilo escocés y una fachada de tono mostaza, la mansión de 73 ambientes disponía de capilla privada, farmacia propia, salón de fiestas, oficinas administrativas, amplios dormitorios y vistas directas a los edificios de calamina que albergaban los motores diésel alemanes traídos en 1901.
-        </p>
-      </div>
-
-      <div class="rooms-vintage-grid">
-        <div class="room-plaque">
-          <span>Cielos Rasos</span>
-          <h3>Cristales de Venecia</h3>
-          <p>Como si del coliseo de Roma se tratara, los techos lucían cristales italianos procedentes de Venecia con murales que revivían escenas románticas de sus canales.</p>
-        </div>
-        <div class="room-plaque">
-          <span>Muros y Tapices</span>
-          <h3>Jardines de Bolonia</h3>
-          <p>Durante los siete años que la familia habitó el inmueble, las paredes estuvieron empapeladas con los paisajes verdes de los jardines franceses de Bolonia.</p>
-        </div>
-        <div class="room-plaque">
-          <span>Etiqueta Señorial</span>
-          <h3>El Salón de Fiestas</h3>
-          <p>Los muros de la imponente sala de fiestas estaban cubiertos de un intenso rojo guindo que contrastaba con la blancura de los arcos y las majestuosas mesas oscuras.</p>
-        </div>
-        <div class="room-plaque">
-          <span>Transformación (1952)</span>
-          <h3>Los 73 Ambientes</h3>
-          <p>Separados hoy por puertas acristaladas tras pasar a manos del Estado y COMIBOL en 1952, son objeto de preservación patrimonial para el desarrollo cultural de Uncía.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- COLECCIÓN DE 6 MODELOS 3D (.GLB) EN VITRINAS DE ÉPOCA -->
-    <div class="section-ornament-header" id="coleccion-3d">
-      <span class="eyebrow">Catálogo Museográfico Tridimensional · 6 Piezas Originales (.GLB)</span>
-      <h2>Reliquias del Imperio del Estaño</h2>
-      <p>Inspecciona cada pieza en 360° o utiliza los selectores de lente y atmósfera para examinar los detalles de su manufactura.</p>
+    <!-- ============================================================
+         SECCIÓN PRINCIPAL: LOS 11 MODELOS .GLB (CASA + 4 MAQUINARIAS + RELIQUIAS)
+         ============================================================ -->
+    <div class="section-ornament-header" id="catalogo-glb" style="margin-top:10px;">
+      <span class="eyebrow">Inspección Tridimensional Interactiva · Haz Clic en Cualquier Pieza para Ampliar</span>
+      <h2>Catálogo de Arquitectura, Maquinaria Diésel y Reliquias (.GLB)</h2>
+      <p>Al entrar a cada modelo o hacer clic para ampliarlo en grande, la crónica histórica se auto-escribe en tiempo real.</p>
     </div>
 
-    <section class="museum-gallery">
+    <!-- Filtros por categoría -->
+    <div class="filter-bar">
+      <button type="button" class="filter-btn active" data-filter="all">Todos los Modelos (11)</button>
+      <button type="button" class="filter-btn" data-filter="arquitectura">Arquitectura y Palacio (2)</button>
+      <button type="button" class="filter-btn" data-filter="maquinaria">Maquinaria Planta Diésel (4)</button>
+      <button type="button" class="filter-btn" data-filter="reliquias">Reliquias y Vida Palaciega (5)</button>
+    </div>
 
-      <!-- PIEZA 01: PLANTA MIRAFLORES -->
-      <article class="museum-vitrine">
-        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
+    <!-- Contenedor dinámico de las 11 tarjetas .glb -->
+    <section class="models-showcase-grid" id="models-grid"></section>
 
-        <div class="vitrine-stage">
-          <span class="vitrine-seal-badge">Pieza I · Casa Diesel, Alemania (1901)</span>
-          <model-viewer
-            id="mv-planta"
-            src="./models/planta_miraflores.glb"
-            alt="Modelo 3D de la Planta Miraflores"
-            auto-rotate
-            camera-controls
-            environment-image="neutral"
-            exposure="1.15"
-            shadow-intensity="2"
-            shadow-softness="0.6"
-            tone-mapping="aces"
-            camera-orbit="35deg 70deg 105%"
-            min-camera-orbit="auto auto 35%"
-            max-camera-orbit="auto auto 200%"
-            interpolation-decay="100">
-          </model-viewer>
-          <div class="vitrine-toolbar">
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-planta', '35deg 70deg 105%', '45deg', 1.15)">Vista General</button>
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-planta', '0deg 60deg 48%', '20deg', 1.35)">Lente Macro</button>
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-planta', '90deg 78deg 80%', '35deg', 0.95)">Luz de Época</button>
-          </div>
-        </div>
-
-        <div class="vitrine-info">
-          <span class="catalog-code">Registro N.º 01 · Ingeniería Energética</span>
-          <h3>Planta Diésel Miraflores y los Gemelos del Titanic</h3>
-          <p>
-            En 1901, Simón I. Patiño hizo traer desde el Viejo Continente los únicos motores fabricados por la casa alemana Diesel a comienzos de siglo. Instalados junto al palacio de La Salvadora, proveían de electricidad a los campamentos mineros, las instalaciones metalúrgicas, el hospital, los ingenios y al pueblo entero.
-          </p>
-          <p>
-            Desde 1912, <strong>sus dos únicos motores gemelos duermen en el fondo del mar, bajo la armadura del transatlántico Titanic</strong>. En el recinto aún se preservan las enormes llaves inglesas con las que se operaban, imposibles de levantar por un solo hombre.
-          </p>
-          <div class="vitrine-ledger">
-            <div><strong>Año</strong>1901</div>
-            <div><strong>Origen</strong>Alemania</div>
-            <div><strong>Archivo 3D</strong>planta_miraflores.glb</div>
-          </div>
-        </div>
-      </article>
-
-      <!-- PIEZA 02: CARRUAJE INGLÉS -->
-      <article class="museum-vitrine">
-        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
-
-        <div class="vitrine-stage">
-          <span class="vitrine-seal-badge">Pieza II · Manufactura Inglesa (1870)</span>
-          <model-viewer
-            id="mv-carruaje"
-            src="./models/carruaje.glb"
-            alt="Modelo 3D del Carruaje Inglés de 1870"
-            auto-rotate
-            camera-controls
-            environment-image="neutral"
-            exposure="1.2"
-            shadow-intensity="2"
-            shadow-softness="0.6"
-            tone-mapping="aces"
-            camera-orbit="-40deg 72deg 105%"
-            min-camera-orbit="auto auto 35%"
-            max-camera-orbit="auto auto 200%"
-            interpolation-decay="100">
-          </model-viewer>
-          <div class="vitrine-toolbar">
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-carruaje', '-40deg 72deg 105%', '45deg', 1.2)">Vista General</button>
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-carruaje', '15deg 65deg 48%', '20deg', 1.4)">Macro Ruedas y Cabina</button>
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-carruaje', '90deg 75deg 82%', '35deg', 1.0)">Perfil Clásico</button>
-          </div>
-        </div>
-
-        <div class="vitrine-info">
-          <span class="catalog-code">Registro N.º 02 · Transporte Aristocrático</span>
-          <h3>El Carruaje Inglés de 1870</h3>
-          <p>
-            En una habitación contigua a la capilla privada del empresario —en la que aún se conservan sus bancos de madera originales— descansa este <strong>carruaje inglés rehabilitado que data de 1870</strong>.
-          </p>
-          <p>
-            Antes de la consolidación del Ferrocarril Machacamarca–Uncía, Patiño paseaba en este carruaje por las calles de Uncía al lado de su esposa Albina Rodríguez Ocampo.
-          </p>
-          <div class="vitrine-ledger">
-            <div><strong>Data</strong>Año 1870</div>
-            <div><strong>Procedencia</strong>Inglaterra</div>
-            <div><strong>Archivo 3D</strong>carruaje.glb</div>
-          </div>
-        </div>
-      </article>
-
-      <!-- PIEZA 03: EL TÍO DE LA MINA -->
-      <article class="museum-vitrine">
-        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
-
-        <div class="vitrine-stage">
-          <span class="vitrine-seal-badge">Pieza III · Deidad Subterránea · La Salvadora</span>
-          <model-viewer
-            id="mv-tio"
-            src="./models/el_tio.glb"
-            alt="Modelo 3D del Tío de la Mina"
-            auto-rotate
-            camera-controls
-            environment-image="neutral"
-            exposure="1.15"
-            shadow-intensity="2.2"
-            shadow-softness="0.5"
-            tone-mapping="aces"
-            camera-orbit="0deg 75deg 105%"
-            min-camera-orbit="auto auto 35%"
-            max-camera-orbit="auto auto 200%"
-            interpolation-decay="100">
-          </model-viewer>
-          <div class="vitrine-toolbar">
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-tio', '0deg 75deg 105%', '45deg', 1.15)">Vista General</button>
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-tio', '0deg 62deg 48%', '20deg', 1.35)">Macro Facciones</button>
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-tio', '-50deg 70deg 75%', '32deg', 0.85)">Claroscuro de Bocamina</button>
-          </div>
-        </div>
-
-        <div class="vitrine-info">
-          <span class="catalog-code">Registro N.º 03 · Sincretismo y Subsuelo</span>
-          <h3>El «Tío» de la Mina del Cerro Juan del Valle</h3>
-          <p>
-            En el inframundo andino, la riqueza mineral no pertenece a los barones del estaño, sino al <strong>«Tío»</strong>, señor y guardián de los parajes profundos.
-          </p>
-          <p>
-            Los más de 5.000 obreros que extrajeron el mineral de Patiño en el cerro Juan del Valle mantenían una profunda devoción por esta figura en las galerías subterráneas, ofreciéndole hojas de coca, cigarrillos y alcohol a cambio de protección y vetas ricas.
-          </p>
-          <div class="vitrine-ledger">
-            <div><strong>Culto</strong>Interior Mina</div>
-            <div><strong>Cerro</strong>Juan del Valle</div>
-            <div><strong>Archivo 3D</strong>el_tio.glb</div>
-          </div>
-        </div>
-      </article>
-
-      <!-- PIEZA 04: TRAJE DE SIMÓN I. PATIÑO -->
-      <article class="museum-vitrine">
-        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
-
-        <div class="vitrine-stage">
-          <span class="vitrine-seal-badge">Pieza IV · Sastrería Europea · Siglo XX</span>
-          <model-viewer
-            id="mv-traje"
-            src="./models/traje_patino.glb"
-            alt="Modelo 3D del Traje de Simón I. Patiño"
-            auto-rotate
-            camera-controls
-            environment-image="neutral"
-            exposure="1.2"
-            shadow-intensity="2"
-            shadow-softness="0.6"
-            tone-mapping="aces"
-            camera-orbit="15deg 75deg 105%"
-            min-camera-orbit="auto auto 35%"
-            max-camera-orbit="auto auto 200%"
-            interpolation-decay="100">
-          </model-viewer>
-          <div class="vitrine-toolbar">
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-traje', '15deg 75deg 105%', '45deg', 1.2)">Silueta Completa</button>
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-traje', '0deg 60deg 48%', '20deg', 1.38)">Macro Solapa y Textil</button>
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-traje', '-70deg 75deg 80%', '35deg', 1.0)">Perfil Aristocrático</button>
-          </div>
-        </div>
-
-        <div class="vitrine-info">
-          <span class="catalog-code">Registro N.º 04 · Indumentaria del Rey del Estaño</span>
-          <h3>La Etiqueta Europea de Simón I. Patiño</h3>
-          <p>
-            Simón I. Patiño adoptó rápidamente los modales y la vestimenta de la alta sociedad europea. Su indumentaria de sastre —con sombrero de copa, frac y bastón— reflejaba el auge de una Uncía próspera donde se escuchaban hasta 15 idiomas.
-          </p>
-          <p>
-            Bolivianos, yugoslavos, españoles, italianos y belgas regentaban en la localidad grandes tiendas comerciales de calzado, destilerías de vinos, pianos y automóviles, contrastando con la vida obrera del campamento.
-          </p>
-          <div class="vitrine-ledger">
-            <div><strong>Época</strong>1900 – 1924</div>
-            <div><strong>Sala</strong>Dormitorio Principal</div>
-            <div><strong>Archivo 3D</strong>traje_patino.glb</div>
-          </div>
-        </div>
-      </article>
-
-      <!-- PIEZA 05: CÁMARA DE CINE -->
-      <article class="museum-vitrine">
-        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
-
-        <div class="vitrine-stage">
-          <span class="vitrine-seal-badge">Pieza V · Archivo Cinematográfico Minero</span>
-          <model-viewer
-            id="mv-camara"
-            src="./models/camara_cine.glb"
-            alt="Modelo 3D de Proyector de Cine Antiguo"
-            auto-rotate
-            camera-controls
-            environment-image="neutral"
-            exposure="1.2"
-            shadow-intensity="2"
-            shadow-softness="0.6"
-            tone-mapping="aces"
-            camera-orbit="-30deg 70deg 105%"
-            min-camera-orbit="auto auto 35%"
-            max-camera-orbit="auto auto 200%"
-            interpolation-decay="100">
-          </model-viewer>
-          <div class="vitrine-toolbar">
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-camara', '-30deg 70deg 105%', '45deg', 1.2)">Vista General</button>
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-camara', '10deg 65deg 48%', '20deg', 1.38)">Macro Engranajes</button>
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-camara', '90deg 75deg 80%', '35deg', 1.0)">Perfil Mecánico</button>
-          </div>
-        </div>
-
-        <div class="vitrine-info">
-          <span class="catalog-code">Registro N.º 05 · Modernidad y Celuloide</span>
-          <h3>Proyectores Cinematográficos de la Época</h3>
-          <p>
-            La bonanza del estaño trajo consigo la modernidad y el espectáculo cinematográfico a los enclaves industriales de Uncía y Catavi.
-          </p>
-          <p>
-            Equipos de proyección en celuloide como este —resguardados en el Archivo Histórico Minero— iluminaban las frías noches del norte de Potosí en las primeras décadas del siglo XX.
-          </p>
-          <div class="vitrine-ledger">
-            <div><strong>Formato</strong>Celuloide 35 mm</div>
-            <div><strong>Resguardo</strong>Archivo Catavi / Uncía</div>
-            <div><strong>Archivo 3D</strong>camara_cine.glb</div>
-          </div>
-        </div>
-      </article>
-
-      <!-- PIEZA 06: PIANO ANTIGUO -->
-      <article class="museum-vitrine">
-        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
-
-        <div class="vitrine-stage">
-          <span class="vitrine-seal-badge">Pieza VI · Salón de Fiestas y Leyenda Nocturna</span>
-          <model-viewer
-            id="mv-piano"
-            src="./models/piano_antiguo.glb"
-            alt="Modelo 3D de Piano Antiguo Europeo"
-            auto-rotate
-            camera-controls
-            environment-image="neutral"
-            exposure="1.2"
-            shadow-intensity="2"
-            shadow-softness="0.6"
-            tone-mapping="aces"
-            camera-orbit="25deg 72deg 105%"
-            min-camera-orbit="auto auto 35%"
-            max-camera-orbit="auto auto 200%"
-            interpolation-decay="100">
-          </model-viewer>
-          <div class="vitrine-toolbar">
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-piano', '25deg 72deg 105%', '45deg', 1.2)">Vista General</button>
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-piano', '0deg 58deg 48%', '20deg', 1.4)">Macro Teclado y Madera</button>
-            <button type="button" class="vitrine-btn" onclick="setVitrine('mv-piano', '-60deg 75deg 82%', '35deg', 0.9)">Luz Nocturna</button>
-          </div>
-        </div>
-
-        <div class="vitrine-info">
-          <span class="catalog-code">Registro N.º 06 · Música de Salón y Mito Urbano</span>
-          <h3>El Piano Europeo y el Brindis de Medianoche</h3>
-          <p>
-            Transportados con enormes esfuerzos a través de los Andes para amoblar el salón de fiestas del palacio, los pianos europeos recreaban el refinamiento de París y Viena en plena cordillera.
-          </p>
-          <p>
-            Más de ochenta años después de que Patiño partiera a Francia, aún hoy hay quienes aseguran divisar por las noches las luces prendidas en el palacio de Uncía: al acercarse hacia la casa, <strong>el sonido de un brindis y la melodía de un piano parecen intensificarse</strong> antes de sumirse en el silencio y la oscuridad del interior.
-          </p>
-          <div class="vitrine-ledger">
-            <div><strong>Ubicación</strong>Salón de Fiestas</div>
-            <div><strong>Tradición</strong>Leyenda Nocturna</div>
-            <div><strong>Archivo 3D</strong>piano_antiguo.glb</div>
-          </div>
-        </div>
-      </article>
-
-    </section>
-
-    <!-- CAPÍTULO II: LA CUNA DEL SINDICALISMO MINERO (1923) -->
-    <section class="chapter-paper" id="sindicalismo">
+    <!-- ============================================================
+         CONTEXTO HISTÓRICO REAL: PLANTA DIÉSEL Y MAQUINARIA DE UNCÍA
+         ============================================================ -->
+    <section class="chapter-paper" id="planta-diesel-historia">
       <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
       <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
       <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
       <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
 
-      <span class="chapter-tag">Capítulo Segundo · 1 de Mayo de 1923</span>
-      <h2>Uncía: La Cuna del Sindicalismo Minero en Bolivia</h2>
+      <span class="chapter-tag">Crónica Industrial · Sector Miraflores, Uncía (1901 – 1924)</span>
+      <h2>La Planta Diésel Miraflores y los Motores Gemelos del Titanic</h2>
 
       <div class="chapter-columns">
         <p class="dropcap">
-          Las crónicas del Palacio de Patiño están íntimamente ligadas a una de las batallas obreras más trascendentales de la historia contemporánea de Bolivia. El 1 de mayo de 1923, Día del Trabajo, los 5.000 mineros que laboraban en las minas de Patiño se congregaron en la estación de ferrocarriles y bajaron en marcha hasta la plaza principal Alonso de Ibáñez en conmemoración de los mártires de Chicago de 1886.
+          Tras el descubrimiento de la célebre veta de estaño en la mina <em>La Salvadora</em> y la consolidación de la sociedad con Sergio Ortiz, Simón I. Patiño comprendió que para colocar a Uncía a la vanguardia mundial debía electrificar e industrializar la montaña a más de 3.800 metros de altitud. En <strong>1901</strong> hizo traer desde Alemania, cruzando el océano y la cordillera andina, los colosales motores fabricados por la casa alemana Diesel (Sulzer/MAN).
         </p>
         <p>
-          Ante la iglesia parroquial, pese a la prohibición del gobierno del presidente Bautista Saavedra (1921–1925), los trabajadores fundaron el <strong>primer sindicato minero de Bolivia</strong> y redactaron un histórico pliego de diez peticiones cuyos tres primeros puntos hicieron temblar a La Paz:
+          Instaladas en los enormes galpones de calamina de la zona de <strong>Miraflores</strong> —visibles directamente desde los ventanales del palacio familiar donde Simón y Albina Rodríguez Ocampo residieron entre 1899 y 1905—, estas modernas maquinarias proveían de energía eléctrica continua a los campamentos mineros, las plantas de concentración metalúrgica, los compresores de aire para perforación neumática, el hospital y al pueblo entero de Uncía.
+        </p>
+        <p>
+          La historia guarda un dato extraordinario sobre estas máquinas: <strong>sus dos únicos motores gemelos fabricados en el siglo pasado en Alemania duermen desde abril de 1912 en el fondo del océano Atlántico, bajo la armadura del transatlántico RMS Titanic</strong>. En los talleres de Uncía aún se conservan las gigantescas llaves inglesas de acero forjado con las que los mecánicos e ingenieros ajustaban los cilindros y volantes de inercia, tan pesadas que resultaban imposibles de levantar por un solo hombre.
+        </p>
+        <p>
+          Este complejo industrial impulsó una Uncía cosmopolita donde se hablaban hasta 15 idiomas y donde, el <strong>1 de mayo de 1923</strong>, cinco mil trabajadores marcharon hasta la plaza Alonso de Ibáñez para fundar el primer sindicato minero de Bolivia exigiendo la jornada de 8 horas, un año antes de que la administración fuera trasladada hacia Catavi en 1924.
         </p>
       </div>
+    </section>
 
-      <ul class="petitions-plaque">
-        <li><strong>Primero:</strong> Reducción de la jornada laboral a ocho horas en las galerías e ingenios.</li>
-        <li><strong>Segundo:</strong> Reconocimiento del derecho legítimo a organizar sindicatos y asociaciones obreras.</li>
-        <li><strong>Tercero:</strong> Vigencia plena del derecho a la huelga.</li>
-      </ul>
+    <!-- ============================================================
+         ÁLBUM FOTOGRÁFICO DOCUMENTAL (TUS 8 NUEVAS IMÁGENES EN IMG/)
+         ============================================================ -->
+    <section class="chapter-paper" id="archivo-fotografico">
+      <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
 
-      <div class="chapter-columns">
-        <p>
-          El gobierno declaró a Uncía «zona militar» destacando seis mil soldados. Tras los disparos iniciados en la plaza por el administrador chileno Emilio Díaz, se desató la trágica Masacre de Uncía, seguida por 22 meses de ocupación militar y un éxodo masivo de trabajadores hacia otros centros mineros.
-        </p>
-        <p>
-          La estocada final al auge de Uncía llegó un año después, en 1924, con el traslado del centro administrativo del imperio de Patiño hacia la vecina localidad de Catavi, mientras el empresario residía en Francia. Hoy, la restauración y puesta en valor del Palacio de Miraflores preserva este legado arquitectónico e histórico único para las futuras generaciones.
-        </p>
+      <span class="chapter-tag">Registro Visual Documental · Colección Fotográfica de Uncía</span>
+      <h2>Archivo Fotográfico de Simón I. Patiño y Uncía</h2>
+
+      <div class="photo-archive-grid">
+        <article class="photo-frame-card">
+          <img src="./img/foto_edificio_color.jpg" data-alt-src="./img/1.jpg" alt="Palacio de Simón I. Patiño en Uncía">
+          <h4>El Palacio en Miraflores</h4>
+          <p>Vista actual del inmueble de 73 ambientes con su fachada mostaza y torre de inspiración escocesa en Uncía.</p>
+        </article>
+
+        <article class="photo-frame-card">
+          <img src="./img/uncia antigua.jpeg" data-alt-src="./img/uncia antigua.jpg" alt="Uncía Antigua a principios del Siglo XX">
+          <h4>Uncía a Principios del Siglo XX</h4>
+          <p>Panorámica histórica de la localidad minera cuando albergaba consulados, comercios europeos y 15 idiomas.</p>
+        </article>
+
+        <article class="photo-frame-card">
+          <img src="./img/patiño.jpg" data-alt-src="./img/1.jpg" alt="Retrato de Simón Iturri Patiño">
+          <h4>Simón Iturri Patiño</h4>
+          <p>El empresario cochabambino que forjó desde el cerro Juan del Valle y La Salvadora el mayor imperio mundial del estaño.</p>
+        </article>
+
+        <article class="photo-frame-card">
+          <img src="./img/patiño_familia.png" data-alt-src="./img/patiño_familia.jpg" alt="Familia Patiño Rodríguez">
+          <h4>Simón Patiño y Albina Rodríguez</h4>
+          <p>La familia para quien se edificó la primera residencia señorial entre 1899 y 1905 tras la promesa en la bocamina.</p>
+        </article>
+
+        <article class="photo-frame-card">
+          <img src="./img/Platan_diesel.png" data-alt-src="./img/Platan_diesel.jpg" alt="Planta Diésel Miraflores">
+          <h4>Planta Diésel Miraflores (1901)</h4>
+          <p>Nave industrial que albergó los motores alemanes gemelos del Titanic encargados de electrificar Uncía.</p>
+        </article>
+
+        <article class="photo-frame-card">
+          <img src="./img/ingeniero_minas.png" data-alt-src="./img/ingeniero_minas.jpg" alt="Ingenieros y técnicos de minas en Uncía">
+          <h4>Cuerpo Técnico e Ingenieros de Minas</h4>
+          <p>Especialistas europeos y bolivianos a cargo de la maquinaria pesada, perforadoras e ingenios de La Salvadora.</p>
+        </article>
+
+        <article class="photo-frame-card">
+          <img src="./img/Foto_reunion_uncia.png" data-alt-src="./img/reunion_uncia.jpg" alt="Reunión histórica en Uncía">
+          <h4>Recepciones y Autoridades en Uncía</h4>
+          <p>Encuentro social y administrativo en los salones del complejo minero durante el apogeo del estaño.</p>
+        </article>
+
+        <article class="photo-frame-card">
+          <img src="./img/reunion_uncia.jpg" data-alt-src="./img/Foto_reunion_uncia.png" alt="Asamblea y vida social en Uncía">
+          <h4>Crónica Social y Sindical de la Época</h4>
+          <p>Registro documental de las históricas jornadas que marcaron a la provincia Rafael Bustillo en el norte de Potosí.</p>
+        </article>
       </div>
 
-      <div style="text-align:center; margin-top:36px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
-        <a href="./interior.html" class="btn-vintage btn-vintage-gold">Entrar a Caminar por los 73 Ambientes (3D) →</a>
-        <a href="./index.html" class="btn-vintage">Volver al Visor Exterior del Palacio</a>
+      <div style="text-align:center; margin-top:40px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+        <a href="./interior.html" class="btn-vintage btn-vintage-gold">Caminar en 1ra Persona por los 73 Ambientes →</a>
+        <a href="./index.html" class="btn-vintage">Ir al Visor Exterior y Mapa de Ubicación</a>
       </div>
     </section>
 
   </main>
 
-  <!-- FOOTER MONUMENTAL -->
-  <footer class="vintage-footer">
-    <div class="footer-nav-row">
-      <span>ARCHIVO PATRIMONIAL · MIRAFLORES, UNCÍA · NORTE DE POTOSÍ</span>
-      <div style="display:flex; gap:24px; flex-wrap:wrap;">
-        <a href="./index.html">Exterior 3D</a>
-        <a href="./historia.html">Crónica y Reliquias</a>
-        <a href="./interior.html">Recorrido Interior 3D</a>
+  <!-- ============================================================
+       MODAL EN PANTALLA GRANDE AL HACER CLIC EN UN MODELO .GLB
+       ============================================================ -->
+  <div class="glb-modal-backdrop" id="glb-modal">
+    <div class="glb-modal-window">
+      <button type="button" class="modal-close-btn" id="modal-close-btn" title="Cerrar (ESC)">✕</button>
+
+      <div class="modal-3d-stage">
+        <span class="card-badge-top" id="modal-badge">INSPECCIÓN TRIDIMENSIONAL AMPLIADA</span>
+        <model-viewer
+          id="modal-viewer"
+          src=""
+          alt="Visor 3D Ampliado"
+          auto-rotate
+          camera-controls
+          environment-image="neutral"
+          exposure="1.2"
+          shadow-intensity="2"
+          shadow-softness="0.6"
+          tone-mapping="aces"
+          min-camera-orbit="auto auto 30%"
+          max-camera-orbit="auto auto 220%">
+        </model-viewer>
+        <div class="modal-3d-controls">
+          <button type="button" class="btn-vintage btn-sm" onclick="setModalCam('35deg 70deg 100%', '45deg', 1.2)">Vista General</button>
+          <button type="button" class="btn-vintage btn-sm" onclick="setModalCam('0deg 60deg 45%', '20deg', 1.38)">Acercamiento Macro</button>
+          <button type="button" class="btn-vintage btn-sm" onclick="setModalCam('90deg 75deg 80%', '35deg', 1.1)">Perfil Técnico</button>
+          <button type="button" class="btn-vintage btn-sm" onclick="setModalCam('-45deg 50deg 65%', '28deg', 0.9)">Luz de Época</button>
+        </div>
+      </div>
+
+      <div class="modal-info-panel">
+        <div>
+          <span class="modal-tag" id="modal-code">REGISTRO PATRIMONIAL</span>
+          <h2 id="modal-title">Título del Modelo</h2>
+          <img id="modal-photo" class="modal-archive-photo" src="./img/foto_edificio_color.jpg" alt="Fotografía histórica asociada" />
+          <p class="modal-typewriter-box typewriter-cursor" id="modal-desc"></p>
+        </div>
+
+        <div>
+          <div class="modal-specs-table">
+            <div><strong>Época / Año</strong><span id="modal-year">1901</span></div>
+            <div><strong>Procedencia</strong><span id="modal-origin">Uncía, Potosí</span></div>
+            <div><strong>Ubicación</strong><span id="modal-place">Sector Miraflores</span></div>
+            <div><strong>Archivo 3D</strong><span id="modal-file">modelo.glb</span></div>
+          </div>
+          <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+            <button type="button" class="btn-vintage btn-sm" id="modal-finish-text" style="flex:1;">
+              ⚡ Mostrar Texto Completo
+            </button>
+            <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="modal-next-model" style="flex:1;">
+              Siguiente Modelo 3D →
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
+
+  <!-- FOOTER MONUMENTAL -->
+  <footer class="vintage-footer">
     <div class="footer-engraved-title">PALACIO PATIÑO</div>
-    <p class="footer-credits">
-      Memoria Histórica y Conservación Tridimensional · Casa de Simón I. Patiño en Uncía
+    <p style="color:var(--text-muted); font-style:italic;">
+      Museo Virtual y Archivo Histórico de la Casa de Simón I. Patiño y Planta Diésel Miraflores · Uncía, Potosí
     </p>
   </footer>
 
+  <!-- ============================================================
+       CATÁLOGO DE LOS 11 MODELOS .GLB + MOTOR DE AUTO-ESCRITURA Y MODAL
+       ============================================================ -->
   <script>
-    // Pre-loader de Época al iniciar la galería
-    (function initHistoryPreloader() {
-      const preloader = document.getElementById('vintage-preloader');
-      const pctEl = document.getElementById('preloader-pct');
-      const fillEl = document.getElementById('preloader-fill');
-      let p = 0;
-      const timer = setInterval(() => {
-        p += Math.floor(Math.random() * 18) + 10;
-        if (p >= 100) {
-          p = 100;
-          clearInterval(timer);
-          setTimeout(() => preloader.classList.add('curtain-open'), 250);
-        }
-        pctEl.textContent = p + '%';
-        fillEl.style.width = p + '%';
-      }, 60);
-    })();
+    // Respaldo inteligente para imágenes si cambia la extensión en Windows (.jpeg / .jpg / .png)
+    document.querySelectorAll('img[data-alt-src]').forEach((img) => {
+      img.addEventListener('error', function onErr() {
+        img.removeEventListener('error', onErr);
+        img.src = img.dataset.altSrc;
+      });
+    });
 
-    // Control de Lentes Macro y Luz de Época en los 6 visores <model-viewer>
-    function setVitrine(id, orbit, fov, exposure) {
-      const viewer = document.getElementById(id);
-      if (!viewer) return;
-      viewer.autoRotate = false;
-      viewer.cameraOrbit = orbit;
-      viewer.fieldOfView = fov;
-      if (exposure !== undefined) viewer.exposure = exposure;
+    // Lista completa de los 11 modelos .glb (incluyendo casa.glb y las 4 maquinarias de tu carpeta models/)
+    const CATALOG_MODELS = [
+      {
+        id: 'casa-palacio',
+        category: 'arquitectura',
+        featured: true,
+        badge: '01 / MAQUETA MONUMENTAL · 73 AMBIENTES',
+        code: 'REGISTRO ARQUITECTÓNICO N.º 01',
+        title: 'El Palacio de Simón I. Patiño en Uncía (casa.glb)',
+        file: './models/casa.glb',
+        fallbackFile: './models/casa-exterior.glb',
+        photo: './img/foto_edificio_color.jpg',
+        year: '1899 – 1905',
+        origin: 'Miraflores, Uncía',
+        place: 'Provincia Rafael Bustillo',
+        shortText: 'Reconstrucción arquitectónica íntegra de la primera mansión que Simón I. Patiño edificó en Uncía tras la promesa hecha a su esposa Albina Rodríguez Ocampo.',
+        fullText: 'Levantada entre 1899 y 1905 en la zona norte de Uncía (sector Miraflores), esta residencia de 73 ambientes cumplió la promesa que Simón I. Patiño le hizo a su esposa Albina Rodríguez Ocampo cuando ella vendió sus joyas en Oruro para acompañarlo en la cima del cerro Llallagua. Su fachada mostaza coronada por una torre de estilo escocés albergaba techos con cristales de Venecia, muros empapelados con los jardines franceses de Bolonia, capilla privada, farmacia y salón de fiestas en tono rojo guindo.'
+      },
+      {
+        id: 'planta-miraflores',
+        category: 'arquitectura',
+        featured: false,
+        badge: '02 / COMPLEJO INDUSTRIAL · 1901',
+        code: 'REGISTRO INDUSTRIAL N.º 02',
+        title: 'Nave Industrial Planta Diésel Miraflores',
+        file: './models/planta_miraflores.glb',
+        photo: './img/Platan_diesel.png',
+        year: 'Año 1901',
+        origin: 'Ingeniería Alemana',
+        place: 'Ingenio Miraflores, Uncía',
+        shortText: 'Edificio industrial contiguo al palacio que resguardaba la central eléctrica y los colosales motores diésel traídos desde Alemania en 1901.',
+        fullText: 'Construida junto a las oficinas administrativas del palacio en Miraflores, esta imponente nave industrial alojó desde 1901 la central térmica que transformó la minería boliviana. Desde aquí se generaba la electricidad para la empresa minera La Salvadora, el ingenio metalúrgico, el hospital y todo el alumbrado público de Uncía.'
+      },
+      {
+        id: 'maquinaria-principal',
+        category: 'maquinaria',
+        featured: false,
+        badge: '03 / MOTOR ALEMÁN GEMELO DEL TITANIC',
+        code: 'MAQUINARIA PLANTA DIÉSEL N.º 03',
+        title: 'Motor Diésel Alemán de 1901 (maquinaria.glb)',
+        file: './models/maquinaria.glb',
+        photo: './img/Platan_diesel.png',
+        year: 'Instalación: 1901',
+        origin: 'Casa Diesel, Alemania',
+        place: 'Planta Diésel Miraflores',
+        shortText: 'Bloque principal de los motores diésel alemanes traídos por Patiño a Uncía; sus dos únicos gemelos de fábrica reposan en el océano bajo el casco del Titanic desde 1912.',
+        fullText: 'Los niños y habitantes de Uncía siempre presumieron de poseer en su terruño los únicos motores diésel de este modelo fabricados a inicios del siglo pasado en Alemania, cuyos dos hermanos gemelos se hundieron en el Atlántico en 1912 bajo la armadura del transatlántico Titanic. Su mantenimiento requería llaves inglesas gigantescas imposibles de levantar por un solo hombre.'
+      },
+      {
+        id: 'maquinaria-1',
+        category: 'maquinaria',
+        featured: false,
+        badge: '04 / GENERACIÓN DE FUERZA MOTRIZ',
+        code: 'MAQUINARIA PLANTA DIÉSEL N.º 04',
+        title: 'Generador y Volante de Inercia (maquinaria 1.glb)',
+        file: './models/maquinaria 1.glb',
+        photo: './img/ingeniero_minas.png',
+        year: '1901 – 1924',
+        origin: 'Importación Europea',
+        place: 'Central Eléctrica Miraflores',
+        shortText: 'Unidad de generación electromecánica acoplada a los motores de la Planta Diésel para alimentar los socavones del cerro Juan del Valle.',
+        fullText: 'Este conjunto mecánico convertía la potencia de combustión interna de la Planta Miraflores en energía constante para los guinches de extracción vertical, los ventiladores de galerías subterráneas y los ferrocarriles eléctricos que extraían la casiterita de alta ley en La Salvadora.'
+      },
+      {
+        id: 'maqui-1',
+        category: 'maquinaria',
+        featured: false,
+        badge: '05 / COMPRESIÓN Y BOMBEO NEUMÁTICO',
+        code: 'MAQUINARIA PLANTA DIÉSEL N.º 05',
+        title: 'Sistema de Compresión e Ingenio (maqui 1.glb)',
+        file: './models/maqui (1).glb',
+        photo: './img/ingeniero_minas.png',
+        year: 'Principios S. XX',
+        origin: 'Alemania / Inglaterra',
+        place: 'Complejo La Salvadora',
+        shortText: 'Maquinaria industrial que suministraba aire comprimido a las perforadoras mecánicas e impulsaba el procesamiento del mineral de estaño.',
+        fullText: 'La modernización introducida por Simón I. Patiño y sus ingenieros europeos reemplazó el barreno manual por perforadoras neumáticas alimentadas desde las salas de máquinas de Miraflores y La Salvadora, multiplicando la producción hasta convertir a Uncía en el centro estañífero más rico del planeta.'
+      },
+      {
+        id: 'maqui-2',
+        category: 'maquinaria',
+        featured: false,
+        badge: '06 / CONCENTRACIÓN METALÚRGICA',
+        code: 'MAQUINARIA PLANTA DIÉSEL N.º 06',
+        title: 'Maquinaria Pesada de Molienda y Tracción (maqui 2.glb)',
+        file: './models/maqui (2).glb',
+        photo: './img/Platan_diesel.png',
+        year: '1901 – 1923',
+        origin: 'Tecnología Industrial',
+        place: 'Ingenio Miraflores, Uncía',
+        shortText: 'Equipo pesado del ingenio Miraflores destinado a la trituración, clasificación y beneficio del estaño antes de su exportación a Europa.',
+        fullText: 'En los galpones de Miraflores operaban estas unidades de alta resistencia mecánica que procesaban día y noche el mineral extraído por más de 5.000 trabajadores. Tras los sucesos sindicales del 1 de mayo de 1923, parte de las operaciones administrativas se trasladaron hacia Catavi en 1924, quedando en Uncía este patrimonio industrial único.'
+      },
+      {
+        id: 'carruaje-1870',
+        category: 'reliquias',
+        featured: false,
+        badge: '07 / CARRUAJE INGLÉS · AÑO 1870',
+        code: 'RELIQUIA PATRIMONIAL N.º 07',
+        title: 'El Carruaje Inglés de la Familia Patiño',
+        file: './models/carruaje.glb',
+        photo: './img/patiño_familia.png',
+        year: 'Data de 1870',
+        origin: 'Manufactura Inglesa',
+        place: 'Sala contigua a la Capilla',
+        shortText: 'Vehículo original de 1870 conservado junto a la capilla del palacio, en el que Simón I. Patiño paseaba por Uncía junto a su esposa Albina.',
+        fullText: 'En una habitación contigua a la capilla privada del empresario —en la que aún quedan sus bancos de madera originales— descansa este carruaje inglés rehabilitado que data de 1870. Antes de la inauguración del Ferrocarril Machacamarca–Uncía, trasladaba a la familia Patiño por las rutas andinas.'
+      },
+      {
+        id: 'el-tio-mina',
+        category: 'reliquias',
+        featured: false,
+        badge: '08 / COSMOVISIÓN MINERA · SUBSUELO',
+        code: 'RELIQUIA PATRIMONIAL N.º 08',
+        title: 'El «Tío» de la Mina del Cerro Juan del Valle',
+        file: './models/el_tio.glb',
+        photo: './img/reunion_uncia.jpg',
+        year: 'Tradición Secular',
+        origin: 'Norte de Potosí',
+        place: 'Bocaminas de La Salvadora',
+        shortText: 'Deidad guardiana de las profundidades a quien los miles de mineros de Uncía rendían tributo con hojas de coca, tabaco y alcohol.',
+        fullText: 'En las galerías subterráneas del cerro Juan del Valle, la riqueza mineral pertenecía al «Tío», señor del inframundo andino. Los 5.000 obreros que forjaron el auge de Uncía y protagonizaron la histórica gesta sindical del 1 de mayo de 1923 acudían ante su imagen en busca de resguardo y vetas prósperas.'
+      },
+      {
+        id: 'traje-patino',
+        category: 'reliquias',
+        featured: false,
+        badge: '09 / ALTA ETIQUETA · 15 IDIOMAS EN UNCÍA',
+        code: 'RELIQUIA PATRIMONIAL N.º 09',
+        title: 'Indumentaria Europea de Simón I. Patiño',
+        file: './models/traje_patino.glb',
+        photo: './img/patiño.jpg',
+        year: '1900 – 1924',
+        origin: 'Sastrería Europea',
+        place: 'Dormitorio Principal',
+        shortText: 'Frac de sastre, sombrero de copa y bastón que reflejan la etiqueta europea adoptada por el Rey del Estaño en una Uncía cosmopolita.',
+        fullText: 'Durante el esplendor de Uncía podían oírse voces hasta en 15 idiomas: bolivianos, yugoslavos, españoles, italianos y belgas regentaban grandes casas comerciales. Patiño adoptó la indumentaria aristocrática de París y Londres, contrastando con la vida obrera de los campamentos mineros.'
+      },
+      {
+        id: 'camara-cine',
+        category: 'reliquias',
+        featured: false,
+        badge: '10 / PROYECCIÓN DE ÉPOCA · 35 MM',
+        code: 'RELIQUIA PATRIMONIAL N.º 10',
+        title: 'Proyector Cinematográfico del Archivo Minero',
+        file: './models/camara_cine.glb',
+        photo: './img/Foto_reunion_uncia.png',
+        year: 'Década de 1910–1920',
+        origin: 'Archivo Catavi / Uncía',
+        place: 'Galería de Distribución',
+        shortText: 'Equipo histórico de proyección en celuloide que llevó el cine a las noches frías de los enclaves mineros de Uncía y Catavi.',
+        fullText: 'Gracias a la electricidad provista por la Planta Diésel Miraflores, Uncía contó desde muy temprano con salas de proyección cinematográfica, teatros y veladas culturales cuyos equipos hoy forman parte del patrimonio histórico minero de la región.'
+      },
+      {
+        id: 'piano-antiguo',
+        category: 'reliquias',
+        featured: false,
+        badge: '11 / SALÓN DE FIESTAS · MITO NOCTURNO',
+        code: 'RELIQUIA PATRIMONIAL N.º 11',
+        title: 'El Piano Europeo y la Leyenda del Brindis Nocturno',
+        file: './models/piano_antiguo.glb',
+        photo: './img/uncia antigua.jpeg',
+        year: 'Siglo XIX – XX',
+        origin: 'Salón Rojo Guindo',
+        place: 'Salón de Recepciones',
+        shortText: 'Piano de salón vinculado al misterio nocturno de Uncía: cuando las luces del palacio parecen encenderse y resuena una melodía a medianoche.',
+        fullText: 'En el salón de fiestas de muros rojo guindo y techos de cristal veneciano resonaban los pianos traídos desde Europa. Hoy, tras más de ochenta años, los vecinos aseguran divisar de noche las luces prendidas en el palacio y escuchar el sonido de un brindis junto a la melodía de este piano antes de que todo quede en silencio.'
+      }
+    ];
+
+    // ============================================================
+    // FUNCIÓN DE AUTO-ESCRITURA (MÁQUINA DE ESCRIBIR DE ÉPOCA)
+    // ============================================================
+    const activeTypeTimers = new WeakMap();
+
+    function typewriteElement(el, text, speed = 16) {
+      if (!el) return;
+      if (activeTypeTimers.has(el)) {
+        clearInterval(activeTypeTimers.get(el));
+      }
+      el.textContent = '';
+      el.classList.add('typewriter-cursor');
+      let i = 0;
+      const timer = setInterval(() => {
+        i += 2; // Escribe fluido de 2 en 2 caracteres
+        el.textContent = text.slice(0, i);
+        if (i >= text.length) {
+          el.textContent = text;
+          clearInterval(timer);
+          activeTypeTimers.delete(el);
+          setTimeout(() => el.classList.remove('typewriter-cursor'), 1200);
+        }
+      }, speed);
+      activeTypeTimers.set(el, timer);
     }
+
+    // Auto-escribir el subtítulo del Hero al entrar a la página
+    const heroTw = document.getElementById('hero-typewriter');
+    if (heroTw) {
+      typewriteElement(heroTw, heroTw.dataset.text, 22);
+    }
+
+    // ============================================================
+    // RENDERIZAR LAS 11 TARJETAS Y ACTIVAR AUTO-ESCRITURA AL ENTRAR EN PANTALLA
+    // ============================================================
+    const gridEl = document.getElementById('models-grid');
+
+    function renderCards(filter = 'all') {
+      gridEl.innerHTML = '';
+      const list = filter === 'all'
+        ? CATALOG_MODELS
+        : CATALOG_MODELS.filter((m) => m.category === filter);
+
+      list.forEach((item) => {
+        const realIdx = CATALOG_MODELS.indexOf(item);
+        const article = document.createElement('article');
+        article.className = 'model-card-vintage' + (item.featured && filter === 'all' ? ' featured-wide' : '');
+
+        article.innerHTML = `
+          <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+          <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
+          <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
+          <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
+
+          <div class="card-viewer-box">
+            <span class="card-badge-top">${item.badge}</span>
+            <model-viewer
+              src="${encodeURI(item.file)}"
+              alt="${item.title}"
+              auto-rotate
+              camera-controls
+              environment-image="neutral"
+              exposure="1.18"
+              shadow-intensity="2"
+              shadow-softness="0.6"
+              tone-mapping="aces">
+            </model-viewer>
+            <button type="button" class="card-expand-pill" data-open-idx="${realIdx}">
+              🔍 Ampliar Modelo 3D en Grande
+            </button>
+          </div>
+
+          <div class="card-body-vintage" data-open-idx="${realIdx}">
+            <div>
+              <span class="card-cat-code">${item.code}</span>
+              <h3>${item.title}</h3>
+              <p class="card-typewriter-text" data-tw-text="${item.shortText}"></p>
+            </div>
+            <div class="card-meta-footer">
+              <span><strong>Época:</strong> ${item.year}</span>
+              <span><strong>Clic para abrir en grande ↗</strong></span>
+            </div>
+          </div>
+        `;
+
+        // Si casa.glb no existiera con ese nombre, usar casa-exterior.glb como respaldo automático
+        if (item.fallbackFile) {
+          const mv = article.querySelector('model-viewer');
+          mv.addEventListener('error', () => {
+            if (mv.src !== item.fallbackFile) mv.src = item.fallbackFile;
+          });
+        }
+
+        gridEl.appendChild(article);
+      });
+
+      observeCardsForTypewriter();
+      bindCardModalTriggers();
+    }
+
+    // Disparar efecto de auto-escritura apenas cada tarjeta 3D entra en la pantalla
+    const typedAlready = new WeakSet();
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const p = entry.target.querySelector('.card-typewriter-text');
+          if (p && !typedAlready.has(p)) {
+            typedAlready.add(p);
+            typewriteElement(p, p.dataset.twText, 18);
+          }
+        }
+      });
+    }, { threshold: 0.25 });
+
+    function observeCardsForTypewriter() {
+      document.querySelectorAll('.model-card-vintage').forEach((card) => {
+        cardObserver.observe(card);
+      });
+    }
+
+    // Botones de filtro por categoría
+    document.querySelectorAll('.filter-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderCards(btn.dataset.filter);
+      });
+    });
+
+    // ============================================================
+    // LÓGICA DEL MODAL EN PANTALLA COMPLETA CON AUTO-ESCRITURA EN VIVO
+    // ============================================================
+    const modalBackdrop  = document.getElementById('glb-modal');
+    const modalViewer    = document.getElementById('modal-viewer');
+    const modalBadge     = document.getElementById('modal-badge');
+    const modalCode      = document.getElementById('modal-code');
+    const modalTitle     = document.getElementById('modal-title');
+    const modalPhoto     = document.getElementById('modal-photo');
+    const modalDesc      = document.getElementById('modal-desc');
+    const modalYear      = document.getElementById('modal-year');
+    const modalOrigin    = document.getElementById('modal-origin');
+    const modalPlace     = document.getElementById('modal-place');
+    const modalFile      = document.getElementById('modal-file');
+
+    let currentModalIdx = 0;
+
+    function openModelModal(index) {
+      currentModalIdx = (index + CATALOG_MODELS.length) % CATALOG_MODELS.length;
+      const item = CATALOG_MODELS[currentModalIdx];
+
+      modalViewer.src = encodeURI(item.file);
+      modalViewer.autoRotate = true;
+      modalViewer.cameraOrbit = '35deg 70deg 100%';
+      modalViewer.fieldOfView = '42deg';
+
+      modalBadge.textContent  = item.badge;
+      modalCode.textContent   = item.code;
+      modalTitle.textContent  = item.title;
+      modalPhoto.src          = item.photo;
+      modalPhoto.onerror      = () => { modalPhoto.src = './img/foto_edificio_color.jpg'; };
+      modalYear.textContent   = item.year;
+      modalOrigin.textContent = item.origin;
+      modalPlace.textContent  = item.place;
+      modalFile.textContent   = item.file.replace('./models/', '');
+
+      modalBackdrop.classList.add('open');
+      // Auto-escribir la crónica completa apenas abres el modelo en grande
+      typewriteElement(modalDesc, item.fullText, 14);
+    }
+
+    function closeModelModal() {
+      modalBackdrop.classList.remove('open');
+      modalViewer.src = '';
+    }
+
+    function bindCardModalTriggers() {
+      document.querySelectorAll('[data-open-idx]').forEach((el) => {
+        el.addEventListener('click', () => {
+          openModelModal(parseInt(el.dataset.openIdx, 10));
+        });
+      });
+    }
+
+    document.getElementById('modal-close-btn').addEventListener('click', closeModelModal);
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) closeModelModal();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalBackdrop.classList.contains('open')) closeModelModal();
+    });
+
+    document.getElementById('modal-finish-text').addEventListener('click', () => {
+      const item = CATALOG_MODELS[currentModalIdx];
+      if (activeTypeTimers.has(modalDesc)) {
+        clearInterval(activeTypeTimers.get(modalDesc));
+        activeTypeTimers.delete(modalDesc);
+      }
+      modalDesc.textContent = item.fullText;
+      modalDesc.classList.remove('typewriter-cursor');
+    });
+
+    document.getElementById('modal-next-model').addEventListener('click', () => {
+      openModelModal(currentModalIdx + 1);
+    });
+
+    window.setModalCam = function(orbit, fov, exp) {
+      modalViewer.autoRotate = false;
+      modalViewer.cameraOrbit = orbit;
+      modalViewer.fieldOfView = fov;
+      if (exp !== undefined) modalViewer.exposure = exp;
+    };
+
+    // Inicializar catálogo completo
+    renderCards('all');
   </script>
 </body>
 </html>

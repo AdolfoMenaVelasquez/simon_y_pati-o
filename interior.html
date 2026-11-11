@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Interior — Casa de Simón I. Patiño, Uncía</title>
-  <meta name="description" content="Camina en primera persona por el interior de la Casa de Simón I. Patiño en Uncía y descubre la historia de sus ambientes.">
-  <link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Recorrido Interior 3D — Palacio de Simón I. Patiño, Uncía</title>
+  <meta name="description" content="Camina en primera persona por el interior de los 73 ambientes del Palacio de Simón I. Patiño en Uncía, Potosí." />
+
+  <!-- Tipografías Clásicas de Época -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Importmap de Three.js r160 -->
   <script type="importmap">
   {
     "imports": {
@@ -14,92 +20,731 @@
     }
   }
   </script>
+
+  <style>
+    /* ============================================================
+       DIRECCIÓN DE ARTE: ESTÉTICA DE ÉPOCA / VINTAGE PATRIMONIAL
+       ============================================================ */
+    :root {
+      --bg-mahogany: #120D08;
+      --bg-charcoal: #1C150E;
+      --surface-leather: #261C14;
+      --surface-plaque: rgba(20, 14, 9, 0.94);
+
+      --gold-bright: #DFC07A;
+      --gold-vintage: #C5A059;
+      --bronze-burnished: #9A7B3E;
+
+      --text-ivory: #F5EFE6;
+      --text-sepia: #D0C4B0;
+      --text-muted: #9E8F78;
+
+      --font-monumental: 'Cinzel', 'Playfair Display', Georgia, serif;
+      --font-editorial: 'Playfair Display', Georgia, serif;
+      --font-chronicle: 'Cormorant Garamond', Georgia, serif;
+      --font-label: 'Libre Baskerville', serif;
+
+      --border-double: 3px double rgba(197, 160, 89, 0.48);
+      --nav-h: 70px;
+      --ease-vintage: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%; height: 100%;
+      background: var(--bg-mahogany);
+      color: var(--text-ivory);
+      font-family: var(--font-chronicle);
+      overflow: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* Grano de película antigua y viñeta */
+    .vintage-film-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 900;
+      background:
+        radial-gradient(circle at 50% 50%, transparent 62%, rgba(8, 5, 3, 0.65) 100%),
+        repeating-linear-gradient(0deg, rgba(197, 160, 89, 0.01) 0px, rgba(197, 160, 89, 0.01) 1px, transparent 1px, transparent 3px);
+    }
+
+    /* Pre-loader de Época conectado a casa-interior.glb */
+    #vintage-preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: radial-gradient(circle at 50% 45%, #261C14 0%, #120D08 75%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      border: 12px double rgba(197, 160, 89, 0.25);
+      transition: opacity 0.9s var(--ease-vintage), visibility 0.9s;
+    }
+    #vintage-preloader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .preloader-crest {
+      width: 88px; height: 88px;
+      border-radius: 50%;
+      border: var(--border-double);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+      background: rgba(18, 13, 8, 0.85);
+    }
+    .preloader-crest svg { width: 46px; height: 46px; stroke: var(--gold-vintage); fill: none; }
+    .preloader-eyebrow {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      color: var(--gold-vintage);
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    .preloader-title {
+      font-family: var(--font-monumental);
+      font-size: clamp(1.5rem, 3.2vw, 2.3rem);
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .preloader-pct {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 2.5rem;
+      color: var(--gold-bright);
+      margin-bottom: 12px;
+    }
+    .preloader-track {
+      width: min(320px, 78vw);
+      height: 6px;
+      border: 1px solid var(--bronze-burnished);
+      padding: 1px;
+    }
+    .preloader-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--bronze-burnished), var(--gold-bright));
+      transition: width 0.2s ease;
+    }
+    .preloader-status {
+      margin-top: 12px;
+      font-family: var(--font-chronicle);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--text-sepia);
+    }
+
+    /* Navegación Ornamental */
+    .vintage-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(18px, 4vw, 44px);
+      background: linear-gradient(180deg, rgba(18, 13, 8, 0.96) 0%, rgba(18, 13, 8, 0.78) 85%, transparent 100%);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.28);
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 12px;
+      font-family: var(--font-monumental);
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      color: var(--text-ivory);
+    }
+    .nav-brand-emblem {
+      width: 28px; height: 28px;
+      border: 1px solid var(--gold-vintage);
+      transform: rotate(45deg);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; color: var(--gold-vintage);
+    }
+    .nav-brand-emblem span { transform: rotate(-45deg); font-weight: 700; }
+    .nav-links {
+      list-style: none;
+      display: flex; align-items: center;
+      gap: clamp(16px, 2.5vw, 32px);
+    }
+    .nav-links a {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      color: var(--text-sepia);
+      padding-bottom: 4px;
+      border-bottom: 1px solid transparent;
+      transition: color 0.25s ease, border-color 0.25s ease;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--gold-bright);
+      border-bottom-color: var(--gold-vintage);
+    }
+
+    .btn-vintage-sm {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      padding: 8px 16px;
+      background: rgba(38, 28, 20, 0.88);
+      border: var(--border-double);
+      color: var(--text-ivory);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .btn-vintage-sm:hover {
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+    }
+
+    /* Escenario 3D Interior */
+    .scene-wrap {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: var(--bg-mahogany);
+      overflow: hidden;
+    }
+    .scene-wrap canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      touch-action: none;
+    }
+
+    /* Marco Perimetral con Filigranas */
+    .stage-ornamental-frame {
+      position: absolute;
+      inset: 14px;
+      top: calc(var(--nav-h) + 8px);
+      border: 1px solid rgba(197, 160, 89, 0.22);
+      pointer-events: none;
+      z-index: 5;
+    }
+    .corner-filigree {
+      position: absolute;
+      width: 26px; height: 26px;
+      stroke: var(--gold-vintage);
+      fill: none;
+      opacity: 0.85;
+      pointer-events: none;
+    }
+    .cf-tl { top: 4px; left: 4px; }
+    .cf-tr { top: 4px; right: 4px; transform: scaleX(-1); }
+    .cf-bl { bottom: 4px; left: 4px; transform: scaleY(-1); }
+    .cf-br { bottom: 4px; right: 4px; transform: scale(-1, -1); }
+
+    /* Retícula central (Crosshair de Época) */
+    .crosshair {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 12px; height: 12px;
+      margin: -6px 0 0 -6px;
+      border: 1.5px solid var(--gold-bright);
+      transform: rotate(45deg);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+      z-index: 6;
+      display: none;
+      pointer-events: none;
+    }
+
+    /* Tarjeta Señorial de Ingreso (PointerLock Prompt) */
+    .enter-prompt {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 25;
+      background: rgba(12, 8, 5, 0.48);
+      backdrop-filter: blur(3px);
+      cursor: pointer;
+    }
+    .enter-prompt .card {
+      position: relative;
+      background: var(--surface-plaque);
+      border: 4px double var(--gold-vintage);
+      padding: 36px 42px;
+      text-align: center;
+      max-width: 440px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9);
+    }
+    .enter-prompt .card-eyebrow {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--gold-vintage);
+      display: block;
+      margin-bottom: 8px;
+    }
+    .enter-prompt h2 {
+      font-family: var(--font-monumental);
+      font-size: 1.75rem;
+      color: var(--text-ivory);
+      margin-bottom: 12px;
+    }
+    .enter-prompt p {
+      font-size: 1.12rem;
+      color: var(--text-sepia);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .enter-prompt .enter-badge {
+      display: inline-block;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      padding: 11px 24px;
+      background: linear-gradient(180deg, #D5B269 0%, #9A7B3E 100%);
+      color: #120D08;
+      font-weight: 700;
+      border: 2px double #F5EFE6;
+    }
+
+    /* Lector de Coordenadas de Época */
+    .coord-debug {
+      position: absolute;
+      top: calc(var(--nav-h) + 18px);
+      left: 24px;
+      z-index: 12;
+      background: rgba(18, 13, 8, 0.85);
+      border: 1px solid rgba(197, 160, 89, 0.38);
+      color: var(--gold-bright);
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      padding: 6px 12px;
+      pointer-events: none;
+    }
+
+    /* Aviso de Proximidad (Tecla E) */
+    .interact-hud {
+      position: absolute;
+      bottom: 110px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface-plaque);
+      color: var(--text-ivory);
+      padding: 12px 24px;
+      font-family: var(--font-chronicle);
+      font-size: 1.15rem;
+      border: var(--border-double);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      display: none;
+      z-index: 40;
+      pointer-events: none;
+      text-align: center;
+    }
+    .interact-hud kbd {
+      background: var(--gold-vintage);
+      color: #120D08;
+      font-family: var(--font-label);
+      font-size: 0.78rem;
+      padding: 2px 8px;
+      margin: 0 4px;
+      font-weight: 700;
+    }
+
+    /* Panel de Control de Iluminación de Época */
+    .light-control-panel {
+      position: absolute;
+      top: calc(var(--nav-h) + 56px);
+      left: 24px;
+      background: var(--surface-plaque);
+      color: var(--text-ivory);
+      padding: 14px 18px;
+      border: var(--border-double);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 220px;
+      pointer-events: auto;
+    }
+    .light-panel-header {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      color: var(--gold-bright);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+      padding-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .light-panel-header button {
+      background: none;
+      border: none;
+      color: var(--gold-bright);
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+    .light-panel-content {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 0.92rem;
+      color: var(--text-sepia);
+    }
+    .light-panel-content label {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .light-panel-content input[type="range"] {
+      accent-color: var(--gold-vintage);
+      cursor: pointer;
+    }
+
+    /* Marcadores 3D de Puntos de Interés (Sellos Dorados de Época) */
+    .hotspot {
+      position: relative;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #E5C882 0%, #8C6930 100%);
+      border: 2px double #120D08;
+      box-shadow: 0 0 0 2px var(--gold-vintage), 0 6px 18px rgba(0,0,0,0.85);
+      cursor: pointer;
+      transform: translate(-50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .hotspot:hover {
+      transform: translate(-50%, -50%) scale(1.22);
+      box-shadow: 0 0 0 4px var(--gold-bright), 0 0 22px rgba(223, 192, 122, 0.85);
+    }
+    .hotspot-label {
+      font-family: var(--font-monumental);
+      font-weight: 800;
+      font-size: 0.78rem;
+      color: #120D08;
+      pointer-events: none;
+    }
+
+    /* Barra Inferior de Teletransporte por Salas (Salas I - IX) */
+    .interior-compass-dock {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      background: var(--surface-plaque);
+      border: var(--border-double);
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 94vw;
+      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.85);
+    }
+    .dock-caption {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      color: var(--gold-vintage);
+      margin-right: 4px;
+    }
+    .room-jump-btn {
+      background: rgba(38, 28, 20, 0.85);
+      border: 1px solid rgba(197, 160, 89, 0.4);
+      color: var(--text-ivory);
+      font-family: var(--font-monumental);
+      font-size: 0.74rem;
+      padding: 6px 11px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .room-jump-btn:hover {
+      background: var(--gold-vintage);
+      color: #120D08;
+      border-color: var(--gold-bright);
+    }
+
+    /* Panel Lateral de Detalle (Placa de Bronce y Pergamino) */
+    .detail-panel {
+      position: fixed;
+      top: calc(var(--nav-h) + 16px);
+      right: 22px;
+      width: min(390px, 92vw);
+      max-height: calc(100vh - var(--nav-h) - 40px);
+      overflow-y: auto;
+      background: var(--surface-plaque);
+      border: 4px double var(--gold-vintage);
+      padding: 30px 26px 26px;
+      color: var(--text-ivory);
+      z-index: 300;
+      transform: translateX(calc(100% + 40px));
+      transition: transform 0.4s var(--ease-vintage);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
+    }
+    .detail-panel.open {
+      transform: translateX(0);
+    }
+    .detail-panel .close-btn {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: rgba(38, 28, 20, 0.9);
+      border: 1px solid var(--gold-vintage);
+      color: var(--gold-bright);
+      width: 32px; height: 32px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .detail-panel .close-btn:hover {
+      background: var(--gold-vintage);
+      color: #120D08;
+    }
+    .detail-panel .tag {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      color: var(--gold-vintage);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .detail-panel h3 {
+      font-family: var(--font-monumental);
+      font-size: 1.55rem;
+      margin: 0 0 14px;
+      line-height: 1.2;
+      color: var(--text-ivory);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.28);
+      padding-bottom: 10px;
+    }
+    #panel-img {
+      width: 100%;
+      max-height: 210px;
+      object-fit: cover;
+      margin: 6px 0 14px;
+      border: 2px double var(--gold-vintage);
+    }
+    #panel-desc {
+      color: var(--text-sepia);
+      font-size: 1.15rem;
+      line-height: 1.65;
+    }
+
+    /* Aviso de modelo de reemplazo */
+    .model-note {
+      position: absolute;
+      left: 24px; bottom: 90px;
+      max-width: 320px;
+      background: var(--surface-plaque);
+      border: var(--border-double);
+      padding: 14px 16px;
+      font-size: 0.9rem;
+      color: var(--text-sepia);
+      z-index: 20;
+    }
+    .model-note button {
+      position: absolute;
+      top: 6px; right: 8px;
+      background: none; border: none;
+      color: var(--gold-bright); cursor: pointer;
+    }
+
+    /* Controles táctiles para móvil */
+    .touch-controls {
+      position: absolute;
+      bottom: 95px; right: 24px;
+      z-index: 35;
+      display: none;
+      pointer-events: none;
+    }
+    .touch-controls.active { display: flex; }
+    .dpad {
+      pointer-events: auto;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+    }
+    .dpad .row { display: flex; gap: 6px; }
+    .btn-touch {
+      width: 48px; height: 48px;
+      background: rgba(24, 17, 11, 0.9);
+      border: 1px solid var(--gold-vintage);
+      color: var(--gold-bright);
+      font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      user-select: none;
+    }
+    .btn-touch:active { background: var(--gold-vintage); color: #120D08; }
+
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .light-control-panel { top: auto; bottom: 95px; left: 16px; min-width: 185px; }
+    }
+  </style>
 </head>
 <body>
 
-<nav class="site-nav">
-  <a href="./index.html" class="brand">Casa Patiño <span>· Uncía</span></a>
-  <ul>
-    <li><a href="./index.html" class="link">Inicio</a></li>
-    <li><a href="./historia.html" class="link">Historia</a></li>
-    <li><a href="./interior.html" class="link active">Interior</a></li>
-  </ul>
-  <button class="nav-toggle" aria-label="Abrir menú">☰</button>
-</nav>
+  <!-- OVERLAY DE PELÍCULA ANTIGUA Y VIÑETA -->
+  <div class="vintage-film-overlay"></div>
 
-<div class="scene-wrap" id="scene-interior">
-  <div class="scene-loading">
-    <div class="ring"></div>
-    <p>Cargando el interior…</p>
-  </div>
+  <!-- FILIGRANA SVG REUTILIZABLE -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <g id="filigree-corner">
+        <path d="M2 26 V2 H26" stroke-width="1.5"/>
+        <path d="M6 20 V6 H20" stroke-width="1"/>
+        <circle cx="9" cy="9" r="2"/>
+      </g>
+    </defs>
+  </svg>
 
-  <div class="model-note" hidden>
-    <button aria-label="Cerrar aviso">✕</button>
-    Aún no se encontró <code>models/casa-interior.glb</code>, así que ves una
-    habitación de reemplazo. Coloca ahí tu archivo real para verla en su lugar.
-    Los puntos de interés ya funcionan sobre este modelo de prueba.
-  </div>
-
-  <div class="crosshair"></div>
-
-  <div class="enter-prompt" id="enter-prompt">
-    <div class="card">
-      <h2>Entra a la casa</h2>
-      <p>Haz click para caminar con <strong>WASD</strong> y mirar con el mouse.<br>
-      Presiona <strong>ESC</strong> para salir en cualquier momento.</p>
+  <!-- NAVEGACIÓN SUPERIOR ORNAMENTAL -->
+  <nav class="vintage-nav">
+    <a href="./index.html" class="nav-brand">
+      <span class="nav-brand-emblem"><span>SP</span></span>
+      <span>PALACIO PATIÑO · UNCÍA</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="./index.html">Exterior 3D</a></li>
+      <li><a href="./historia.html">Crónica y Reliquias 3D</a></li>
+      <li><a href="./interior.html" class="active">Interior (73 Ambientes)</a></li>
+    </ul>
+    <div>
+      <a href="./historia.html" class="btn-vintage-sm">Ver Catálogo de Piezas (.GLB) →</a>
     </div>
-  </div>
+  </nav>
 
-  <div class="coord-debug" id="coord-debug">x: 0.00 · y: 0.00 · z: 0.00</div>
+  <!-- CONTENEDOR PRINCIPAL DE LA ESCENA INTERIOR -->
+  <div class="scene-wrap" id="scene-interior">
 
-  <!-- Aviso flotante de proximidad (Tecla E / Tocar) -->
-  <div class="interact-hud" id="interact-hud"></div>
-
-  <!-- Panel de Control de Iluminación -->
-  <div class="light-control-panel" id="light-control-panel">
-    <div class="light-panel-header">
-      <span>Control de Luces</span>
-      <button id="toggle-light-panel" aria-label="Minimizar panel">−</button>
+    <!-- PRE-LOADER DE ÉPOCA CONECTADO AL .GLB INTERIOR -->
+    <div class="scene-loading" id="vintage-preloader">
+      <div class="preloader-crest">
+        <svg viewBox="0 0 64 64">
+          <polygon points="32,6 58,20 58,44 32,58 6,44 6,20" stroke-width="1.5"/>
+          <polygon points="32,14 50,24 50,40 32,50 14,40 14,24" stroke-width="1"/>
+          <circle cx="32" cy="32" r="6" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <span class="preloader-eyebrow">Inspección Interior en Primera Persona · Sector Miraflores</span>
+      <h1 class="preloader-title">LOS 73 AMBIENTES DEL PALACIO</h1>
+      <div class="preloader-pct" id="interior-pct">0%</div>
+      <div class="preloader-track">
+        <div class="preloader-fill" id="interior-fill"></div>
+      </div>
+      <p class="preloader-status">Cargando salones y mobiliario histórico (casa-interior.glb)…</p>
     </div>
-    <div id="light-panel-content" class="light-panel-content">
-      <label>
-        <span>Intensidad Focos: <strong id="val-point">12</strong></span>
-        <input type="range" id="range-point" min="0" max="35" step="0.5" value="12">
-      </label>
-      <label>
-        <span>Luz Ambiental: <strong id="val-ambient">0.35</strong></span>
-        <input type="range" id="range-ambient" min="0" max="2" step="0.05" value="0.35">
-      </label>
+
+    <!-- Marco Ornamental Perimetral -->
+    <div class="stage-ornamental-frame">
+      <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
     </div>
-  </div>
 
-  <div class="interior-hud">
-    <div class="pill">Toca los puntos brillantes o acércate y presiona <strong>E</strong></div>
-  </div>
+    <div class="model-note" hidden>
+      <button aria-label="Cerrar aviso">✕</button>
+      No se encontró <code>models/casa-interior.glb</code>; se muestra la sala de reemplazo.
+    </div>
 
-  <!-- Controles para dispositivos táctiles -->
-  <div class="touch-controls">
-    <div class="dpad">
-      <button id="btn-forward" class="btn-touch" aria-label="Avanzar">▲</button>
-      <div class="row">
-        <button id="btn-left" class="btn-touch" aria-label="Izquierda">◄</button>
-        <button id="btn-back" class="btn-touch" aria-label="Retroceder">▼</button>
-        <button id="btn-right" class="btn-touch" aria-label="Derecha">►</button>
+    <div class="crosshair"></div>
+
+    <!-- TARJETA SEÑORIAL DE INGRESO AL RECORRIDO -->
+    <div class="enter-prompt" id="enter-prompt">
+      <div class="card">
+        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+        <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
+        <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
+        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
+        <span class="card-eyebrow">Residencia de Simón y Albina (1899 – 1905)</span>
+        <h2>Ingresar a los Salones del Palacio</h2>
+        <p>
+          Camina con las teclas <strong>W, A, S, D</strong> (mantén <strong>Shift</strong> para avanzar más rápido) y mira alrededor con el cursor.<br>
+          Acércate a los sellos dorados y presiona <strong>E</strong> o usa la barra inferior para ir directo a cada sala.
+        </p>
+        <span class="enter-badge">[ Hacer Clic para Iniciar Recorrido ]</span>
       </div>
     </div>
+
+    <!-- Coordenadas en Tiempo Real -->
+    <div class="coord-debug" id="coord-debug">x: 0.00 · y: 0.00 · z: 0.00</div>
+
+    <!-- Aviso de Proximidad (Tecla E) -->
+    <div class="interact-hud" id="interact-hud"></div>
+
+    <!-- Panel de Control de Iluminación de Época -->
+    <div class="light-control-panel" id="light-control-panel">
+      <div class="light-panel-header">
+        <span>Lámparas del Palacio</span>
+        <button id="toggle-light-panel" aria-label="Minimizar panel">−</button>
+      </div>
+      <div id="light-panel-content" class="light-panel-content">
+        <label>
+          <span>Candelabros Internos: <strong id="val-point">12</strong></span>
+          <input type="range" id="range-point" min="0" max="35" step="0.5" value="12">
+        </label>
+        <label>
+          <span>Claridad Ambiental: <strong id="val-ambient">1.2</strong></span>
+          <input type="range" id="range-ambient" min="0" max="3" step="0.05" value="1.2">
+        </label>
+      </div>
+    </div>
+
+    <!-- Barra Inferior de Teletransporte por los 9 Ambientes (Salas I - IX) -->
+    <div class="interior-compass-dock" id="interior-dock">
+      <span class="dock-caption">Ir a Sala:</span>
+      <button type="button" class="room-jump-btn" data-spot-index="0" title="Vestíbulo Principal">I. Ingreso</button>
+      <button type="button" class="room-jump-btn" data-spot-index="1" title="Oficinas de Miraflores">II. Despacho</button>
+      <button type="button" class="room-jump-btn" data-spot-index="2" title="Salón de Fiestas Rojo Guindo">III. Salón Fiestas</button>
+      <button type="button" class="room-jump-btn" data-spot-index="3" title="Comedor y Cristales de Venecia">IV. Comedor</button>
+      <button type="button" class="room-jump-btn" data-spot-index="4" title="Archivo y Vista a Motores">V. Archivo</button>
+      <button type="button" class="room-jump-btn" data-spot-index="5" title="Dormitorio y Jardines de Bolonia">VI. Dormitorio</button>
+      <button type="button" class="room-jump-btn" data-spot-index="6" title="Galería de Distribución">VII. Galería</button>
+      <button type="button" class="room-jump-btn" data-spot-index="7" title="Capilla y Sala del Carruaje">VIII. Capilla</button>
+      <button type="button" class="room-jump-btn" data-spot-index="8" title="Farmacia y Servicios">IX. Farmacia</button>
+    </div>
+
+    <!-- Controles Táctiles para Smartphones / Tablets -->
+    <div class="touch-controls">
+      <div class="dpad">
+        <button id="btn-forward" class="btn-touch" aria-label="Avanzar">▲</button>
+        <div class="row">
+          <button id="btn-left" class="btn-touch" aria-label="Izquierda">◄</button>
+          <button id="btn-back" class="btn-touch" aria-label="Retroceder">▼</button>
+          <button id="btn-right" class="btn-touch" aria-label="Derecha">►</button>
+        </div>
+      </div>
+    </div>
+
   </div>
-</div>
 
-<!-- Panel lateral de detalle de hotspots -->
-<div class="detail-panel" id="detail-panel">
-  <button class="close-btn" aria-label="Cerrar">✕</button>
-  <p class="tag">Punto de interés</p>
-  <h3 id="panel-title">Título</h3>
-  <img id="panel-img" src="" alt="Imagen del ambiente" hidden />
-  <p id="panel-desc">Descripción.</p>
-</div>
+  <!-- PANEL LATERAL DE BRONCE Y PERGAMINO (DETALLE DE AMBIENTE) -->
+  <aside class="detail-panel" id="detail-panel">
+    <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+    <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
+    <button class="close-btn" aria-label="Cerrar">✕</button>
+    <span class="tag">Cédula Patrimonial · Interior del Palacio</span>
+    <h3 id="panel-title">Título del Ambiente</h3>
+    <img id="panel-img" src="" alt="Fotografía histórica del ambiente" hidden />
+    <p id="panel-desc">Descripción histórica del ambiente.</p>
+  </aside>
 
-<script src="./js/nav.js" defer></script>
-<script type="module" src="./js/interior-scene.js"></script>
+  <script type="module" src="./js/interior-scene.js"></script>
 </body>
 </html>

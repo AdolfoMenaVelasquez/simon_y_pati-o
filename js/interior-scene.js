@@ -1,6 +1,6 @@
 // ============================================================
 // Casa de Simón I. Patiño — Uncía
-// Escena 3D del INTERIOR — recorrido en primera persona
+// Escena 3D del INTERIOR — Estética de Época / Vintage Patrimonial
 // ============================================================
 
 import * as THREE from 'three';
@@ -14,83 +14,82 @@ import {
   disposeObject
 } from './glb-loader.js';
 
-// ---------- Puntos de Interés (Hotspots) ----------
-// Puedes añadir la propiedad opcional image: './img/foto.jpg' en cualquiera de ellos
+// ---------- 9 Estaciones Históricas del Interior (Los 73 Ambientes) ----------
 const HOTSPOTS = [
   {
     id: 'spot-1',
-    label: '1',
-    title: 'Ingreso a los 73 Ambientes',
+    label: 'I',
+    title: 'I. Ingreso a los 73 Ambientes',
     image: './img/1.jpg',
-    description: 'El palacio que Simón I. Patiño prometió a su esposa Albina Rodríguez Ocampo tras vender sus joyas cuenta con 73 ambientes divididos por puertas acristaladas (modificadas tras pasar a COMIBOL en 1952).',
+    description: 'El palacio que Simón I. Patiño prometió a su esposa Albina Rodríguez Ocampo tras vender sus alhajas cuenta con 73 ambientes divididos por puertas acristaladas (modificadas tras pasar a manos de COMIBOL en 1952).',
     position: { x: -7.85, y: 16.00, z: -10.26 }
   },
   {
     id: 'spot-2',
-    label: '2',
-    title: 'Oficinas Administrativas de Miraflores',
-    description: 'Desde este despacho en la zona norte de Uncía se administró el complejo minero La Salvadora (1899-1905), donde Patiño consolidó su sociedad tras adquirir la propiedad de Sergio Ortiz.',
+    label: 'II',
+    title: 'II. Oficinas Administrativas de Miraflores',
+    description: 'Desde este despacho en la zona norte de Uncía se administró el complejo minero La Salvadora (1899–1905), donde Patiño consolidó su fortuna tras adquirir la propiedad de su socio Sergio Ortiz.',
     position: { x: -6.07, y: 16.00, z: -3.49 }
   },
   {
     id: 'spot-3',
-    label: '3',
-    title: 'Salón de Fiestas (Muros Rojo Guindo)',
-    description: 'Ambiente señorial cuyos muros de color rojo guindo contrastaban con el blanco de los arcos. Aquí resonaba el piano europeo que, según la leyenda local, aún se escucha tocar por las noches junto al sonido de un brindis.',
+    label: 'III',
+    title: 'III. Salón de Fiestas (Muros Rojo Guindo)',
+    description: 'Ambiente señorial cuyos muros cubiertos en rojo guindo contrastaban con la blancura de sus arcos. Aquí resonaba el piano europeo que, según la leyenda de Uncía, aún se escucha tocar por las noches junto al sonido de un brindis.',
     position: { x: -4.78, y: 16.00, z: 7.80 }
   },
   {
     id: 'spot-4',
-    label: '4',
-    title: 'Comedor y Techos de Cristal Veneciano',
-    description: 'Rodeado por majestuosas mesas y sillas oscuras. Originalmente sus techos lucían cristales italianos traídos de Venecia con murales románticos de sus canales, hoy protegidos con policarbonato de una pulgada.',
+    label: 'IV',
+    title: 'IV. Comedor y Techos de Cristal Veneciano',
+    description: 'Rodeado por majestuosas mesas y sillas oscuras. Como si del coliseo de Roma se tratara, sus techos estaban cubiertos con cristales italianos procedentes de Venecia y murales románticos de sus canales.',
     position: { x: -9.70, y: 16.00, z: 13.16 }
   },
   {
     id: 'spot-5',
-    label: '5',
-    title: 'Sala de Motores Diésel y Archivo (1901)',
-    description: 'Desde sus ventanas se divisan los galpones de los motores diésel alemanes instalados en 1901 —cuyos dos gemelos se hundieron en el Titanic en 1912— junto a las pesadas llaves inglesas que un solo hombre no podía levantar.',
+    label: 'V',
+    title: 'V. Archivo y Vista a los Motores del Titanic',
+    description: 'Desde sus ventanales se divisan los enormes edificios de calamina que albergan los motores alemanes Diesel instalados en 1901 —cuyos dos gemelos duermen bajo el casco del Titanic desde 1912— y las pesadas llaves inglesas.',
     position: { x: -4.85, y: 16.00, z: 23.16 }
   },
   {
     id: 'spot-6',
-    label: '6',
-    title: 'Dormitorio de Simón y Albina',
-    description: 'Durante los siete años que la familia habitó la casa (1899-1905), sus paredes estuvieron empapeladas con paisajes verdes de los jardines franceses de Bolonia.',
+    label: 'VI',
+    title: 'VI. Dormitorio y Tapices de Bolonia',
+    description: 'Durante los siete años en que la familia Patiño residió en la casa (1899–1905), las paredes de las habitaciones estuvieron empapeladas con los paisajes verdes de los jardines franceses de Bolonia.',
     position: { x: 3.85, y: 16.00, z: 6.89 }
   },
   {
     id: 'spot-7',
-    label: '7',
-    title: 'Galería Cosmopolita y Proyección',
-    description: 'Reflejo de la Uncía próspera donde se hablaban 15 idiomas (yugoslavos, italianos, belgas, españoles) y donde el1 de mayo de 1923 los 5.000 mineros marcharon para fundar el primer sindicato minero de Bolivia.',
+    label: 'VII',
+    title: 'VII. Galería Cosmopolita de los 15 Idiomas',
+    description: 'Pasillo que conectaba las dependencias públicas y privadas en una época en que en Uncía se hablaban hasta 15 idiomas y donde el 1 de mayo de 1923 los 5.000 mineros fundaron el primer sindicato minero de Bolivia.',
     position: { x: 3.77, y: 16.00, z: -9.46 }
   },
   {
     id: 'spot-8',
-    label: '8',
-    title: 'Capilla Privada y Sala del Carruaje (1870)',
-    description: 'Capilla familiar que aún conserva sus bancos de madera. En la sala contigua descansa el carruaje inglés de 1870 en el que Patiño paseaba por Uncía junto a su esposa Albina.',
+    label: 'VIII',
+    title: 'VIII. Capilla Privada y Sala del Carruaje (1870)',
+    description: 'Capilla del empresario que aún conserva sus bancos de madera. En la habitación contigua descansa el carruaje inglés rehabilitado de 1870 en el que Patiño paseaba por Uncía al lado de su esposa Albina.',
     position: { x: 0.19, y: 16.00, z: -23.99 }
   },
   {
     id: 'spot-9',
-    label: '9',
-    title: 'Farmacia Privada y Área de Servicios',
-    description: 'Patiño dotó a la residencia de su propia farmacia, cocina y almacenes logísticos antes de trasladar su centro de operaciones hacia Catavi en 1924.',
+    label: 'IX',
+    title: 'IX. Farmacia Privada y Área de Servicios',
+    description: 'Patiño no se privó de ningún adelanto: dotó al palacio de su propia farmacia, cocina y almacenes antes de que el centro de operaciones se trasladara a Catavi en 1924.',
     position: { x: -7.61, y: 16.00, z: -24.82 }
   }
 ];
 
-const MODEL_URL = new URL('../models/casa-interior.glb', import.meta.url).href;
+const MODEL_URL = new URL('../models/casa-interior.glb?v=2', import.meta.url).href;
 const EYE_HEIGHT = 1.65;
 const INTERACTION_DISTANCE = 2.8;
 const START_POS = { x: -10.63, y: 16.58, z: -13.48 };
-const BASE_SPEED = 3.5;
+const BASE_SPEED = 3.6;
 const SPRINT_SPEED = 9.0;
 
-// ---------- Objetos del museo ----------
+// ---------- Objetos 3D del Museo dentro del Recorrido ----------
 const PROPS = [
   {
     id: 'piano',
@@ -125,14 +124,16 @@ const PROPS = [
 // ---------- Referencias del DOM ----------
 const wrap = document.getElementById('scene-interior');
 const loadingEl = wrap.querySelector('.scene-loading');
+const interiorPct = document.getElementById('interior-pct');
+const interiorFill = document.getElementById('interior-fill');
 const noteEl = wrap.querySelector('.model-note');
 const enterPrompt = document.getElementById('enter-prompt');
 const crosshair = wrap.querySelector('.crosshair');
 const touchControls = wrap.querySelector('.touch-controls');
 const interactHUD = document.getElementById('interact-hud');
 const lightControlPanel = document.getElementById('light-control-panel');
+const interiorDock = document.getElementById('interior-dock');
 
-// Selectores corregidos por ID exacto
 const panel = document.getElementById('detail-panel');
 const panelTitle = document.getElementById('panel-title');
 const panelImg = document.getElementById('panel-img');
@@ -144,11 +145,14 @@ const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
 if (lightControlPanel) {
   lightControlPanel.addEventListener('click', (e) => e.stopPropagation());
 }
+if (interiorDock) {
+  interiorDock.addEventListener('click', (e) => e.stopPropagation());
+}
 
-// ---------- Escena base ----------
+// ---------- Escena, Cámara y Renderizador con Tono de Museo ----------
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x1c140d);
-scene.fog = new THREE.Fog(0x1c140d, 8, 35);
+scene.background = new THREE.Color(0x241c15);
+scene.fog = new THREE.Fog(0x241c15, 25, 95);
 
 const camera = new THREE.PerspectiveCamera(
   60, wrap.clientWidth / wrap.clientHeight, 0.05, 200
@@ -161,6 +165,8 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 renderer.setSize(wrap.clientWidth, wrap.clientHeight);
 renderer.shadowMap.enabled = true;
 renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
 wrap.appendChild(renderer.domElement);
 
 const labelRenderer = new CSS2DRenderer();
@@ -171,24 +177,27 @@ labelRenderer.domElement.style.left = '0';
 labelRenderer.domElement.style.pointerEvents = 'none';
 wrap.appendChild(labelRenderer.domElement);
 
-// ---------- Luces y Panel de Control ----------
-const ambientLight = new THREE.AmbientLight(0xffeedd, 0.35);
+// ---------- Iluminación Natural Cálida de Museo ----------
+const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
 scene.add(ambientLight);
+
+const hemiLight = new THREE.HemisphereLight(0xffffff, 0xd8cfc4, 0.85);
+scene.add(hemiLight);
 
 const pointLights = [];
 const posicionesLuces = [
-  { x: -7.26, y: 18.50, z: 4.25 },
-  { x: -7.04, y: 18.50, z: 13.02 },
-  { x: -3.56, y: 18.50, z: 19.38 },
-  { x:  2.26, y: 18.50, z: 7.27 },
-  { x:  1.80, y: 18.50, z: -23.98 },
-  { x: -7.26, y: 18.50, z: -3.38 },
-  { x: -6.26, y: 18.50, z: -24.09 },
-  { x: -6.68, y: 18.50, z: -14.66 }
+  { x: -7.26, y: 18.20, z: 4.25 },
+  { x: -7.04, y: 18.20, z: 13.02 },
+  { x: -3.56, y: 18.20, z: 19.38 },
+  { x:  2.26, y: 18.20, z: 7.27 },
+  { x:  1.80, y: 18.20, z: -23.98 },
+  { x: -7.26, y: 18.20, z: -3.38 },
+  { x: -6.26, y: 18.20, z: -24.09 },
+  { x: -6.68, y: 18.20, z: -14.66 }
 ];
 
 posicionesLuces.forEach((pos) => {
-  const luz = new THREE.PointLight(0xffa843, 12, 12, 2);
+  const luz = new THREE.PointLight(0xfff4e0, 12, 26, 1.5);
   luz.position.set(pos.x, pos.y, pos.z);
   scene.add(luz);
   pointLights.push(luz);
@@ -226,7 +235,7 @@ if (rangeAmbient && valAmbient) {
   });
 }
 
-// ---------- Habitación de reemplazo (Fallback) ----------
+// ---------- Habitación de Reemplazo (Fallback) ----------
 let floorMesh = null;
 const collidables = [];
 
@@ -234,85 +243,59 @@ function buildPlaceholderRoom() {
   const group = new THREE.Group();
   const wallMat = new THREE.MeshStandardMaterial({ color: 0x6b5233, roughness: 0.95 });
   const floorMat = new THREE.MeshStandardMaterial({ color: 0x4a3520, roughness: 0.9 });
-  const woodMat = new THREE.MeshStandardMaterial({ color: 0x3c2814, roughness: 0.7 });
-  const clothMat = new THREE.MeshStandardMaterial({ color: 0x5a2028, roughness: 0.85 });
-
   const ROOM = 8;
+
   floorMesh = new THREE.Mesh(new THREE.PlaneGeometry(ROOM, ROOM), floorMat);
   floorMesh.rotation.x = -Math.PI / 2;
-  floorMesh.receiveShadow = true;
   group.add(floorMesh);
 
   const wallH = 3;
-  const wallGeoLong = new THREE.BoxGeometry(ROOM, wallH, 0.2);
-  const wallGeoShort = new THREE.BoxGeometry(0.2, wallH, ROOM);
-
-  const back = new THREE.Mesh(wallGeoLong, wallMat);
+  const back = new THREE.Mesh(new THREE.BoxGeometry(ROOM, wallH, 0.2), wallMat);
   back.position.set(0, wallH / 2, -ROOM / 2);
   group.add(back); collidables.push(back);
-
-  const front1 = new THREE.Mesh(new THREE.BoxGeometry(ROOM / 2 - 0.6, wallH, 0.2), wallMat);
-  front1.position.set(-(ROOM / 4 + 0.3), wallH / 2, ROOM / 2);
-  group.add(front1); collidables.push(front1);
-
-  const front2 = front1.clone();
-  front2.position.x = ROOM / 4 + 0.3;
-  group.add(front2); collidables.push(front2);
-
-  const left = new THREE.Mesh(wallGeoShort, wallMat);
-  left.position.set(-ROOM / 2, wallH / 2, 0);
-  group.add(left); collidables.push(left);
-
-  const right = new THREE.Mesh(wallGeoShort, wallMat);
-  right.position.set(ROOM / 2, wallH / 2, 0);
-  group.add(right); collidables.push(right);
-
-  const bench = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.5, 0.7), clothMat);
-  bench.position.set(-1.4, 0.25, -2.4);
-  group.add(bench); collidables.push(bench);
-
-  const table = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.75, 0.9), woodMat);
-  table.position.set(1.6, 0.375, 0.4);
-  group.add(table); collidables.push(table);
 
   enableShadows(group);
   return group;
 }
 
-// ---------- Carga de Modelo ----------
+// ---------- Carga del Modelo Interior (.GLB) ----------
 let realModelLoaded = false;
 let placeholderGroup = null;
 let hotspotsPlaced = false;
 let settleFrames = 0;
 
 function finishLoading() {
-  loadingEl.classList.add('hidden');
+  if (interiorPct) interiorPct.textContent = '100%';
+  if (interiorFill) interiorFill.style.width = '100%';
+  setTimeout(() => loadingEl.classList.add('hidden'), 280);
 }
 
-function setLoadingText(msg) {
-  const p = loadingEl.querySelector('p');
-  if (p) p.textContent = msg;
+function setLoadingProgress(pct, msg) {
+  const clamped = Math.min(99, Math.max(0, Math.round(pct)));
+  if (interiorPct) interiorPct.textContent = clamped + '%';
+  if (interiorFill) interiorFill.style.width = clamped + '%';
+  const p = loadingEl.querySelector('.preloader-status');
+  if (p && msg) p.textContent = msg;
 }
 
 function showFallback() {
   if (realModelLoaded || placeholderGroup) return;
   placeholderGroup = buildPlaceholderRoom();
   scene.add(placeholderGroup);
-
   player.position.set(0, EYE_HEIGHT, 3);
   settleFrames = 90;
-
   finishLoading();
   if (noteEl) noteEl.hidden = false;
   placeHotspots();
 }
 
 function onModelProgress(xhr) {
-  if (xhr.lengthComputable) {
+  if (xhr.lengthComputable && xhr.total > 0) {
     const pct = Math.round((xhr.loaded / xhr.total) * 100);
-    setLoadingText(`Cargando el interior… ${pct}%`);
+    setLoadingProgress(pct, `Restaurando salones interiores (${pct}%)…`);
   } else {
-    setLoadingText(`Cargando el interior… ${(xhr.loaded / 1048576).toFixed(1)} MB`);
+    const mb = (xhr.loaded / 1048576).toFixed(1);
+    setLoadingProgress(Math.min(92, xhr.loaded / 450000), `Descargando modelo interior (${mb} MB)…`);
   }
 }
 
@@ -340,6 +323,11 @@ async function loadInterior() {
       if (n.isMesh) {
         n.castShadow = true;
         n.receiveShadow = true;
+        // Renderizar por ambas caras para evitar techos o muros invisibles
+        if (n.material) {
+          const mats = Array.isArray(n.material) ? n.material : [n.material];
+          mats.forEach((m) => { m.side = THREE.DoubleSide; });
+        }
         collidables.push(n);
         houseMeshes.push(n);
         if (!floorMesh && /floor|piso|suelo/i.test(n.name)) floorMesh = n;
@@ -353,7 +341,6 @@ async function loadInterior() {
     finishLoading();
     if (noteEl) noteEl.hidden = true;
     placeHotspots();
-
     loadProps(houseMeshes);
   } catch (error) {
     clearTimeout(fallbackTimer);
@@ -406,7 +393,7 @@ if (noteEl) {
   if (closeBtn) closeBtn.addEventListener('click', () => { noteEl.hidden = true; });
 }
 
-// ---------- Hotspots y Panel de Detalle ----------
+// ---------- Sellos Dorados (Hotspots) y Teletransporte por Salas ----------
 function placeHotspots() {
   if (hotspotsPlaced) return;
   hotspotsPlaced = true;
@@ -424,6 +411,19 @@ function placeHotspots() {
     scene.add(obj);
   });
 }
+
+// Teletransportar al jugador a cualquiera de las 9 salas desde la barra inferior
+document.querySelectorAll('.room-jump-btn').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const idx = parseInt(btn.dataset.spotIndex, 10);
+    const spot = HOTSPOTS[idx];
+    if (!spot) return;
+
+    player.position.set(spot.position.x, spot.position.y + 0.5, spot.position.z + 1.1);
+    settleFrames = 45;
+    openPanel(spot);
+  });
+});
 
 function openPanel(spot) {
   panelTitle.textContent = spot.title;
@@ -479,11 +479,11 @@ function checkProximityInteraction() {
 
   if (activeHotspot && interactHUD) {
     if (isTouch) {
-      interactHUD.innerHTML = `Toca para examinar: <strong>${activeHotspot.title}</strong>`;
+      interactHUD.innerHTML = `Toca para examinar cédula: <strong>${activeHotspot.title}</strong>`;
       interactHUD.style.pointerEvents = 'auto';
       interactHUD.onclick = () => openPanel(activeHotspot);
     } else {
-      interactHUD.innerHTML = `Presiona <kbd>E</kbd> para examinar: <strong>${activeHotspot.title}</strong>`;
+      interactHUD.innerHTML = `Presiona <kbd>E</kbd> para leer cédula: <strong>${activeHotspot.title}</strong>`;
       interactHUD.style.pointerEvents = 'none';
     }
     interactHUD.style.display = 'block';
@@ -492,7 +492,7 @@ function checkProximityInteraction() {
   }
 }
 
-// ---------- Controles ----------
+// ---------- Controles Primera Persona ----------
 const controls = new PointerLockControls(camera, renderer.domElement);
 scene.add(camera);
 let controlsLocked = false;
@@ -684,5 +684,4 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(wrap.clientWidth, wrap.clientHeight);
   labelRenderer.setSize(wrap.clientWidth, wrap.clientHeight);
-})
-;
+});

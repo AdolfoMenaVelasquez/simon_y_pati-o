@@ -3,37 +3,52 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>PALACIO PATIÑO · UNCÍA — Experiencia Digital Inmersiva</title>
-  <meta name="description" content="Reconstrucción digital interactiva del Palacio de Simón I. Patiño en Uncía, Potosí. Scrollytelling, arquitectura de 73 ambientes y patrimonio minero." />
+  <title>Palacio de Simón I. Patiño — Uncía · Edificio Patrimonial (1899–1905)</title>
+  <meta name="description" content="Explora en 3D el exterior del Palacio de Simón I. Patiño en Uncía, Potosí. Recorrido guiado cinematográfico, exploración libre y archivo histórico de principios del siglo XX." />
 
-  <!-- Tipografías Display & Técnica (Syne + Space Grotesk + Plus Jakarta Sans) -->
+  <!-- Tipografías Clásicas de Época: Cinzel, Playfair Display, Cormorant Garamond y Libre Baskerville -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Importmap de Three.js r160 -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
 
   <style>
     /* ============================================================
-       VARIABLES Y SISTEMA DE TEMAS DINÁMICOS (AWWWARDS DARK MODE)
+       DIRECCIÓN DE ARTE: ESTÉTICA DE ÉPOCA / VINTAGE PATRIMONIAL
        ============================================================ */
     :root {
-      --bg-deep: #050505;
-      --bg-card: rgba(14, 14, 18, 0.72);
-      --text-pure: #FFFFFF;
-      --text-metal: #A1A1AA;
-      --text-dim: #71717A;
+      --bg-mahogany: #120D08;
+      --bg-charcoal: #1C150E;
+      --surface-leather: #261C14;
+      --surface-parchment: rgba(244, 236, 216, 0.07);
+      --surface-plaque: rgba(24, 17, 11, 0.92);
 
-      /* Colores de acento por defecto (Púrpura Eléctrico + Cian Neón del prompt) */
-      --accent-primary: #8B5CF6;
-      --accent-secondary: #06B6D4;
-      --accent-rgb: 139, 92, 246;
-      --accent-sec-rgb: 6, 182, 212;
+      --gold-bright: #DFC07A;
+      --gold-vintage: #C5A059;
+      --bronze-burnished: #9A7B3E;
+      --bronze-dark: #5C4622;
 
-      --font-display: 'Syne', 'Space Grotesk', sans-serif;
-      --font-tech: 'Space Grotesk', monospace;
-      --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --text-ivory: #F5EFE6;
+      --text-sepia: #D0C4B0;
+      --text-muted: #9E8F78;
 
-      --border-glass: rgba(255, 255, 255, 0.09);
-      --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+      --font-monumental: 'Cinzel', 'Playfair Display', Georgia, serif;
+      --font-editorial: 'Playfair Display', Georgia, serif;
+      --font-chronicle: 'Cormorant Garamond', Georgia, serif;
+      --font-label: 'Libre Baskerville', serif;
+
+      --border-double: 3px double rgba(197, 160, 89, 0.45);
+      --border-fine: 1px solid rgba(197, 160, 89, 0.32);
+      --ease-vintage: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     * {
@@ -44,27 +59,21 @@
 
     html {
       scroll-behavior: smooth;
-      background-color: var(--bg-deep);
-      color: var(--text-pure);
-      font-family: var(--font-body);
+      background-color: var(--bg-mahogany);
+      color: var(--text-ivory);
+      font-family: var(--font-chronicle);
     }
 
     body {
-      background-color: var(--bg-deep);
-      color: var(--text-pure);
+      background-color: var(--bg-mahogany);
+      color: var(--text-ivory);
       overflow-x: hidden;
-      selection-background-color: var(--accent-primary);
+      line-height: 1.6;
     }
 
     ::selection {
-      background: var(--accent-primary);
-      color: var(--text-pure);
-    }
-
-    @media (pointer: fine) {
-      body, a, button {
-        cursor: none;
-      }
+      background: var(--gold-vintage);
+      color: var(--bg-mahogany);
     }
 
     a {
@@ -73,688 +82,870 @@
     }
 
     /* ============================================================
-       PRE-LOADER CINEMATOGRÁFICO (0% -> 100%)
+       OVERLAY GLOBAL: GRANO DE PELÍCULA SEPIA Y VIÑETA CLÁSICA
        ============================================================ */
-    #preloader {
+    .vintage-film-overlay {
       position: fixed;
       inset: 0;
-      background: #050505;
+      pointer-events: none;
+      z-index: 900;
+      background:
+        radial-gradient(circle at 50% 50%, transparent 55%, rgba(8, 5, 3, 0.72) 100%),
+        repeating-linear-gradient(0deg, rgba(197, 160, 89, 0.012) 0px, rgba(197, 160, 89, 0.012) 1px, transparent 1px, transparent 3px);
+    }
+
+    /* ============================================================
+       PRE-LOADER DE ÉPOCA (CONECTADO AL CARGADOR GLB REAL)
+       ============================================================ */
+    #vintage-preloader {
+      position: fixed;
+      inset: 0;
       z-index: 9999;
+      background:
+        radial-gradient(circle at 50% 45%, #261C14 0%, #120D08 75%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.85s var(--transition-smooth), visibility 0.85s;
+      padding: 24px;
+      border: 12px double rgba(197, 160, 89, 0.25);
+      transition: opacity 1.1s var(--ease-vintage), transform 1.1s var(--ease-vintage), visibility 1.1s;
     }
 
-    #preloader.loaded {
+    #vintage-preloader.curtain-open {
       opacity: 0;
+      transform: scale(1.03);
       visibility: hidden;
       pointer-events: none;
     }
 
-    .loader-brand {
-      font-family: var(--font-tech);
-      font-size: 0.78rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--text-metal);
-      margin-bottom: 18px;
-    }
-
-    .loader-counter {
-      font-family: var(--font-display);
-      font-size: clamp(3.5rem, 9vw, 6.5rem);
-      font-weight: 800;
-      line-height: 1;
-      background: linear-gradient(135deg, #FFFFFF 0%, var(--accent-primary) 60%, var(--accent-secondary) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .preloader-crest {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: var(--border-double);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 24px;
-    }
-
-    .loader-bar-wrap {
-      width: min(320px, 75vw);
-      height: 3px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 99px;
-      overflow: hidden;
       position: relative;
+      background: rgba(18, 13, 8, 0.8);
+      box-shadow: 0 0 40px rgba(197, 160, 89, 0.18);
     }
 
-    .loader-bar-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-      box-shadow: 0 0 20px var(--accent-primary);
-      transition: width 0.1s linear;
+    .preloader-crest svg {
+      width: 52px;
+      height: 52px;
+      stroke: var(--gold-vintage);
+      fill: none;
     }
 
-    /* ============================================================
-       CURSOR PERSONALIZADO CON LERP
-       ============================================================ */
-    .cursor-dot,
-    .cursor-ring {
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-    }
-
-    .cursor-dot {
-      width: 7px;
-      height: 7px;
-      background: var(--accent-secondary);
-      box-shadow: 0 0 12px var(--accent-secondary);
-    }
-
-    .cursor-ring {
-      width: 38px;
-      height: 38px;
-      border: 1.5px solid rgba(var(--accent-rgb), 0.65);
-      background: rgba(var(--accent-rgb), 0.04);
-      transition: width 0.3s var(--transition-smooth),
-                  height 0.3s var(--transition-smooth),
-                  background 0.3s ease,
-                  border-color 0.3s ease;
-    }
-
-    .cursor-ring.hovered {
-      width: 68px;
-      height: 68px;
-      border-color: var(--accent-secondary);
-      background: rgba(var(--accent-sec-rgb), 0.12);
-    }
-
-    @media (pointer: coarse) {
-      .cursor-dot, .cursor-ring { display: none; }
-    }
-
-    /* ============================================================
-       CANVAS DE PARTÍCULAS Y NEBLINA LUMINOSA (FONDO FIJO)
-       ============================================================ */
-    #ambient-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    /* ============================================================
-       NAVBAR STICKY (HUD GLASSMORPHISM)
-       ============================================================ */
-    .hud-navbar {
-      position: fixed;
-      top: 18px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(1320px, 94vw);
-      height: 64px;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      background: rgba(10, 10, 14, 0.62);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid var(--border-glass);
-      border-radius: 999px;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
-      transition: border-color 0.4s ease;
-    }
-
-    .hud-logo {
-      font-family: var(--font-tech);
-      font-weight: 700;
-      font-size: 0.95rem;
-      letter-spacing: 0.12em;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .hud-logo-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--accent-primary);
-      box-shadow: 0 0 12px var(--accent-primary);
-    }
-
-    .hud-links {
-      display: flex;
-      align-items: center;
-      gap: clamp(16px, 2.5vw, 32px);
-      list-style: none;
-    }
-
-    .hud-links a {
-      font-family: var(--font-tech);
-      font-size: 0.82rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-metal);
-      transition: color 0.25s ease;
-    }
-
-    .hud-links a:hover {
-      color: var(--text-pure);
-    }
-
-    .hud-nav-cta {
-      font-family: var(--font-tech);
+    .preloader-eyebrow {
+      font-family: var(--font-label);
+      font-variant: small-caps;
       font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 10px 20px;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-      color: #fff;
-      box-shadow: 0 0 22px rgba(var(--accent-rgb), 0.45);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-
-    .hud-nav-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 32px rgba(var(--accent-sec-rgb), 0.75);
-    }
-
-    /* ============================================================
-       HERO SCROLLYTELLING (100% VIEWPORT PINNED SECTION)
-       ============================================================ */
-    .hero-scroll-track {
-      position: relative;
-      height: 300vh; /* Pinned scroll duration */
-      width: 100%;
-      z-index: 2;
-    }
-
-    .hero-sticky {
-      position: sticky;
-      top: 0;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* 1. Eje Central Sagrado (100% Centrado) */
-    .sacred-center {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* Halo volumétrico reactivo al scroll */
-    .core-glow {
-      position: absolute;
-      width: min(560px, 75vw);
-      height: min(560px, 75vw);
-      border-radius: 50%;
-      background: radial-gradient(circle,
-        rgba(var(--accent-rgb), 0.35) 0%,
-        rgba(var(--accent-sec-rgb), 0.18) 45%,
-        transparent 72%);
-      filter: blur(45px);
-      transform: scale(1);
-      transition: background 0.5s ease;
-    }
-
-    /* Anillos orbitales HUD en el eje central */
-    .orbital-ring {
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      transition: border-color 0.4s ease;
-    }
-
-    .ring-1 {
-      width: min(440px, 68vw);
-      height: min(440px, 68vw);
-      border-top-color: var(--accent-primary);
-      border-bottom-color: var(--accent-secondary);
-      animation: floatPulse 6s ease-in-out infinite;
-    }
-
-    .ring-2 {
-      width: min(540px, 82vw);
-      height: min(540px, 82vw);
-      border: 1px dashed rgba(var(--accent-sec-rgb), 0.28);
-    }
-
-    @keyframes floatPulse {
-      0%, 100% { transform: translateY(0px) scale(1); }
-      50% { transform: translateY(-12px) scale(1.02); }
-    }
-
-    /* Contenedor visual central (Póster estático -> Secuencia activa al hacer scroll) */
-    .visual-core-frame {
-      position: relative;
-      width: min(390px, 62vw);
-      height: min(470px, 56vh);
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.16);
-      background: #0b0b10;
-      box-shadow:
-        0 30px 80px rgba(0, 0, 0, 0.85),
-        0 0 50px rgba(var(--accent-rgb), 0.25);
-      transform-style: preserve-3d;
-      will-change: transform, filter;
-    }
-
-    .core-media {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: opacity 0.4s ease, filter 0.4s ease;
-    }
-
-    /* Capa activa de animación/energía que despierta con el scroll */
-    .core-active-overlay {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 50% 35%, rgba(var(--accent-sec-rgb), 0.42), transparent 65%),
-        linear-gradient(180deg, transparent 30%, rgba(5, 5, 5, 0.9) 100%);
-      opacity: 0;
-      mix-blend-mode: screen;
-    }
-
-    .core-hud-telemetry {
-      position: absolute;
-      inset: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 14px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 14px 16px;
-      font-family: var(--font-tech);
-      font-size: 0.7rem;
-      letter-spacing: 0.14em;
-      color: var(--text-metal);
-      background: linear-gradient(180deg, rgba(0,0,0,0.45) 0%, transparent 35%, rgba(0,0,0,0.75) 100%);
-    }
-
-    .telemetry-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .telemetry-status {
-      color: var(--accent-secondary);
-      font-weight: 600;
-    }
-
-    /* Barra de energía que se llena con el scroll */
-    .energy-charge-wrap {
-      width: 100%;
-    }
-
-    .energy-charge-header {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 6px;
-      font-size: 0.68rem;
-      color: var(--text-pure);
-    }
-
-    .energy-bar-track {
-      width: 100%;
-      height: 5px;
-      background: rgba(255, 255, 255, 0.14);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-
-    .energy-bar-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-      box-shadow: 0 0 16px var(--accent-secondary);
-    }
-
-    /* 2. Composición Tipográfica Dividida (Split Layout sin tapar el centro) */
-    .hero-split-layout {
-      position: relative;
-      z-index: 3;
-      width: min(1420px, 92vw);
-      height: 100%;
-      display: grid;
-      grid-template-columns: 1fr minmax(280px, 420px) 1fr;
-      align-items: center;
-      pointer-events: none;
-    }
-
-    .hero-left {
-      text-align: left;
-      padding-right: 20px;
-      will-change: transform;
-    }
-
-    .hero-eyebrow {
-      font-family: var(--font-tech);
-      font-size: 0.78rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--accent-secondary);
-      margin-bottom: 12px;
-      display: inline-block;
-    }
-
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(2.6rem, 5.2vw, 5.4rem);
-      font-weight: 800;
-      line-height: 0.96;
-      letter-spacing: -0.03em;
-      text-transform: uppercase;
-      color: var(--text-pure);
-      text-shadow: 0 0 40px rgba(var(--accent-rgb), 0.35);
-    }
-
-    .hero-title .stroke-text {
-      display: block;
-      color: transparent;
-      -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.75);
-    }
-
-    .hero-right {
-      grid-column: 3;
-      text-align: right;
-      padding-left: 20px;
-      justify-self: end;
-      max-width: 360px;
-      will-change: transform;
-    }
-
-    .hero-subtitle {
-      font-family: var(--font-tech);
-      font-size: clamp(1rem, 1.5vw, 1.25rem);
-      font-weight: 600;
-      color: var(--accent-primary);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 14px;
-      text-shadow: 0 0 20px rgba(var(--accent-rgb), 0.45);
-    }
-
-    .hero-desc {
-      font-size: 0.95rem;
-      line-height: 1.65;
-      color: var(--text-metal);
-    }
-
-    /* 3. Centro Inferior y Botones Flotantes en las Esquinas (HUD Style) */
-    .scroll-indicator {
-      position: absolute;
-      bottom: 26px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 4;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-tech);
-      font-size: 0.68rem;
       letter-spacing: 0.24em;
-      color: var(--text-metal);
+      color: var(--gold-vintage);
+      margin-bottom: 10px;
       text-align: center;
     }
 
-    .scroll-line {
-      width: 2px;
-      height: 44px;
-      background: rgba(255, 255, 255, 0.12);
-      position: relative;
-      overflow: hidden;
+    .preloader-title {
+      font-family: var(--font-monumental);
+      font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+      color: var(--text-ivory);
+      letter-spacing: 0.08em;
+      margin-bottom: 22px;
+      text-align: center;
     }
 
-    .scroll-line::after {
-      content: "";
-      position: absolute;
-      top: -100%;
-      left: 0;
-      width: 100%;
+    .preloader-pct {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: 2.8rem;
+      color: var(--gold-bright);
+      margin-bottom: 14px;
+    }
+
+    .preloader-track {
+      width: min(340px, 78vw);
+      height: 6px;
+      border: 1px solid var(--bronze-burnished);
+      padding: 1px;
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .preloader-fill {
       height: 100%;
-      background: linear-gradient(180deg, transparent, var(--accent-secondary), var(--accent-primary));
-      animation: pulseLine 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+      width: 0%;
+      background: linear-gradient(90deg, var(--bronze-burnished), var(--gold-bright));
+      transition: width 0.2s ease;
     }
 
-    @keyframes pulseLine {
-      0% { top: -100%; }
-      100% { top: 100%; }
-    }
-
-    .hud-corner-left {
-      position: absolute;
-      bottom: 34px;
-      left: clamp(20px, 4vw, 56px);
-      z-index: 5;
-    }
-
-    .hud-corner-right {
-      position: absolute;
-      bottom: 34px;
-      right: clamp(20px, 4vw, 56px);
-      z-index: 5;
-    }
-
-    /* Botón Ghost con barrido de luz (CTA 1) */
-    .btn-hud-ghost {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-tech);
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 15px 28px;
-      border-radius: 999px;
-      color: var(--text-pure);
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      overflow: hidden;
-      backdrop-filter: blur(10px);
-      transition: border-color 0.3s ease, transform 0.3s ease;
-    }
-
-    .btn-hud-ghost::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -120%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
-      transition: left 0.55s ease;
-    }
-
-    .btn-hud-ghost:hover {
-      border-color: var(--accent-secondary);
-      transform: translateY(-2px);
-    }
-
-    .btn-hud-ghost:hover::before {
-      left: 120%;
-    }
-
-    /* Botón Sólido Neón con Micro-interacción Magnética (CTA 2) */
-    .btn-hud-neon {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-family: var(--font-tech);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 16px 30px;
-      border-radius: 999px;
-      color: #050505;
-      background: linear-gradient(135deg, #FFFFFF 0%, var(--accent-secondary) 100%);
-      box-shadow:
-        0 0 25px rgba(var(--accent-sec-rgb), 0.55),
-        0 0 55px rgba(var(--accent-rgb), 0.35);
-      transition: box-shadow 0.3s ease, transform 0.15s linear;
-      will-change: transform;
-    }
-
-    .btn-hud-neon:hover {
-      box-shadow:
-        0 0 38px rgba(var(--accent-sec-rgb), 0.9),
-        0 0 75px rgba(var(--accent-rgb), 0.65);
+    .preloader-status {
+      margin-top: 12px;
+      font-family: var(--font-chronicle);
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--text-sepia);
     }
 
     /* ============================================================
-       SECCIÓN 1: CINTA DINÁMICA (INFINITE MARQUEE)
+       NAVEGACIÓN SUPERIOR ORNAMENTAL
        ============================================================ */
-    .marquee-section {
+    .vintage-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 74px;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(18px, 4vw, 48px);
+      background: linear-gradient(180deg, rgba(18, 13, 8, 0.95) 0%, rgba(18, 13, 8, 0.72) 80%, transparent 100%);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.25);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: var(--font-monumental);
+      font-size: 1.05rem;
+      letter-spacing: 0.1em;
+      color: var(--text-ivory);
+    }
+
+    .nav-brand-emblem {
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--gold-vintage);
+      transform: rotate(45deg);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: var(--gold-vintage);
+    }
+
+    .nav-brand-emblem span {
+      transform: rotate(-45deg);
+      font-weight: 700;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: clamp(16px, 2.5vw, 32px);
+    }
+
+    .nav-links a {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.76rem;
+      letter-spacing: 0.16em;
+      color: var(--text-sepia);
+      padding-bottom: 4px;
+      border-bottom: 1px solid transparent;
+      transition: color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--gold-bright);
+      border-bottom-color: var(--gold-vintage);
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    /* ============================================================
+       BOTONES CLÁSICOS CON FILIGRANA EN ESQUINAS
+       ============================================================ */
+    .btn-vintage {
       position: relative;
-      z-index: 3;
-      padding: 22px 0;
-      background: rgba(10, 10, 14, 0.9);
-      border-top: 1px solid var(--border-glass);
-      border-bottom: 1px solid var(--border-glass);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.76rem;
+      letter-spacing: 0.18em;
+      padding: 13px 26px;
+      color: var(--text-ivory);
+      background: rgba(38, 28, 20, 0.88);
+      border: var(--border-double);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+    }
+
+    .btn-vintage:hover {
+      background: rgba(197, 160, 89, 0.18);
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
+    }
+
+    .btn-vintage-gold {
+      background: linear-gradient(180deg, #D5B269 0%, #9A7B3E 100%);
+      color: #120D08;
+      font-weight: 700;
+      border: 3px double #F5EFE6;
+      box-shadow: 0 8px 28px rgba(197, 160, 89, 0.28);
+    }
+
+    .btn-vintage-gold:hover {
+      background: linear-gradient(180deg, #E8CA88 0%, #B3904B 100%);
+      color: #120D08;
+      border-color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+
+    .btn-sm {
+      padding: 9px 16px;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+    }
+
+    /* ============================================================
+       HERO 3D VIEWPORT (100VW, 100VH) + 3 ESTADOS DE CÁMARA
+       ============================================================ */
+    .hero-stage-3d {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--bg-mahogany);
+    }
+
+    #exterior-canvas-container {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    #exterior-canvas-container canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      outline: none;
+    }
+
+    /* Marco Ornamental Perimetral del Visor */
+    .stage-ornamental-frame {
+      position: absolute;
+      inset: 16px;
+      top: 82px;
+      border: 1px solid rgba(197, 160, 89, 0.24);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .corner-filigree {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      stroke: var(--gold-vintage);
+      fill: none;
+      opacity: 0.8;
+    }
+    .cf-tl { top: 4px; left: 4px; }
+    .cf-tr { top: 4px; right: 4px; transform: scaleX(-1); }
+    .cf-bl { bottom: 4px; left: 4px; transform: scaleY(-1); }
+    .cf-br { bottom: 4px; right: 4px; transform: scale(-1, -1); }
+
+    /* ------------------------------------------------------------
+       ESTADO 1: PRESENTACIÓN GENERAL (SPLIT LAYOUT)
+       ------------------------------------------------------------ */
+    .state-presentation-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      pointer-events: none;
+      display: grid;
+      grid-template-columns: minmax(280px, 430px) 1fr minmax(280px, 410px);
+      align-items: center;
+      padding: 90px clamp(24px, 4.5vw, 64px) 100px;
+      background:
+        linear-gradient(90deg, rgba(18,13,8,0.82) 0%, transparent 32%, transparent 68%, rgba(18,13,8,0.82) 100%),
+        linear-gradient(0deg, rgba(18,13,8,0.85) 0%, transparent 28%);
+      transition: opacity 0.75s var(--ease-vintage), transform 0.75s var(--ease-vintage);
+    }
+
+    .state-presentation-overlay.hidden-state {
+      opacity: 0;
+      transform: scale(0.98);
+      pointer-events: none !important;
+    }
+
+    .state-presentation-overlay.hidden-state * {
+      pointer-events: none !important;
+    }
+
+    .split-col-left {
+      pointer-events: auto;
+      padding: 28px;
+      background: rgba(18, 13, 8, 0.68);
+      border: var(--border-double);
+      backdrop-filter: blur(6px);
+      position: relative;
+    }
+
+    .era-badge {
+      display: inline-block;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      color: var(--gold-vintage);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.4);
+      padding-bottom: 6px;
+      margin-bottom: 14px;
+    }
+
+    .split-col-left h1 {
+      font-family: var(--font-monumental);
+      font-size: clamp(2rem, 3.4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.08;
+      color: var(--text-ivory);
+      margin-bottom: 14px;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.9);
+    }
+
+    .split-col-left h1 span {
+      display: block;
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-weight: 400;
+      font-size: 0.65em;
+      color: var(--gold-bright);
+      margin-top: 6px;
+    }
+
+    .split-col-left .lema {
+      font-size: 1.15rem;
+      color: var(--text-sepia);
+      margin-bottom: 22px;
+      font-style: italic;
+    }
+
+    .split-col-right {
+      grid-column: 3;
+      pointer-events: auto;
+      padding: 28px;
+      background: rgba(18, 13, 8, 0.68);
+      border: var(--border-double);
+      backdrop-filter: blur(6px);
+      text-align: right;
+    }
+
+    .split-col-right h2 {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.82rem;
+      letter-spacing: 0.2em;
+      color: var(--gold-vintage);
+      margin-bottom: 12px;
+    }
+
+    .split-col-right p {
+      font-size: 1.12rem;
+      color: var(--text-sepia);
+      margin-bottom: 18px;
+      line-height: 1.65;
+    }
+
+    .split-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .split-col-right .split-actions {
+      justify-content: flex-end;
+    }
+
+    /* ------------------------------------------------------------
+       ESTADO 2: PLACA DE BRONCE / PERGAMINO (RECORRIDO GUIADO)
+       ------------------------------------------------------------ */
+    .tour-plaque-card {
+      position: absolute;
+      bottom: 105px;
+      left: 50%;
+      transform: translateX(-50%) translateY(30px);
+      width: min(620px, 92vw);
+      background: var(--surface-plaque);
+      border: 4px double var(--gold-vintage);
+      padding: 26px 32px;
+      z-index: 25;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.88);
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.55s var(--ease-vintage);
+    }
+
+    .tour-plaque-card.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .plaque-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+      padding-bottom: 8px;
+      margin-bottom: 12px;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      color: var(--gold-vintage);
+    }
+
+    .tour-plaque-card h3 {
+      font-family: var(--font-monumental);
+      font-size: 1.55rem;
+      color: var(--text-ivory);
+      margin-bottom: 8px;
+    }
+
+    .tour-plaque-card p {
+      font-size: 1.12rem;
+      color: var(--text-sepia);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .tour-progress-bar {
+      width: 100%;
+      height: 3px;
+      background: rgba(197, 160, 89, 0.2);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .tour-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--gold-bright);
+      transition: width 0.1s linear;
+    }
+
+    .plaque-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* ------------------------------------------------------------
+       ESTADO 3: BARRA INFERIOR DE EXPLORACIÓN LIBRE Y ATMÓSFERAS
+       ------------------------------------------------------------ */
+    .vintage-compass-dock {
+      position: absolute;
+      bottom: 22px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 30;
+      background: rgba(18, 13, 8, 0.92);
+      border: var(--border-double);
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: max-content;
+      max-width: 95vw;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
+    }
+
+    .dock-divider {
+      width: 1px;
+      height: 26px;
+      background: rgba(197, 160, 89, 0.35);
+    }
+
+    .dock-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .dock-label {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+
+    .dock-btn {
+      background: rgba(38, 28, 20, 0.75);
+      border: 1px solid rgba(197, 160, 89, 0.35);
+      color: var(--text-sepia);
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      padding: 8px 13px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .dock-btn:hover,
+    .dock-btn.active {
+      background: rgba(197, 160, 89, 0.22);
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
+    }
+
+    /* ------------------------------------------------------------
+       MARCADORES 3D PROYECTADOS A 2D (SELLOS DORADOS EN FACHADA)
+       ------------------------------------------------------------ */
+    #hotspots-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 15;
+      overflow: hidden;
+    }
+
+    .seal-hotspot {
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #D5B269 0%, #8C6930 100%);
+      border: 2px double #120D08;
+      box-shadow: 0 0 0 2px var(--gold-vintage), 0 6px 18px rgba(0,0,0,0.85);
+      color: #120D08;
+      font-family: var(--font-monumental);
+      font-weight: 800;
+      font-size: 0.78rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      pointer-events: auto;
+      transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s ease;
+    }
+
+    .seal-hotspot:hover {
+      transform: translate(-50%, -50%) scale(1.22);
+      box-shadow: 0 0 0 4px var(--gold-bright), 0 0 25px rgba(223, 192, 122, 0.8);
+    }
+
+    .seal-tooltip {
+      position: absolute;
+      bottom: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      background: rgba(18, 13, 8, 0.94);
+      border: 1px solid var(--gold-vintage);
+      color: var(--text-ivory);
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.66rem;
+      letter-spacing: 0.14em;
+      padding: 4px 10px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .seal-hotspot:hover .seal-tooltip {
+      opacity: 1;
+    }
+
+    /* Aviso sutil si el usuario explora libremente */
+    .free-roam-hint {
+      position: absolute;
+      top: 94px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 20;
+      background: rgba(18, 13, 8, 0.85);
+      border: 1px solid rgba(197, 160, 89, 0.4);
+      padding: 7px 18px;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
+      color: var(--gold-bright);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .free-roam-hint.visible {
+      opacity: 1;
+    }
+
+    /* ============================================================
+       SECCIÓN 1 POST-SCROLL: CINTA HISTÓRICA (MARQUEE CLÁSICO)
+       ============================================================ */
+    .vintage-marquee {
+      position: relative;
+      z-index: 20;
+      background: var(--bg-charcoal);
+      border-top: var(--border-double);
+      border-bottom: var(--border-double);
+      padding: 18px 0;
       overflow: hidden;
       display: flex;
     }
 
-    .marquee-track {
+    .vintage-marquee-track {
       display: flex;
       white-space: nowrap;
-      animation: scrollMarquee 28s linear infinite;
+      animation: classicMarquee 36s linear infinite;
     }
 
-    .marquee-item {
-      font-family: var(--font-display);
-      font-size: clamp(1.1rem, 2.2vw, 1.65rem);
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--text-pure);
-      padding: 0 32px;
+    .vintage-marquee-item {
+      font-family: var(--font-editorial);
+      font-style: italic;
+      font-size: clamp(1.15rem, 2vw, 1.5rem);
+      color: var(--text-ivory);
+      padding: 0 28px;
       display: inline-flex;
       align-items: center;
-      gap: 32px;
+      gap: 28px;
     }
 
-    .marquee-item span.sep {
-      color: var(--accent-primary);
-      text-shadow: 0 0 14px var(--accent-primary);
+    .vintage-marquee-item .fleuron {
+      color: var(--gold-vintage);
+      font-style: normal;
+      font-size: 1.1rem;
     }
 
-    @keyframes scrollMarquee {
+    @keyframes classicMarquee {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
 
     /* ============================================================
-       ESTILOS GENERALES DE SECCIONES Y REVEAL ON SCROLL
+       CONTENEDOR EDITORIAL DE ÉPOCA (SECCIONES INFERIORES)
        ============================================================ */
-    .content-section {
+    .patrimonial-section {
       position: relative;
-      z-index: 3;
-      max-width: 1320px;
+      z-index: 20;
+      max-width: 1240px;
       margin: 0 auto;
-      padding: clamp(90px, 12vw, 150px) 24px;
+      padding: clamp(80px, 11vw, 130px) 24px;
     }
 
-    .section-header {
-      max-width: 680px;
-      margin-bottom: 56px;
+    .section-ornament-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 60px;
     }
 
-    .section-tag {
-      font-family: var(--font-tech);
+    .section-ornament-header .eyebrow {
+      font-family: var(--font-label);
+      font-variant: small-caps;
       font-size: 0.76rem;
       letter-spacing: 0.24em;
-      text-transform: uppercase;
-      color: var(--accent-secondary);
-      margin-bottom: 12px;
-      display: inline-block;
+      color: var(--gold-vintage);
+      display: block;
+      margin-bottom: 10px;
     }
 
-    .section-title {
-      font-family: var(--font-display);
-      font-size: clamp(2rem, 4.2vw, 3.4rem);
-      font-weight: 800;
-      line-height: 1.05;
-      margin-bottom: 16px;
+    .section-ornament-header h2 {
+      font-family: var(--font-monumental);
+      font-size: clamp(1.9rem, 3.8vw, 3rem);
+      color: var(--text-ivory);
+      margin-bottom: 14px;
     }
 
-    .section-desc {
-      color: var(--text-metal);
-      font-size: 1rem;
-      line-height: 1.65;
+    .section-ornament-header p {
+      font-size: 1.2rem;
+      color: var(--text-sepia);
+      font-style: italic;
     }
 
-    .reveal {
-      opacity: 0;
-      transform: translateY(36px);
-      transition: opacity 0.85s var(--transition-smooth),
-                  transform 0.85s var(--transition-smooth);
+    .ornament-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin: 16px auto 0;
+      color: var(--gold-vintage);
     }
 
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
+    .ornament-divider::before,
+    .ornament-divider::after {
+      content: "";
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-vintage), transparent);
     }
 
     /* ============================================================
-       SECCIÓN 2: BENTO GRID CON TILT 3D, SPOTLIGHT Y CONTADORES
+       SECCIÓN 2: COMPARADOR INTERACTIVO "PLANO ORIGINAL VS. ARQUITECTURA"
        ============================================================ */
-    .bento-grid {
+    .comparator-frame {
+      position: relative;
+      max-width: 980px;
+      height: clamp(340px, 54vw, 540px);
+      margin: 0 auto;
+      border: 4px double var(--gold-vintage);
+      background: #0e0a06;
+      overflow: hidden;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85);
+      user-select: none;
+    }
+
+    .comp-layer {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .comp-layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Vista Restaurada (Fondo) */
+    .comp-after img {
+      filter: contrast(108%) sepia(18%) brightness(95%);
+    }
+
+    /* Vista Boceto / Plano de Época (Capa recortada por el slider) */
+    .comp-before {
+      width: 50%;
+      overflow: hidden;
+      border-right: 2px solid var(--gold-bright);
+      background:
+        repeating-linear-gradient(0deg, rgba(197,160,89,0.08) 0px, rgba(197,160,89,0.08) 1px, transparent 1px, transparent 24px),
+        repeating-linear-gradient(90deg, rgba(197,160,89,0.08) 0px, rgba(197,160,89,0.08) 1px, transparent 1px, transparent 24px),
+        #22170e;
+    }
+
+    .comp-before img {
+      width: 980px;
+      max-width: none;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) sepia(85%) contrast(155%) brightness(82%) invert(8%);
+      mix-blend-mode: luminosity;
+    }
+
+    /* Superposición de cotas técnicas sobre el plano */
+    .blueprint-grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(223, 192, 122, 0.14) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(223, 192, 122, 0.14) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    .comp-badge {
+      position: absolute;
+      top: 18px;
+      padding: 6px 14px;
+      background: rgba(18, 13, 8, 0.88);
+      border: 1px solid var(--gold-vintage);
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      color: var(--gold-bright);
+      z-index: 4;
+    }
+
+    .comp-badge.left { left: 18px; }
+    .comp-badge.right { right: 18px; }
+
+    .comp-handle {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 44px;
+      transform: translateX(-50%);
+      cursor: ew-resize;
+      z-index: 6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .comp-handle-medallion {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--gold-bright) 0%, var(--bronze-burnished) 100%);
+      border: 2px solid #120D08;
+      box-shadow: 0 0 0 2px var(--gold-vintage), 0 6px 20px rgba(0,0,0,0.8);
+      color: #120D08;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+    }
+
+    /* ============================================================
+       SECCIÓN 3: GALERÍA DE DETALLES ARQUITECTÓNICOS (TILT 3D + LUZ DE VELA)
+       ============================================================ */
+    .brass-cards-grid {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
-      gap: 22px;
+      gap: 26px;
       perspective: 1200px;
     }
 
-    .bento-card {
+    .brass-card {
       position: relative;
-      background: var(--bg-card);
-      border: 1px solid var(--border-glass);
-      border-radius: 24px;
+      background: linear-gradient(160deg, rgba(38, 28, 20, 0.9) 0%, rgba(20, 14, 9, 0.96) 100%);
+      border: var(--border-double);
       padding: 36px 32px;
-      overflow: hidden;
       transform-style: preserve-3d;
-      transition: transform 0.18s ease-out, border-color 0.3s ease;
+      transition: transform 0.2s ease-out, border-color 0.3s ease;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       min-height: 290px;
     }
 
-    /* Destello radial (Spotlight) siguiendo al cursor */
-    .bento-card::before {
+    .brass-span-6 { grid-column: span 6; }
+
+    /* Brillo cálido de lámpara/vela siguiendo al puntero */
+    .brass-card::before {
       content: "";
       position: absolute;
       inset: 0;
       background: radial-gradient(
-        520px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(var(--accent-rgb), 0.18),
-        rgba(var(--accent-sec-rgb), 0.06) 40%,
+        420px circle at var(--candle-x, 50%) var(--candle-y, 50%),
+        rgba(223, 192, 122, 0.22),
+        rgba(197, 160, 89, 0.06) 45%,
         transparent 70%
       );
       opacity: 0;
@@ -762,1085 +953,1300 @@
       pointer-events: none;
     }
 
-    .bento-card:hover::before {
+    .brass-card:hover::before {
       opacity: 1;
     }
 
-    .bento-card:hover {
-      border-color: rgba(var(--accent-rgb), 0.45);
+    .brass-card:hover {
+      border-color: var(--gold-bright);
     }
 
-    .bento-span-7 { grid-column: span 7; }
-    .bento-span-5 { grid-column: span 5; }
-
-    .bento-stat {
-      font-family: var(--font-display);
-      font-size: clamp(2.8rem, 5vw, 4.4rem);
-      font-weight: 800;
-      line-height: 1;
-      background: linear-gradient(135deg, #FFFFFF 20%, var(--accent-secondary) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .card-catalog-num {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      color: var(--gold-vintage);
       margin-bottom: 14px;
+      display: block;
     }
 
-    .bento-card h3 {
-      font-family: var(--font-tech);
-      font-size: 1.35rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-      color: var(--text-pure);
+    .brass-card h3 {
+      font-family: var(--font-monumental);
+      font-size: 1.5rem;
+      color: var(--text-ivory);
+      margin-bottom: 12px;
     }
 
-    .bento-card p {
-      color: var(--text-metal);
-      font-size: 0.94rem;
+    .brass-card p {
+      font-size: 1.14rem;
+      color: var(--text-sepia);
       line-height: 1.65;
     }
 
-    .bento-badge {
-      align-self: flex-start;
-      font-family: var(--font-tech);
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      padding: 6px 12px;
-      border-radius: 99px;
-      background: rgba(var(--accent-rgb), 0.14);
-      border: 1px solid rgba(var(--accent-rgb), 0.35);
-      color: var(--accent-secondary);
-      margin-bottom: 22px;
+    .brass-card-footer {
+      margin-top: 22px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(197, 160, 89, 0.22);
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
     }
 
     /* ============================================================
-       SECCIÓN 3: SELECTOR INTERACTIVO DE VARIANTES / MODOS (THEME SWITCHER)
+       SECCIÓN 4: LÍNEA DEL TIEMPO PATRIMONIAL (CRÓNICA DE LA ÉPOCA)
        ============================================================ */
-    .mode-switcher-wrap {
-      background: linear-gradient(145deg, rgba(16, 16, 22, 0.85), rgba(8, 8, 12, 0.95));
-      border: 1px solid var(--border-glass);
-      border-radius: 28px;
-      padding: clamp(28px, 5vw, 56px);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-      align-items: center;
+    .chronicle-timeline {
+      position: relative;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 20px 0;
     }
 
-    .mode-buttons {
+    .timeline-spine {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: rgba(197, 160, 89, 0.2);
+      transform: translateX(-50%);
+    }
+
+    .timeline-spine-fill {
+      width: 100%;
+      height: 0%;
+      background: linear-gradient(180deg, var(--gold-bright), var(--bronze-burnished));
+      box-shadow: 0 0 12px rgba(223, 192, 122, 0.5);
+      transition: height 0.15s linear;
+    }
+
+    .chronicle-entry {
+      position: relative;
       display: flex;
-      flex-direction: column;
-      gap: 14px;
+      justify-content: flex-start;
+      width: 50%;
+      padding: 0 44px 52px 0;
+      text-align: right;
     }
 
-    .mode-btn {
+    .chronicle-entry:nth-child(even) {
+      margin-left: 50%;
+      padding: 0 0 52px 44px;
       text-align: left;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--border-glass);
-      border-radius: 16px;
-      padding: 20px 24px;
-      color: var(--text-pure);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: all 0.3s ease;
     }
 
-    .mode-btn.active {
-      background: rgba(var(--accent-rgb), 0.14);
-      border-color: var(--accent-primary);
-      box-shadow: 0 0 30px rgba(var(--accent-rgb), 0.25);
-    }
-
-    .mode-btn-info h4 {
-      font-family: var(--font-tech);
-      font-size: 1.05rem;
-      margin-bottom: 4px;
-    }
-
-    .mode-btn-info span {
-      font-size: 0.84rem;
-      color: var(--text-metal);
-    }
-
-    .mode-swatches {
-      display: flex;
-      gap: 8px;
-    }
-
-    .swatch {
+    .chronicle-node {
+      position: absolute;
+      top: 6px;
+      right: -9px;
       width: 18px;
       height: 18px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.4);
+      transform: rotate(45deg);
+      background: var(--bg-mahogany);
+      border: 2px solid var(--gold-vintage);
+      z-index: 2;
     }
 
-    .mode-preview-display {
-      position: relative;
-      min-height: 300px;
-      border-radius: 20px;
-      border: 1px solid rgba(var(--accent-rgb), 0.35);
-      background:
-        radial-gradient(circle at 50% 35%, rgba(var(--accent-rgb), 0.32), transparent 65%),
-        #07070a;
-      padding: 32px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      box-shadow: inset 0 0 40px rgba(var(--accent-sec-rgb), 0.12);
-      transition: all 0.4s ease;
+    .chronicle-entry:nth-child(even) .chronicle-node {
+      right: auto;
+      left: -9px;
     }
 
-    .mode-preview-display h3 {
-      font-family: var(--font-display);
-      font-size: 1.9rem;
-      margin-bottom: 10px;
-    }
-
-    .mode-preview-display p {
-      color: var(--text-metal);
-      line-height: 1.65;
-      font-size: 0.95rem;
-    }
-
-    /* ============================================================
-       SECCIÓN 4: DESGLOSE TÉCNICO CON HOTSPOTS INTERACTIVOS
-       ============================================================ */
-    .blueprint-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 28px;
-      align-items: stretch;
-    }
-
-    .blueprint-stage {
-      position: relative;
-      min-height: 460px;
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid var(--border-glass);
-      background:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
-        #08080c;
-      background-size: 36px 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .blueprint-stage img {
+    .chronicle-card {
+      background: var(--surface-parchment);
+      border: var(--border-double);
+      padding: 24px 28px;
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0.55;
-      filter: contrast(115%) saturate(85%);
     }
 
-    .bp-hotspot {
-      position: absolute;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: rgba(5, 5, 5, 0.85);
-      border: 2px solid var(--accent-secondary);
-      color: var(--text-pure);
-      font-family: var(--font-tech);
+    .chronicle-year {
+      font-family: var(--font-label);
+      font-variant: small-caps;
       font-size: 0.78rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transform: translate(-50%, -50%);
-      box-shadow: 0 0 0 8px rgba(var(--accent-sec-rgb), 0.2);
-      animation: bpPulse 2.2s infinite;
-      transition: background 0.25s ease, transform 0.25s ease;
-      z-index: 4;
-    }
-
-    .bp-hotspot.active,
-    .bp-hotspot:hover {
-      background: var(--accent-primary);
-      border-color: #fff;
-      transform: translate(-50%, -50%) scale(1.18);
-    }
-
-    @keyframes bpPulse {
-      0%, 100% { box-shadow: 0 0 0 6px rgba(var(--accent-sec-rgb), 0.22); }
-      50% { box-shadow: 0 0 0 14px rgba(var(--accent-rgb), 0.08); }
-    }
-
-    .blueprint-detail-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(var(--accent-rgb), 0.35);
-      border-radius: 24px;
-      padding: 36px 32px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .bp-spec-bars {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      margin: 24px 0;
-    }
-
-    .bp-bar-item label {
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--font-tech);
-      font-size: 0.78rem;
-      color: var(--text-metal);
+      letter-spacing: 0.22em;
+      color: var(--gold-bright);
+      display: block;
       margin-bottom: 6px;
     }
 
-    .bp-bar-track {
-      width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 99px;
-      overflow: hidden;
+    .chronicle-card h3 {
+      font-family: var(--font-monumental);
+      font-size: 1.35rem;
+      margin-bottom: 8px;
+      color: var(--text-ivory);
     }
 
-    .bp-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-      border-radius: 99px;
-      transition: width 0.6s var(--transition-smooth);
-    }
-
-    /* ============================================================
-       SECCIÓN 5: PREGUNTAS FRECUENTES (ACORDEÓN FLUIDO)
-       ============================================================ */
-    .faq-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      max-width: 880px;
-    }
-
-    .faq-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border-glass);
-      border-radius: 18px;
-      overflow: hidden;
-      transition: border-color 0.3s ease;
-    }
-
-    .faq-item.open {
-      border-color: rgba(var(--accent-rgb), 0.5);
-    }
-
-    .faq-trigger {
-      width: 100%;
-      padding: 24px 28px;
-      background: none;
-      border: none;
-      color: var(--text-pure);
-      font-family: var(--font-tech);
-      font-size: 1.05rem;
-      font-weight: 600;
-      text-align: left;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .faq-icon {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+    .chronicle-card p {
       font-size: 1.1rem;
-      color: var(--accent-secondary);
-      transition: transform 0.35s var(--transition-smooth), background 0.3s ease;
-      flex-shrink: 0;
-    }
-
-    .faq-item.open .faq-icon {
-      transform: rotate(45deg);
-      background: rgba(var(--accent-rgb), 0.2);
-    }
-
-    .faq-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s var(--transition-smooth);
-    }
-
-    .faq-content p {
-      padding: 0 28px 24px;
-      color: var(--text-metal);
-      line-height: 1.7;
-      font-size: 0.95rem;
+      color: var(--text-sepia);
+      line-height: 1.6;
     }
 
     /* ============================================================
-       FOOTER MONUMENTAL
+       FOOTER MONUMENTAL GRABADO EN ORO VIEJO
        ============================================================ */
-    .monumental-footer {
+    .vintage-footer {
       position: relative;
-      z-index: 3;
-      border-top: 1px solid var(--border-glass);
+      z-index: 20;
+      background: #0d0905;
+      border-top: 4px double rgba(197, 160, 89, 0.4);
       padding: 70px 24px 36px;
-      background: linear-gradient(180deg, transparent 0%, rgba(var(--accent-rgb), 0.07) 100%);
+      text-align: center;
       overflow: hidden;
     }
 
-    .footer-top {
-      max-width: 1320px;
-      margin: 0 auto 40px;
+    .footer-nav-row {
+      max-width: 1180px;
+      margin: 0 auto 36px;
       display: flex;
-      flex-wrap: wrap;
       justify-content: space-between;
-      gap: 24px;
-      color: var(--text-metal);
-      font-family: var(--font-tech);
-      font-size: 0.85rem;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 24px;
+      align-items: center;
       flex-wrap: wrap;
+      gap: 20px;
+      border-bottom: 1px solid rgba(197, 160, 89, 0.2);
+      padding-bottom: 24px;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      color: var(--text-sepia);
     }
 
-    .footer-links a:hover {
-      color: var(--accent-secondary);
-    }
-
-    .footer-giant-brand {
-      font-family: var(--font-display);
-      font-size: clamp(3.2rem, 13.5vw, 13rem);
+    .footer-engraved-title {
+      font-family: var(--font-monumental);
+      font-size: clamp(2.6rem, 11vw, 10.5rem);
       font-weight: 800;
-      line-height: 0.88;
-      text-align: center;
-      letter-spacing: -0.04em;
-      text-transform: uppercase;
-      background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.08) 100%);
+      line-height: 0.9;
+      letter-spacing: 0.04em;
+      background: linear-gradient(180deg, rgba(223, 192, 122, 0.55) 0%, rgba(154, 123, 62, 0.08) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
+      margin: 12px 0 24px;
       user-select: none;
-      margin: 10px 0 24px;
+    }
+
+    .footer-credits {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      font-style: italic;
     }
 
     /* ============================================================
-       DISEÑO 100% RESPONSIVO (MÓVIL Y TABLET)
+       RESPONSIVE DESIGN (TABLETS Y MÓVILES)
        ============================================================ */
-    @media (max-width: 960px) {
-      .hud-links { display: none; }
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
 
-      .hero-split-layout {
+      .state-presentation-overlay {
         grid-template-columns: 1fr;
         grid-template-rows: auto 1fr auto;
-        padding: 96px 0 110px;
-        text-align: center;
+        padding: 84px 18px 115px;
       }
 
-      .hero-left {
-        padding-right: 0;
-        text-align: center;
-      }
-
-      .hero-right {
+      .split-col-right {
         grid-column: 1;
-        text-align: center;
-        justify-self: center;
-        padding-left: 0;
+        text-align: left;
       }
 
-      .visual-core-frame {
-        width: min(310px, 78vw);
-        height: min(340px, 42vh);
+      .split-col-right .split-actions {
+        justify-content: flex-start;
       }
 
-      .bento-span-7, .bento-span-5 {
+      .brass-span-6 {
         grid-column: span 12;
       }
 
-      .mode-switcher-wrap,
-      .blueprint-grid {
-        grid-template-columns: 1fr;
+      .timeline-spine { left: 16px; }
+      .chronicle-entry,
+      .chronicle-entry:nth-child(even) {
+        width: 100%;
+        margin-left: 0;
+        padding: 0 0 36px 42px;
+        text-align: left;
       }
-
-      .hud-corner-left, .hud-corner-right {
-        bottom: 18px;
-      }
-
-      .btn-hud-ghost, .btn-hud-neon {
-        padding: 12px 18px;
-        font-size: 0.7rem;
-      }
-
-      .scroll-indicator {
-        display: none;
+      .chronicle-node,
+      .chronicle-entry:nth-child(even) .chronicle-node {
+        left: 7px;
+        right: auto;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- PRE-LOADER CINEMATOGRÁFICO -->
-  <div id="preloader">
-    <div class="loader-brand">PALACIO SIMÓN I. PATIÑO · UNCÍA</div>
-    <div class="loader-counter" id="loader-counter">0%</div>
-    <div class="loader-bar-wrap">
-      <div class="loader-bar-fill" id="loader-bar"></div>
+  <!-- OVERLAY DE GRANO DE PELÍCULA SEPIA Y VIÑETA -->
+  <div class="vintage-film-overlay"></div>
+
+  <!-- DEFINICIÓN DE FILIGRANA SVG REUTILIZABLE -->
+  <svg width="0" height="0" style="position:absolute">
+    <defs>
+      <g id="filigree-corner">
+        <path d="M2 26 V2 H26" stroke-width="1.5"/>
+        <path d="M6 20 V6 H20" stroke-width="1"/>
+        <circle cx="9" cy="9" r="2"/>
+      </g>
+    </defs>
+  </svg>
+
+  <!-- PRE-LOADER DE ÉPOCA (CONECTADO AL MODELO .GLB REAL) -->
+  <div id="vintage-preloader">
+    <div class="preloader-crest">
+      <svg viewBox="0 0 64 64">
+        <polygon points="32,6 58,20 58,44 32,58 6,44 6,20" stroke-width="1.5"/>
+        <polygon points="32,14 50,24 50,40 32,50 14,40 14,24" stroke-width="1"/>
+        <circle cx="32" cy="32" r="6" stroke-width="1.5"/>
+      </svg>
     </div>
+    <p class="preloader-eyebrow">Patrimonio Histórico Arquitectónico · Uncía, Potosí</p>
+    <h1 class="preloader-title">PALACIO DE SIMÓN I. PATIÑO</h1>
+    <div class="preloader-pct" id="preloader-pct">0%</div>
+    <div class="preloader-track">
+      <div class="preloader-fill" id="preloader-fill"></div>
+    </div>
+    <p class="preloader-status" id="preloader-status">Restaurando geometría tridimensional (casa-exterior.glb)…</p>
   </div>
 
-  <!-- CURSOR PERSONALIZADO -->
-  <div class="cursor-dot" id="cursor-dot"></div>
-  <div class="cursor-ring" id="cursor-ring"></div>
-
-  <!-- CANVAS HTML5 DE PARTÍCULAS Y NEBLINA LUMINOSA -->
-  <canvas id="ambient-canvas"></canvas>
-
-  <!-- NAVBAR STICKY (HUD STYLE) -->
-  <nav class="hud-navbar">
-    <a href="./index.html" class="hud-logo">
-      <span class="hud-logo-dot"></span>
-      <span>CASA PATIÑO · UNCÍA</span>
+  <!-- BARRA DE NAVEGACIÓN ORNAMENTAL -->
+  <nav class="vintage-nav">
+    <a href="./index.html" class="nav-brand">
+      <span class="nav-brand-emblem"><span>SP</span></span>
+      <span>PALACIO PATIÑO · UNCÍA</span>
     </a>
-    <ul class="hud-links">
-      <li><a href="#origen">Origen</a></li>
-      <li><a href="#especificaciones">Especificaciones</a></li>
-      <li><a href="#modos">Atmósfera</a></li>
-      <li><a href="#arquitectura">Hotspots</a></li>
-      <li><a href="#faq">FAQ</a></li>
-      <li><a href="./historia.html">Galería 3D</a></li>
+
+    <ul class="nav-links">
+      <li><a href="#visor-exterior" class="active">Exterior 3D</a></li>
+      <li><a href="#plano-comparador">Plano y Restauración</a></li>
+      <li><a href="#detalles-arquitectura">Arquitectura</a></li>
+      <li><a href="#cronica-historica">Crónica (1892–1952)</a></li>
+      <li><a href="./historia.html">Colección 3D (.GLB)</a></li>
     </ul>
-    <a href="./interior.html" class="hud-nav-cta">Recorrido 3D →</a>
+
+    <div class="nav-actions">
+      <a href="./interior.html" class="btn-vintage btn-sm">Entrar a los 73 Ambientes →</a>
+    </div>
   </nav>
 
-  <!-- HERO SCROLLYTELLING (100% VIEWPORT PINNED) -->
-  <section class="hero-scroll-track" id="origen">
-    <div class="hero-sticky">
+  <!-- ============================================================
+       HERO 3D DEL EXTERIOR (THREE.JS + CASA-EXTERIOR.GLB)
+       ============================================================ -->
+  <section class="hero-stage-3d" id="visor-exterior">
 
-      <!-- 1. EJE CENTRAL SAGRADO (100% CENTRADO) -->
-      <div class="sacred-center">
-        <div class="core-glow" id="core-glow"></div>
-        <div class="orbital-ring ring-1" id="ring-1"></div>
-        <div class="orbital-ring ring-2" id="ring-2"></div>
+    <!-- Lienzo WebGL de Three.js -->
+    <div id="exterior-canvas-container"></div>
 
-        <div class="visual-core-frame" id="visual-core">
-          <!-- Imagen Base / Poster + Transición controlada por Scroll -->
-          <img
-            id="core-poster"
-            class="core-media"
-            src="./img/1.jpg"
-            onerror="this.src='https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1000&q=85'"
-            alt="Palacio de Simón I. Patiño en Uncía"
-          />
-          <div class="core-active-overlay" id="core-active-overlay"></div>
+    <!-- Capa de Hotspots 3D proyectados a 2D (Sellos Dorados) -->
+    <div id="hotspots-layer"></div>
 
-          <!-- HUD de Telemetría y Barra de Energía por Scroll -->
-          <div class="core-hud-telemetry">
-            <div class="telemetry-top">
-              <span>LAT 18°28'S · POTOSÍ</span>
-              <span class="telemetry-status" id="telemetry-state">ESTADO: REPOSO</span>
-            </div>
-
-            <div class="energy-charge-wrap">
-              <div class="energy-charge-header">
-                <span>MEMORIA PATRIMONIAL</span>
-                <span id="charge-percent">0%</span>
-              </div>
-              <div class="energy-bar-track">
-                <div class="energy-bar-fill" id="charge-bar"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 2. COMPOSICIÓN TIPOGRÁFICA DIVIDIDA (SPLIT LAYOUT) -->
-      <div class="hero-split-layout">
-        <div class="hero-left" id="parallax-left">
-          <span class="hero-eyebrow">MIRAFLORES · UNCÍA (1899 – 1905)</span>
-          <h1 class="hero-title">
-            PALACIO
-            <span class="stroke-text">PATIÑO</span>
-          </h1>
-        </div>
-
-        <div class="hero-right" id="parallax-right">
-          <h2 class="hero-subtitle">EL IMPERIO DEL ESTAÑO EN ALTA DEFINICIÓN</h2>
-          <p class="hero-desc">
-            La primera residencia de 73 ambientes que el Rey del Estaño levantó en Uncía. Cristales de Venecia, jardines de Bolonia y los motores gemelos del Titanic.
-          </p>
-        </div>
-      </div>
-
-      <!-- 3. INDICADOR CENTRAL Y BOTONES FLOTANTES EN ESQUINAS -->
-      <div class="scroll-indicator">
-        <span>SCROLL TO CHARGE / DESLIZA PARA ACTIVAR</span>
-        <div class="scroll-line"></div>
-      </div>
-
-      <div class="hud-corner-left">
-        <a href="./historia.html" class="btn-hud-ghost">Archivo y Modelos 3D</a>
-      </div>
-
-      <div class="hud-corner-right">
-        <a href="./interior.html" class="btn-hud-neon" id="magnetic-cta">Entrar al Palacio ↗</a>
-      </div>
-
+    <!-- Marco Ornamental Perimetral -->
+    <div class="stage-ornamental-frame">
+      <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
     </div>
+
+    <!-- Aviso de controles en Modo Exploración Libre -->
+    <div class="free-roam-hint" id="free-roam-hint">
+      Arrastra para girar · Rueda para acercar · Clic derecho o WASD para desplazarte · Toca los sellos dorados
+    </div>
+
+    <!-- ESTADO 1: PRESENTACIÓN GENERAL (SPLIT LAYOUT) -->
+    <div class="state-presentation-overlay" id="presentation-overlay">
+      <div class="split-col-left">
+        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
+        <span class="era-badge">Principios del Siglo XX · Residencia 1899 – 1905</span>
+        <h1>
+          El Palacio de Simón I. Patiño
+          <span>Sector Miraflores · Uncía, Potosí</span>
+        </h1>
+        <p class="lema">
+          «La primera mansión de 73 ambientes que el Rey del Estaño prometió y edificó para su esposa Albina Rodríguez Ocampo al pie de La Salvadora.»
+        </p>
+        <div class="split-actions">
+          <button type="button" class="btn-vintage btn-vintage-gold" id="btn-start-tour">
+            [ Iniciar Recorrido Guiado ]
+          </button>
+          <button type="button" class="btn-vintage" id="btn-free-explore">
+            Explorar Exterior Libremente
+          </button>
+        </div>
+      </div>
+
+      <div class="split-col-right">
+        <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
+        <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
+        <h2>Monumento Patrimonial del Estaño</h2>
+        <p>
+          Coronado por una torre de estilo escocés y fachada color mostaza, este inmueble albergó cristales de Venecia, tapices de Bolonia, un carruaje inglés de 1870 y la vista directa a los motores diésel alemanes de 1901, gemelos del Titanic.
+        </p>
+        <div class="split-actions">
+          <a href="./interior.html" class="btn-vintage btn-sm">Recorrido Interior 1ra Persona</a>
+          <a href="./historia.html" class="btn-vintage btn-sm">Museo de Piezas 3D</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESTADO 2: PLACA DE BRONCE DEL RECORRIDO GUIADO -->
+    <div class="tour-plaque-card" id="tour-plaque">
+      <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+      <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
+      <div class="plaque-header">
+        <span id="plaque-step">ESTACIÓN I DE IV · RECORRIDO EXTERIOR</span>
+        <span id="plaque-coords">MIRAFLORES · UNCÍA</span>
+      </div>
+      <h3 id="plaque-title">Fachada Principal Mostaza</h3>
+      <p id="plaque-desc">Descripción histórica del punto arquitectónico.</p>
+      <div class="tour-progress-bar">
+        <div class="tour-progress-fill" id="tour-progress-fill"></div>
+      </div>
+      <div class="plaque-controls">
+        <button type="button" class="btn-vintage btn-sm" id="btn-prev-stop">← Anterior</button>
+        <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="btn-next-stop">Siguiente Estación →</button>
+        <button type="button" class="btn-vintage btn-sm" id="btn-skip-tour">Saltar a Exploración Libre</button>
+      </div>
+    </div>
+
+    <!-- ESTADO 3: BARRA DE HERRAMIENTAS Y SELECTOR DE ATMÓSFERA DE ÉPOCA -->
+    <div class="vintage-compass-dock">
+      <div class="dock-group">
+        <span class="dock-label">Cámara:</span>
+        <button type="button" class="dock-btn active" id="dock-btn-present">Vista General</button>
+        <button type="button" class="dock-btn" id="dock-btn-tour">Recorrido Guiado</button>
+        <button type="button" class="dock-btn" id="dock-btn-free">Exploración Libre</button>
+      </div>
+
+      <div class="dock-divider"></div>
+
+      <div class="dock-group">
+        <span class="dock-label">Atmósfera 3D:</span>
+        <button type="button" class="dock-btn active" data-weather="day">Luz de Día Clásica</button>
+        <button type="button" class="dock-btn" data-weather="sunset">Atardecer Sepia</button>
+        <button type="button" class="dock-btn" data-weather="night">Noche de Faroles</button>
+      </div>
+
+      <div class="dock-divider"></div>
+
+      <a href="#plano-comparador" class="dock-btn">Deslizar a la Historia ↓</a>
+    </div>
+
   </section>
 
-  <!-- SECCIÓN 1: CINTA DINÁMICA (INFINITE MARQUEE) -->
-  <div class="marquee-section">
-    <div class="marquee-track">
-      <div class="marquee-item">SIMÓN I. PATIÑO <span class="sep">✦</span> 73 AMBIENTES DE LUJO <span class="sep">✦</span> MOTORES GEMELOS DEL TITANIC (1901) <span class="sep">✦</span> CRISTALES DE VENECIA <span class="sep">✦</span> CUNA DEL SINDICALISMO MINERO (1923) <span class="sep">✦</span> UNCÍA · NORTE DE POTOSÍ <span class="sep">✦</span></div>
-      <div class="marquee-item">SIMÓN I. PATIÑO <span class="sep">✦</span> 73 AMBIENTES DE LUJO <span class="sep">✦</span> MOTORES GEMELOS DEL TITANIC (1901) <span class="sep">✦</span> CRISTALES DE VENECIA <span class="sep">✦</span> CUNA DEL SINDICALISMO MINERO (1923) <span class="sep">✦</span> UNCÍA · NORTE DE POTOSÍ <span class="sep">✦</span></div>
+  <!-- ============================================================
+       SECCIÓN 1 POST-SCROLL: CINTA HISTÓRICA (MARQUEE CLÁSICO)
+       ============================================================ -->
+  <div class="vintage-marquee">
+    <div class="vintage-marquee-track">
+      <div class="vintage-marquee-item">
+        <span>Edificado entre 1899 y 1905 en Miraflores, Uncía</span> <span class="fleuron">⚜</span>
+        <span>73 Ambientes con Cristales de Venecia y Tapices de Bolonia</span> <span class="fleuron">⚜</span>
+        <span>Motores Diésel Alemanes de 1901 · Gemelos del Titanic</span> <span class="fleuron">⚜</span>
+        <span>Carruaje Inglés de 1870 y Capilla Privada</span> <span class="fleuron">⚜</span>
+        <span>Cuna del Primer Sindicato Minero de Bolivia (1 de Mayo de 1923)</span> <span class="fleuron">⚜</span>
+      </div>
+      <div class="vintage-marquee-item">
+        <span>Edificado entre 1899 y 1905 en Miraflores, Uncía</span> <span class="fleuron">⚜</span>
+        <span>73 Ambientes con Cristales de Venecia y Tapices de Bolonia</span> <span class="fleuron">⚜</span>
+        <span>Motores Diésel Alemanes de 1901 · Gemelos del Titanic</span> <span class="fleuron">⚜</span>
+        <span>Carruaje Inglés de 1870 y Capilla Privada</span> <span class="fleuron">⚜</span>
+        <span>Cuna del Primer Sindicato Minero de Bolivia (1 de Mayo de 1923)</span> <span class="fleuron">⚜</span>
+      </div>
     </div>
   </div>
 
-  <!-- SECCIÓN 2: BENTO GRID CON TILT 3D, SPOTLIGHT Y CONTADORES -->
-  <section class="content-section" id="especificaciones">
-    <div class="section-header reveal">
-      <span class="section-tag">01 // DIMENSIONES HISTÓRICAS</span>
-      <h2 class="section-title">Arquitectura e Ingeniería sin Precedentes en los Andes</h2>
-      <p class="section-desc">Pasa el cursor sobre cada módulo para inspeccionar en perspectiva 3D las cifras que transformaron a Uncía en una metrópoli cosmopolita.</p>
+  <!-- ============================================================
+       SECCIÓN 2: COMPARADOR INTERACTIVO "PLANO ORIGINAL VS. ARQUITECTURA"
+       ============================================================ -->
+  <section class="patrimonial-section" id="plano-comparador">
+    <div class="section-ornament-header">
+      <span class="eyebrow">Archivo de Restauración · AECI & Municipio de Uncía</span>
+      <h2>Trazo Arquitectónico vs. Conservación Patrimonial</h2>
+      <p>Arrastra el medallón central para contrastar el grabado arquitectónico de época con la estructura del inmueble en Miraflores.</p>
+      <div class="ornament-divider">⚜</div>
     </div>
 
-    <div class="bento-grid">
-      <div class="bento-card bento-span-7 reveal" data-tilt>
-        <span class="bento-badge">ARQUITECTURA PALACIEGA</span>
-        <div>
-          <div class="bento-stat"><span class="counter" data-target="73">0</span></div>
-          <h3>Ambientes Conectados</h3>
-          <p>Desde el salón de fiestas en tono rojo guindo con arcos blancos y techos de cristal veneciano hasta capilla privada, farmacia, despacho en Miraflores y sala de carruaje inglés de 1870.</p>
-        </div>
-      </div>
-
-      <div class="bento-card bento-span-5 reveal" data-tilt>
-        <span class="bento-badge">ENERGÍA INDUSTRIAL</span>
-        <div>
-          <div class="bento-stat"><span class="counter" data-target="1901">0</span></div>
-          <h3>Motores Alemanes del Titanic</h3>
-          <p>Año en que se instalaron junto al palacio los generadores diésel traídos de Alemania, cuyos dos únicos gemelos naufragaron en el Atlántico bajo el casco del Titanic en 1912.</p>
-        </div>
-      </div>
-
-      <div class="bento-card bento-span-5 reveal" data-tilt>
-        <span class="bento-badge">AUGE COSMOPOLITA</span>
-        <div>
-          <div class="bento-stat">+<span class="counter" data-target="15">0</span></div>
-          <h3>Idiomas en las Calles de Uncía</h3>
-          <p>Bolivianos, yugoslavos, italianos, españoles y belgas regentaban casas importadoras de pianos europeos, automóviles, sastrerías y proyectores de cine.</p>
-        </div>
-      </div>
-
-      <div class="bento-card bento-span-7 reveal" data-tilt>
-        <span class="bento-badge">GESTA HISTÓRICA · 1 DE MAYO DE 1923</span>
-        <div>
-          <div class="bento-stat"><span class="counter" data-target="5000">0</span></div>
-          <h3>Mineros en la Cuna del Sindicalismo</h3>
-          <p>Trabajadores de La Salvadora que marcharon hasta la plaza Alonso de Ibáñez para fundar el primer sindicato minero de Bolivia exigiendo la jornada laboral de 8 horas.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECCIÓN 3: SELECTOR INTERACTIVO DE VARIANTES / MODOS (COLOR THEME SWITCHER) -->
-  <section class="content-section" id="modos">
-    <div class="section-header reveal">
-      <span class="section-tag">02 // ATMÓSFERA CROMÁTICA REACTIVA</span>
-      <h2 class="section-title">Selector de Modos de Iluminación</h2>
-      <p class="section-desc">Cambia la frecuencia lumínica de toda la interfaz, los bordes holográficos y las partículas del Canvas en tiempo real.</p>
-    </div>
-
-    <div class="mode-switcher-wrap reveal">
-      <div class="mode-buttons">
-        <button class="mode-btn active"
-          data-primary="#8B5CF6"
-          data-secondary="#06B6D4"
-          data-rgb="139, 92, 246"
-          data-sec-rgb="6, 182, 212"
-          data-title="Modo 01 · Nocturno Cyber-Museo"
-          data-desc="Inspirado en la leyenda nocturna de Uncía: cuando las luces del palacio parecen encenderse a medianoche y se escucha la melodía del piano europeo y el tintineo de un brindis.">
-          <div class="mode-btn-info">
-            <h4>01. Nocturno Cyber-Museo</h4>
-            <span>Púrpura Eléctrico #8B5CF6 · Cian Neón #06B6D4</span>
-          </div>
-          <div class="mode-swatches">
-            <span class="swatch" style="background:#8B5CF6"></span>
-            <span class="swatch" style="background:#06B6D4"></span>
-          </div>
-        </button>
-
-        <button class="mode-btn"
-          data-primary="#F59E0B"
-          data-secondary="#EA580C"
-          data-rgb="245, 158, 11"
-          data-sec-rgb="234, 88, 12"
-          data-title="Modo 02 · Fiebre del Estaño 1901"
-          data-desc="Evoca el dorado imperial de los salones europeos, la fachada mostaza con torre escocesa y el calor de las fundiciones e ingenios de Miraflores y La Salvadora.">
-          <div class="mode-btn-info">
-            <h4>02. Fiebre del Estaño 1901</h4>
-            <span>Oro Imperial #F59E0B · Cobre Minero #EA580C</span>
-          </div>
-          <div class="mode-swatches">
-            <span class="swatch" style="background:#F59E0B"></span>
-            <span class="swatch" style="background:#EA580C"></span>
-          </div>
-        </button>
-
-        <button class="mode-btn"
-          data-primary="#10B981"
-          data-secondary="#3B82F6"
-          data-rgb="16, 185, 129"
-          data-sec-rgb="59, 130, 246"
-          data-title="Modo 03 · Jardines de Bolonia & Venecia"
-          data-desc="Recrea los tonos esmeralda de los tapices franceses de Bolonia que cubrían las habitaciones de Albina Rodríguez y el reflejo de los cristales venecianos del techo.">
-          <div class="mode-btn-info">
-            <h4>03. Jardines de Bolonia & Venecia</h4>
-            <span>Esmeralda #10B981 · Cristal Veneciano #3B82F6</span>
-          </div>
-          <div class="mode-swatches">
-            <span class="swatch" style="background:#10B981"></span>
-            <span class="swatch" style="background:#3B82F6"></span>
-          </div>
-        </button>
-      </div>
-
-      <div class="mode-preview-display">
-        <span class="section-tag">PREVISUALIZACIÓN DE SISTEMA ACTIVO</span>
-        <div>
-          <h3 id="mode-title">Modo 01 · Nocturno Cyber-Museo</h3>
-          <p id="mode-desc">Inspirado en la leyenda nocturna de Uncía: cuando las luces del palacio parecen encenderse a medianoche y se escucha la melodía del piano europeo y el tintineo de un brindis.</p>
-        </div>
-        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
-          <a href="./interior.html" class="btn-hud-ghost">Abrir Recorrido 3D</a>
-          <a href="./historia.html" class="btn-hud-Ghost btn-hud-ghost">Ver Colección GLB</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- SECCIÓN 4: DESGLOSE TÉCNICO CON HOTSPOTS INTERACTIVOS -->
-  <section class="content-section" id="arquitectura">
-    <div class="section-header reveal">
-      <span class="section-tag">03 // ESCÁNER ARQUITECTÓNICO</span>
-      <h2 class="section-title">Desglose Técnico por Puntos de Interés</h2>
-      <p class="section-desc">Selecciona cualquiera de los 4 nodos pulsantes para analizar la estructura del complejo patrimonial de Miraflores.</p>
-    </div>
-
-    <div class="blueprint-grid reveal">
-      <div class="blueprint-stage">
+    <div class="comparator-frame" id="comparator-frame">
+      <!-- Derecha: Fotografía Restaurada -->
+      <div class="comp-layer comp-after">
         <img
           src="./img/1.jpg"
-          onerror="this.src='https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80'"
-          alt="Plano visual del Palacio de Patiño"
+          onerror="this.src='https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=85'"
+          alt="Vista restaurada del Palacio de Simón I. Patiño"
         />
-        <button class="bp-hotspot active" style="top: 26%; left: 32%;"
-          data-title="01. Torre de Estilo Escocés y Fachada"
-          data-desc="Corona la fachada color mostaza del palacio prometido por Simón I. Patiño a su esposa Albina Rodríguez Ocampo tras vender sus alhajas en los inicios de La Salvadora."
-          data-b1="95" data-b2="98" data-b3="90">01</button>
-
-        <button class="bp-hotspot" style="top: 48%; left: 54%;"
-          data-title="02. Salón de Fiestas y Cristales de Venecia"
-          data-desc="Muros en rojo guindo contrastados con arcos blancos. Sus techos exhibían cristales italianos de Venecia con murales de canales, hoy resguardados con policarbonato de una pulgada."
-          data-b1="88" data-b2="100" data-b3="96">02</button>
-
-        <button class="bp-hotspot" style="top: 68%; left: 38%;"
-          data-title="03. Capilla Privada y Carruaje Inglés (1870)"
-          data-desc="Junto a la capilla de bancos de madera se conserva el carruaje inglés rehabilitado de 1870 en el que la familia Patiño recorría Uncía antes del ferrocarril."
-          data-b1="92" data-b2="96" data-b3="85">03</button>
-
-        <button class="bp-hotspot" style="top: 38%; left: 76%;"
-          data-title="04. Galpones de la Planta Diésel Miraflores"
-          data-desc="Visibles desde los ventanales del palacio: albergan los motores alemanes de 1901 y las gigantescas llaves inglesas que un solo hombre no podía levantar."
-          data-b1="84" data-b2="100" data-b3="99">04</button>
       </div>
 
-      <div class="blueprint-detail-card">
+      <!-- Izquierda: Boceto / Grabado Antiguo -->
+      <div class="comp-layer comp-before" id="comp-before">
+        <img
+          id="comp-before-img"
+          src="./img/1.jpg"
+          onerror="this.src='https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=85'"
+          alt="Plano y grabado de época del Palacio"
+        />
+        <div class="blueprint-grid-overlay"></div>
+      </div>
+
+      <span class="comp-badge left">Grabado y Trazo de Época (1899)</span>
+      <span class="comp-badge right">Registro Patrimonial Actual</span>
+
+      <div class="comp-handle" id="comp-handle">
+        <div class="comp-handle-medallion">↔</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SECCIÓN 3: GALERÍA DE DETALLES ARQUITECTÓNICOS (TILT 3D + LUZ DE VELA)
+       ============================================================ -->
+  <section class="patrimonial-section" id="detalles-arquitectura">
+    <div class="section-ornament-header">
+      <span class="eyebrow">Inspección de Elementos Constructivos</span>
+      <h2>Detalles Arquitectónicos del Palacio</h2>
+      <p>Cuatro registros monumentales que definieron el esplendor europeo en medio de la serranía minera del norte de Potosí.</p>
+      <div class="ornament-divider">⚜</div>
+    </div>
+
+    <div class="brass-cards-grid">
+      <article class="brass-card brass-span-6" data-brass-tilt>
+        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
         <div>
-          <span class="bento-badge">TELEMETRÍA DE NODO SELECCIONADO</span>
-          <h3 id="bp-title" style="font-family:var(--font-display); font-size:1.65rem; margin-bottom:12px;">
-            01. Torre de Estilo Escocés y Fachada
-          </h3>
-          <p id="bp-desc" style="color:var(--text-metal); line-height:1.65; font-size:0.95rem;">
-            Corona la fachada color mostaza del palacio prometido por Simón I. Patiño a su esposa Albina Rodríguez Ocampo tras vender sus alhajas en los inicios de La Salvadora.
+          <span class="card-catalog-num">Registro N.º 01 · Fachada y Torreón</span>
+          <h3>Torre de Estilo Escocés y Muros Mostaza</h3>
+          <p>
+            La volumetría exterior destaca por su fachada en tono mostaza coronada por una torre de inspiración escocesa, desde la cual se dominaba el paisaje industrial del ingenio Miraflores y el camino hacia el cerro Juan del Valle.
           </p>
-
-          <div class="bp-spec-bars">
-            <div class="bp-bar-item">
-              <label><span>INTEGRIDAD ESTRUCTURAL</span><span id="bp-val-1">95%</span></label>
-              <div class="bp-bar-track"><div class="bp-bar-fill" id="bp-bar-1" style="width:95%"></div></div>
-            </div>
-            <div class="bp-bar-item">
-              <label><span>VALOR HISTÓRICO PATRIMONIAL</span><span id="bp-val-2">98%</span></label>
-              <div class="bp-bar-track"><div class="bp-bar-fill" id="bp-bar-2" style="width:98%"></div></div>
-            </div>
-            <div class="bp-bar-item">
-              <label><span>COMPLEJIDAD ARQUITECTÓNICA</span><span id="bp-val-3">90%</span></label>
-              <div class="bp-bar-track"><div class="bp-bar-fill" id="bp-bar-3" style="width:90%"></div></div>
-            </div>
-          </div>
         </div>
+        <div class="brass-card-footer">
+          <span>Sector: Miraflores Norte</span>
+          <span>Época: 1899 – 1905</span>
+        </div>
+      </article>
 
-        <a href="./interior.html" class="btn-hud-ghost" style="justify-content:center;">
-          Inspeccionar Ambiente en Primera Persona →
-        </a>
-      </div>
+      <article class="brass-card brass-span-6" data-brass-tilt>
+        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
+        <div>
+          <span class="card-catalog-num">Registro N.º 02 · Cielos Rasos e Iluminación</span>
+          <h3>Cristales de Venecia y Salón Rojo Guindo</h3>
+          <p>
+            Como si del coliseo de Roma se tratara, los techos estuvieron cubiertos por cristales italianos procedentes de Venecia con murales de sus canales, iluminando el salón de fiestas cuyos muros rojo guindo contrastaban con arcos blancos.
+          </p>
+        </div>
+        <div class="brass-card-footer">
+          <span>Origen: Venecia, Italia</span>
+          <span>Ambientes: 73 Salas</span>
+        </div>
+      </article>
+
+      <article class="brass-card brass-span-6" data-brass-tilt>
+        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
+        <div>
+          <span class="card-catalog-num">Registro N.º 03 · Reliquias de Transporte</span>
+          <h3>El Carruaje Inglés de 1870 y la Capilla</h3>
+          <p>
+            En una sala contigua a la capilla privada —que aún conserva sus bancas originales de madera— descansa el carruaje inglés rehabilitado de 1870 en el que Simón I. Patiño paseaba por Uncía junto a su esposa Albina.
+          </p>
+        </div>
+        <div class="brass-card-footer">
+          <span>Manufactura: Inglaterra, 1870</span>
+          <span>Modelo 3D: carruaje.glb</span>
+        </div>
+      </article>
+
+      <article class="brass-card brass-span-6" data-brass-tilt>
+        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
+        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
+        <div>
+          <span class="card-catalog-num">Registro N.º 04 · Complejo Energético</span>
+          <h3>Los Motores Alemanes Gemelos del Titanic</h3>
+          <p>
+            Desde los ventanales del palacio se divisan los galpones de calamina donde en 1901 se instalaron los motores diésel alemanes que electrificaron Uncía; sus dos únicos gemelos de fábrica reposan en el océano bajo el casco del Titanic desde 1912.
+          </p>
+        </div>
+        <div class="brass-card-footer">
+          <span>Instalación: Año 1901</span>
+          <span>Origen: Casa Diesel, Alemania</span>
+        </div>
+      </article>
     </div>
   </section>
 
-  <!-- SECCIÓN 5: PREGUNTAS FRECUENTES (ACORDEÓN FLUIDO) -->
-  <section class="content-section" id="faq">
-    <div class="section-header reveal">
-      <span class="section-tag">04 // ARCHIVO DOCUMENTAL</span>
-      <h2 class="section-title">Preguntas Frecuentes sobre el Palacio</h2>
+  <!-- ============================================================
+       SECCIÓN 4: LÍNEA DEL TIEMPO PATRIMONIAL (CRÓNICA DE LA ÉPOCA)
+       ============================================================ -->
+  <section class="patrimonial-section" id="cronica-historica">
+    <div class="section-ornament-header">
+      <span class="eyebrow">Crónica Documental · Siglos XVI al XX</span>
+      <h2>Efemérides del Palacio y de Uncía</h2>
+      <p>De la promesa junto a una bocamina en el monte Llallagua al nacimiento del sindicalismo minero boliviano.</p>
+      <div class="ornament-divider">⚜</div>
     </div>
 
-    <div class="faq-list reveal">
-      <div class="faq-item open">
-        <button class="faq-trigger">
-          <span>¿Por qué Simón I. Patiño construyó su primer palacio en Uncía?</span>
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-content" style="max-height: 240px;">
-          <p>Cuando Patiño vivía junto a la bocamina en el cerro Llallagua, su esposa Albina Rodríguez Ocampo vendió sus joyas en Oruro para acompañarlo. Conmovido, Patiño le prometió construirle un palacio. Entre 1899 y 1905 habitaron esta mansión de 73 ambientes en la zona de Miraflores.</p>
+    <div class="chronicle-timeline" id="chronicle-timeline">
+      <div class="timeline-spine">
+        <div class="timeline-spine-fill" id="timeline-spine-fill"></div>
+      </div>
+
+      <div class="chronicle-entry">
+        <div class="chronicle-node"></div>
+        <div class="chronicle-card">
+          <span class="chronicle-year">Año 1564 · Bautizo Colonial</span>
+          <h3>Juan del Valle y la Moneda de «Ínfimo Valor»</h3>
+          <p>El español Juan del Valle explora los cerros buscando plata superficial. Al no hallarla, nombra al paraje «Uncía» (antigua moneda romana de mínimo valor), sin sospechar la fortuna de estaño que guardaban sus entrañas.</p>
         </div>
       </div>
 
-      <div class="faq-item">
-        <button class="faq-trigger">
-          <span>¿Qué relación tienen los motores de Uncía con el Titanic?</span>
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-content">
-          <p>En 1901 Patiño importó desde Alemania motores diésel de última generación para dar electricidad a La Salvadora y al pueblo de Uncía. Sus dos motores gemelos de fábrica fueron instalados en el transatlántico Titanic, hundiéndose en el Atlántico en 1912.</p>
+      <div class="chronicle-entry">
+        <div class="chronicle-node"></div>
+        <div class="chronicle-card">
+          <span class="chronicle-year">1892 – 1898 · La Promesa en la Bocamina</span>
+          <h3>Albina Rodríguez Vende sus Alhajas</h3>
+          <p>Tras asociarse con Sergio Ortiz en La Salvadora, Patiño recibe en la cima del cerro a su esposa Albina, quien vendió sus joyas en Oruro para apoyarlo. Conmovido, le promete: «¡Algún día te construiré un palacio!».</p>
         </div>
       </div>
 
-      <div class="faq-item">
-        <button class="faq-trigger">
-          <span>¿Cómo puedo explorar los modelos 3D (.glb) del interior y las reliquias?</span>
-          <span class="faq-icon">+</span>
-        </button>
-        <div class="faq-content">
-          <p>Desde los botones superiores e inferiores puedes acceder directamente a la sección «Historia / Galería 3D» (donde se exhiben el carruaje inglés, el piano, los motores de Miraflores y el Tío de la Mina) y a «Interior» para caminar en primera persona con WASD por los ambientes de la casa.</p>
+      <div class="chronicle-entry">
+        <div class="chronicle-node"></div>
+        <div class="chronicle-card">
+          <span class="chronicle-year">1899 – 1905 · Esplendor en Miraflores</span>
+          <h3>Los Siete Años de Residencia de la Familia Patiño</h3>
+          <p>Se levanta el palacio de 73 ambientes con capilla, farmacia, salón de fiestas y jardines franceses de Bolonia en sus muros, junto a la instalación en 1901 de los colosales motores diésel alemanes.</p>
         </div>
       </div>
+
+      <div class="chronicle-entry">
+        <div class="chronicle-node"></div>
+        <div class="chronicle-card">
+          <span class="chronicle-year">1 de Mayo de 1923 · Gesta Obrera</span>
+          <h3>Cuna del Sindicalismo Minero en Bolivia</h3>
+          <p>En una Uncía cosmopolita donde se hablaban 15 idiomas, 5.000 mineros marchan a la plaza Alonso de Ibáñez y fundan el primer sindicato minero del país exigiendo la jornada de 8 horas.</p>
+        </div>
+      </div>
+
+      <div class="chronicle-entry">
+        <div class="chronicle-node"></div>
+        <div class="chronicle-card">
+          <span class="chronicle-year">1924 – Presente · Mito y Restauración</span>
+          <h3>El Traslado a Catavi y la Melodía Nocturna</h3>
+          <p>Tras el traslado administrativo a Catavi en 1924 y el paso a COMIBOL en 1952, el inmueble hoy se preserva como joya turística, mientras la leyenda local asegura que de noche aún resuenan el piano y el brindis de Patiño.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:32px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a href="./interior.html" class="btn-vintage btn-vintage-gold">Caminar por el Interior 3D (WASD) →</a>
+      <a href="./historia.html" class="btn-vintage">Inspeccionar Reliquias 3D en Detalle</a>
     </div>
   </section>
 
-  <!-- FOOTER MONUMENTAL -->
-  <footer class="monumental-footer">
-    <div class="footer-top">
-      <div>UNCÍA · PROVINCIA RAFAEL BUSTILLO · POTOSÍ, BOLIVIA</div>
-      <div class="footer-links">
-        <a href="#origen">Inicio</a>
-        <a href="./historia.html">Galería 3D (.GLB)</a>
-        <a href="./interior.html">Recorrido Interior 3D</a>
-        <a href="#especificaciones">Especificaciones</a>
+  <!-- ============================================================
+       FOOTER MONUMENTAL
+       ============================================================ -->
+  <footer class="vintage-footer">
+    <div class="footer-nav-row">
+      <span>UNCÍA · PROVINCIA RAFAEL BUSTILLO · POTOSÍ, BOLIVIA</span>
+      <div style="display:flex; gap:24px; flex-wrap:wrap;">
+        <a href="#visor-exterior">Visor Exterior 3D</a>
+        <a href="./interior.html">Recorrido Interior</a>
+        <a href="./historia.html">Galería de Modelos GLB</a>
       </div>
     </div>
-    <div class="footer-giant-brand">CASA PATIÑO</div>
+    <div class="footer-engraved-title">PALACIO PATIÑO</div>
+    <p class="footer-credits">
+      Reconstrucción Patrimonial Tridimensional · Casa Museo de Simón I. Patiño en Uncía — Desarrollado con Three.js / WebGL
+    </p>
   </footer>
 
   <!-- ============================================================
-       LÓGICA INTERACTIVA (SCROLLYTELLING, CANVAS, TILT 3D, LERP)
+       MOTOR THREE.JS: CARGA DE .GLB, 3 ESTADOS DE CÁMARA, HOTSPOTS Y CLIMAS
        ============================================================ -->
-  <script>
-    // 1. Pre-loader Cinematográfico (0% a 100%)
-    (function initPreloader() {
-      const preloader = document.getElementById('preloader');
-      const counterEl = document.getElementById('loader-counter');
-      const barEl = document.getElementById('loader-bar');
-      let progress = 0;
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+    import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
-      const timer = setInterval(() => {
-        progress += Math.floor(Math.random() * 14) + 6;
-        if (progress >= 100) {
-          progress = 100;
-          clearInterval(timer);
-          setTimeout(() => preloader.classList.add('loaded'), 280);
-        }
-        counterEl.textContent = progress + '%';
-        barEl.style.width = progress + '%';
-      }, 65);
-    })();
+    // Rutas a tus modelos .glb reales en tu repositorio
+    const HOUSE_GLB_URL    = new URL('./models/casa-exterior.glb', import.meta.url).href;
+    const CARRIAGE_GLB_URL = new URL('./models/carruaje.glb', import.meta.url).href;
+    const HOUSE_TARGET_SIZE = 14;
 
-    // 2. Cursor Personalizado con Interpolación (Lerp) y Expansión
-    const dot = document.getElementById('cursor-dot');
-    const ring = document.getElementById('cursor-ring');
-    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-    let ringX = mouseX, ringY = mouseY;
+    // Referencias DOM del Pre-loader
+    const preloaderEl     = document.getElementById('vintage-preloader');
+    const preloaderPct    = document.getElementById('preloader-pct');
+    const preloaderFill   = document.getElementById('preloader-fill');
+    const preloaderStatus = document.getElementById('preloader-status');
 
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      dot.style.left = mouseX + 'px';
-      dot.style.top = mouseY + 'px';
+    // Referencias DOM de Estados e Interfaz
+    const container           = document.getElementById('exterior-canvas-container');
+    const hotspotsLayer       = document.getElementById('hotspots-layer');
+    const presentationOverlay = document.getElementById('presentation-overlay');
+    const tourPlaque          = document.getElementById('tour-plaque');
+    const plaqueStep          = document.getElementById('plaque-step');
+    const plaqueCoords        = document.getElementById('plaque-coords');
+    const plaqueTitle         = document.getElementById('plaque-title');
+    const plaqueDesc          = document.getElementById('plaque-desc');
+    const tourProgressFill    = document.getElementById('tour-progress-fill');
+    const freeRoamHint        = document.getElementById('free-roam-hint');
+
+    const dockBtnPresent = document.getElementById('dock-btn-present');
+    const dockBtnTour    = document.getElementById('dock-btn-tour');
+    const dockBtnFree    = document.getElementById('dock-btn-free');
+
+    // ---------- Escena, Cámara y Renderizador ----------
+    const scene = new THREE.Scene();
+    scene.background = makeSkyGradient('#2B3540', '#B89360');
+    scene.fog = new THREE.Fog(0x6e583f, 22, 95);
+
+    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 400);
+    camera.position.set(14, 6.5, 15);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    container.appendChild(renderer.domElement);
+
+    // ---------- OrbitControls (para Exploración Libre) ----------
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.maxPolarAngle = Math.PI * 0.485;
+    controls.minDistance = 3;
+    controls.maxDistance = 48;
+    controls.target.set(0, 2.2, 0);
+    controls.enabled = false; // Inicia en Estado 1 (Órbita de Presentación)
+
+    // ---------- Iluminación de Época y Faroles Nocturnos ----------
+    const ambientLight = new THREE.AmbientLight(0xffe8c2, 0.65);
+    scene.add(ambientLight);
+
+    const hemiLight = new THREE.HemisphereLight(0xdce4ec, 0x6b5335, 0.85);
+    scene.add(hemiLight);
+
+    const sunLight = new THREE.DirectionalLight(0xffdfad, 2.2);
+    sunLight.position.set(14, 18, 10);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.set(2048, 2048);
+    sunLight.shadow.camera.left = -24;
+    sunLight.shadow.camera.right = 24;
+    sunLight.shadow.camera.top = 24;
+    sunLight.shadow.camera.bottom = -24;
+    sunLight.shadow.bias = -0.0004;
+    scene.add(sunLight);
+
+    // Faroles cálidos (PointLights) que se encienden en el modo "Noche de Faroles"
+    const lanternGroup = new THREE.Group();
+    const lanternLights = [];
+    const lanternCoords = [
+      { x: -5.5, y: 2.6, z: 5.5 },
+      { x:  5.5, y: 2.6, z: 5.5 },
+      { x: -5.5, y: 2.6, z: -5.5 },
+      { x:  6.8, y: 2.4, z: 2.2 }
+    ];
+
+    lanternCoords.forEach((pos) => {
+      const pLight = new THREE.PointLight(0xff9d3b, 0, 16, 1.8);
+      pLight.position.set(pos.x, pos.y, pos.z);
+      lanternGroup.add(pLight);
+      lanternLights.push(pLight);
+
+      const bulb = new THREE.Mesh(
+        new THREE.SphereGeometry(0.12, 12, 12),
+        new THREE.MeshBasicMaterial({ color: 0xffcf70 })
+      );
+      bulb.position.copy(pLight.position);
+      bulb.visible = false;
+      pLight.userData.bulb = bulb;
+      lanternGroup.add(bulb);
     });
+    scene.add(lanternGroup);
 
-    function animateCursor() {
-      ringX += (mouseX - ringX) * 0.16;
-      ringY += (mouseY - ringY) * 0.16;
-      ring.style.left = ringX + 'px';
-      ring.style.top = ringY + 'px';
-      requestAnimationFrame(animateCursor);
-    }
-    animateCursor();
+    // ---------- Terreno Andino y Cerros de Uncía ----------
+    const ground = new THREE.Mesh(
+      new THREE.CircleGeometry(65, 64),
+      new THREE.MeshStandardMaterial({ color: 0x6e583b, roughness: 0.96 })
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.receiveShadow = true;
+    scene.add(ground);
 
-    document.querySelectorAll('a, button, .bento-card').forEach((el) => {
-      el.addEventListener('mouseenter', () => ring.classList.add('hovered'));
-      el.addEventListener('mouseleave', () => ring.classList.remove('hovered'));
-    });
+    const courtyard = new THREE.Mesh(
+      new THREE.CircleGeometry(9.5, 48),
+      new THREE.MeshStandardMaterial({ color: 0x8a7b65, roughness: 0.92 })
+    );
+    courtyard.rotation.x = -Math.PI / 2;
+    courtyard.position.y = 0.02;
+    courtyard.receiveShadow = true;
+    scene.add(courtyard);
 
-    // Micro-interacción magnética en CTA 2
-    const magBtn = document.getElementById('magnetic-cta');
-    if (magBtn) {
-      magBtn.addEventListener('mousemove', (e) => {
-        const rect = magBtn.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        magBtn.style.transform = `translate(${x * 0.28}px, ${y * 0.28}px)`;
-      });
-      magBtn.addEventListener('mouseleave', () => {
-        magBtn.style.transform = 'translate(0px, 0px)';
-      });
-    }
-
-    // 3. Canvas HTML5 de Fondo: Partículas Reactivas + Neblina Bokeh
-    const canvas = document.getElementById('ambient-canvas');
-    const ctx = canvas.getContext('2d');
-    let accentRGB = '139, 92, 246';
-    let secRGB = '6, 182, 212';
-    let particles = [];
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    for (let i = 0; i < 55; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        r: Math.random() * 2.2 + 0.6,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        alpha: Math.random() * 0.55 + 0.15
-      });
+    const hillMat = new THREE.MeshStandardMaterial({ color: 0x52412c, roughness: 1 });
+    for (let i = 0; i < 12; i++) {
+      const angle = (i / 12) * Math.PI * 2;
+      const dist = 36 + (i % 3) * 7;
+      const hill = new THREE.Mesh(
+        new THREE.ConeGeometry(10 + (i % 4) * 2.5, 8 + (i % 3) * 4, 6),
+        hillMat
+      );
+      hill.position.set(Math.cos(angle) * dist, -1, Math.sin(angle) * dist);
+      hill.rotation.y = i * 0.8;
+      scene.add(hill);
     }
 
-    function drawCanvas() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // ---------- Configuración de GLTFLoader con Draco y Meshopt ----------
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/draco/');
 
-      // Neblina bokeh siguiendo suavemente al cursor
-      const grad = ctx.createRadialGradient(ringX, ringY, 10, ringX, ringY, 380);
-      grad.addColorStop(0, `rgba(${accentRGB}, 0.11)`);
-      grad.addColorStop(0.5, `rgba(${secRGB}, 0.04)`);
-      grad.addColorStop(1, 'transparent');
-      ctx.fillStyle = grad;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.setDRACOLoader(dracoLoader);
+    gltfLoader.setMeshoptDecoder(MeshoptDecoder);
 
-      particles.forEach((p) => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-
-        // Repulsión suave al cursor
-        const dx = p.x - mouseX;
-        const dy = p.y - mouseY;
-        const dist = Math.hypot(dx, dy);
-        if (dist < 130) {
-          p.x += (dx / dist) * 1.2;
-          p.y += (dy / dist) * 1.2;
-        }
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${secRGB}, ${p.alpha})`;
-        ctx.fill();
-      });
-
-      requestAnimationFrame(drawCanvas);
+    function setPreloaderProgress(pct, text) {
+      const clamped = Math.min(100, Math.max(0, Math.round(pct)));
+      preloaderPct.textContent = clamped + '%';
+      preloaderFill.style.width = clamped + '%';
+      if (text) preloaderStatus.textContent = text;
     }
-    drawCanvas();
 
-    // 4. Scrollytelling del Hero (Pinned Track + Barra de Carga + Morph)
-    const heroTrack = document.querySelector('.hero-scroll-track');
-    const visualCore = document.getElementById('visual-core');
-    const activeOverlay = document.getElementById('core-active-overlay');
-    const chargeBar = document.getElementById('charge-bar');
-    const chargePercent = document.getElementById('charge-percent');
-    const telemetryState = document.getElementById('telemetry-state');
-    const ring1 = document.getElementById('ring-1');
-    const ring2 = document.getElementById('ring-2');
-    const coreGlow = document.getElementById('core-glow');
-    const parallaxLeft = document.getElementById('parallax-left');
-    const parallaxRight = document.getElementById('parallax-right');
+    function openPreloaderCurtain() {
+      setPreloaderProgress(100, '¡Monumento listo para su inspección!');
+      setTimeout(() => {
+        preloaderEl.classList.add('curtain-open');
+      }, 350);
+    }
 
-    window.addEventListener('scroll', () => {
-      const rect = heroTrack.getBoundingClientRect();
-      const scrollable = heroTrack.offsetHeight - window.innerHeight;
-      const scrolled = Math.min(Math.max(-rect.top, 0), scrollable);
-      const progress = scrollable > 0 ? scrolled / scrollable : 0;
-      const pct = Math.round(progress * 100);
-
-      // Actualizar barra de energía
-      chargeBar.style.width = pct + '%';
-      chargePercent.textContent = pct + '%';
-
-      // Transformación del eje central según el scroll
-      const scale = 1 + progress * 0.18;
-      const rotZ = progress * 4;
-      visualCore.style.transform = `scale(${scale}) rotateZ(${rotZ}deg)`;
-      activeOverlay.style.opacity = (progress * 0.9).toFixed(2);
-      ring1.style.transform = `rotate(${progress * 180}deg) scale(${1 + progress * 0.12})`;
-      ring2.style.transform = `rotate(-${progress * 140}deg) scale(${1 + progress * 0.2})`;
-      coreGlow.style.transform = `scale(${1 + progress * 0.55})`;
-
-      if (pct === 0) {
-        telemetryState.textContent = 'ESTADO: REPOSO';
-      } else if (pct < 95) {
-        telemetryState.textContent = 'ACTIVANDO SECUENCIA: ' + pct + '%';
-      } else {
-        telemetryState.textContent = 'MEMORIA 100% SINCRONIZADA';
+    // Utilidades de centrado y escala del modelo .glb
+    function normalizeAndCenterModel(obj, targetHorizontal) {
+      obj.updateMatrixWorld(true);
+      const box = new THREE.Box3().setFromObject(obj);
+      const size = box.getSize(new THREE.Vector3());
+      const maxHoriz = Math.max(size.x, size.z);
+      if (maxHoriz > 0 && targetHorizontal) {
+        const scale = targetHorizontal / maxHoriz;
+        obj.scale.multiplyScalar(scale);
+        obj.updateMatrixWorld(true);
       }
-    }, { passive: true });
 
-    // Parallax del título dividido al mover el ratón
-    window.addEventListener('mousemove', (e) => {
-      const nx = (e.clientX / window.innerWidth - 0.5) * 2;
-      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
-      parallaxLeft.style.transform = `translate3d(${nx * -14}px, ${ny * -10}px, 0)`;
-      parallaxRight.style.transform = `translate3d(${nx * 14}px, ${ny * 10}px, 0)`;
+      const finalBox = new THREE.Box3().setFromObject(obj);
+      const center = finalBox.getCenter(new THREE.Vector3());
+      obj.position.x -= center.x;
+      obj.position.z -= center.z;
+      obj.position.y -= finalBox.min.y;
+      obj.updateMatrixWorld(true);
+
+      obj.traverse((n) => {
+        if (n.isMesh) {
+          n.castShadow = true;
+          n.receiveShadow = true;
+        }
+      });
+
+      return new THREE.Box3().setFromObject(obj);
+    }
+
+    // Fallback arquitectónico si el modelo tardara o no estuviese en local
+    function createFallbackPalace() {
+      const g = new THREE.Group();
+      const wallM = new THREE.MeshStandardMaterial({ color: 0xd8b878, roughness: 0.85 });
+      const roofM = new THREE.MeshStandardMaterial({ color: 0x6b3529, roughness: 0.8 });
+      const body = new THREE.Mesh(new THREE.BoxGeometry(9, 4.2, 7), wallM);
+      body.position.y = 2.1;
+      g.add(body);
+      const tower = new THREE.Mesh(new THREE.BoxGeometry(2.6, 6.5, 2.6), wallM);
+      tower.position.set(3.2, 3.25, 2.2);
+      g.add(tower);
+      const spire = new THREE.Mesh(new THREE.ConeGeometry(2.1, 2.6, 4), roofM);
+      spire.position.set(3.2, 7.8, 2.2);
+      spire.rotation.y = Math.PI / 4;
+      g.add(spire);
+      return g;
+    }
+
+    // ---------- Carga del Palacio Exterior y del Carruaje Inglés ----------
+    gltfLoader.load(
+      HOUSE_GLB_URL,
+      (gltf) => {
+        const palace = gltf.scene;
+        const houseBox = normalizeAndCenterModel(palace, HOUSE_TARGET_SIZE);
+        scene.add(palace);
+        openPreloaderCurtain();
+
+        // Cargar el carruaje inglés de 1870 junto al palacio
+        gltfLoader.load(
+          CARRIAGE_GLB_URL,
+          (carGltf) => {
+            const carriage = carGltf.scene;
+            const houseSize = houseBox.getSize(new THREE.Vector3());
+            normalizeAndCenterModel(carriage, Math.max(houseSize.x, houseSize.z) * 0.22);
+            carriage.rotation.y = -Math.PI / 3;
+            carriage.position.x = houseBox.max.x + 2.8;
+            carriage.position.z = houseBox.max.z * 0.45;
+            scene.add(carriage);
+          },
+          undefined,
+          () => {}
+        );
+      },
+      (xhr) => {
+        if (xhr.lengthComputable && xhr.total > 0) {
+          setPreloaderProgress((xhr.loaded / xhr.total) * 100, 'Descargando arquitectura 3D (casa-exterior.glb)…');
+        } else {
+          const mb = (xhr.loaded / 1048576).toFixed(1);
+          setPreloaderProgress(Math.min(92, xhr.loaded / 350000), `Cargando modelo patrimonial (${mb} MB)…`);
+        }
+      },
+      (err) => {
+        console.warn('Usando palacio de respaldo:', err);
+        const fallback = createFallbackPalace();
+        normalizeAndCenterModel(fallback, HOUSE_TARGET_SIZE);
+        scene.add(fallback);
+        openPreloaderCurtain();
+      }
+    );
+
+    // ============================================================
+    // SISTEMA DE 3 ESTADOS DE CÁMARA + 4 PARADAS DEL RECORRIDO GUIADO
+    // ============================================================
+    const TOUR_STOPS = [
+      {
+        step: 'ESTACIÓN I DE IV · FACHADA PRINCIPAL',
+        coords: 'SECTOR MIRAFLORES · UNCÍA',
+        title: 'La Fachada Mostaza y la Promesa a Albina',
+        desc: 'Levantada entre 1899 y 1905 tras el hallazgo de la gran veta en La Salvadora. Cumplió la promesa que Simón I. Patiño hizo a su esposa Albina Rodríguez Ocampo cuando ella vendió sus joyas en Oruro.',
+        camPos: new THREE.Vector3(0.5, 4.2, 13.5),
+        lookAt: new THREE.Vector3(0, 2.3, 0),
+        hotspotPos: new THREE.Vector3(0, 2.6, 4.8),
+        shortLabel: 'I. Fachada Principal'
+      },
+      {
+        step: 'ESTACIÓN II DE IV · TORREÓN Y MIRADOR',
+        coords: 'ESTILO ESCOCÉS · PRINCIPIOS S. XX',
+        title: 'La Torre de Estilo Escocés y Techos Venecianos',
+        desc: 'Coronando el inmueble se alza su emblemática torre escocesa. En su interior, los techos lucían cristales italianos traídos de Venecia con murales románticos de sus canales.',
+        camPos: new THREE.Vector3(10.5, 6.8, 9.5),
+        lookAt: new THREE.Vector3(1.5, 3.4, 0.5),
+        hotspotPos: new THREE.Vector3(3.2, 4.8, 2.2),
+        shortLabel: 'II. Torre Escocesa'
+      },
+      {
+        step: 'ESTACIÓN III DE IV · PATIO DEL CARRUAJE',
+        coords: 'MANUFACTURA INGLESA · AÑO 1870',
+        title: 'El Carruaje Inglés de 1870 y la Capilla',
+        desc: 'Junto al ala lateral y la capilla privada descansa el carruaje inglés original de 1870 en el que la familia Patiño recorría las calles de Uncía antes del ferrocarril Machacamarca–Uncía.',
+        camPos: new THREE.Vector3(11.8, 3.2, 5.2),
+        lookAt: new THREE.Vector3(5.8, 1.4, 2.2),
+        hotspotPos: new THREE.Vector3(6.2, 1.6, 2.4),
+        shortLabel: 'III. Carruaje de 1870'
+      },
+      {
+        step: 'ESTACIÓN IV DE IV · PERSPECTIVA INDUSTRIAL',
+        coords: 'INGENIO MIRAFLORES · MOTORES 1901',
+        title: 'Galpones de los Motores Gemelos del Titanic',
+        desc: 'Desde este ángulo del palacio se divisaban las oficinas administrativas y los galpones que alojaban los motores diésel alemanes de 1901, cuyos dos gemelos naufragaron en el Titanic en 1912.',
+        camPos: new THREE.Vector3(-12.5, 5.8, -10.5),
+        lookAt: new THREE.Vector3(0, 2.2, 0),
+        hotspotPos: new THREE.Vector3(-4.5, 3.0, -3.5),
+        shortLabel: 'IV. Vista Miraflores'
+      }
+    ];
+
+    // Crear marcadores (Sellos Dorados 3D -> 2D) sobre el modelo
+    const hotspotElements = TOUR_STOPS.map((stop, index) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'seal-hotspot';
+      btn.innerHTML = `<span>${index + 1}</span><span class="seal-tooltip">${stop.shortLabel}</span>`;
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        focusHotspotStop(index);
+      });
+      hotspotsLayer.appendChild(btn);
+      return { btn, worldPos: stop.hotspotPos.clone() };
     });
 
-    // 5. Efecto Tilt 3D y Spotlight en tarjetas del Bento Grid
-    document.querySelectorAll('[data-tilt]').forEach((card) => {
+    // Variables de estado de cámara
+    let currentState = 'PRESENTATION'; // 'PRESENTATION' | 'TOUR' | 'FREE'
+    let orbitAngle = 0.65;
+    let currentStopIndex = 0;
+    let tourStepTimer = 0;
+    const TOUR_HOLD_DURATION = 5.5; // segundos por estación en modo automático
+
+    // Interpolación suave de cámara (Tween sin librerías externas)
+    let camTween = null;
+    function animateCameraTo(targetPos, targetLook, duration = 1.8, onComplete = null) {
+      camTween = {
+        startPos: camera.position.clone(),
+        startLook: controls.target.clone(),
+        endPos: targetPos.clone(),
+        endLook: targetLook.clone(),
+        elapsed: 0,
+        duration,
+        onComplete
+      };
+    }
+
+    function updateDockActiveButton(mode) {
+      [dockBtnPresent, dockBtnTour, dockBtnFree].forEach((b) => b.classList.remove('active'));
+      if (mode === 'PRESENTATION') dockBtnPresent.classList.add('active');
+      if (mode === 'TOUR') dockBtnTour.classList.add('active');
+      if (mode === 'FREE') dockBtnFree.classList.add('active');
+    }
+
+    // --- Activar ESTADO 1: Presentación General ---
+    function setPresentationMode() {
+      currentState = 'PRESENTATION';
+      controls.enabled = false;
+      presentationOverlay.classList.remove('hidden-state');
+      tourPlaque.classList.remove('active');
+      freeRoamHint.classList.remove('visible');
+      updateDockActiveButton('PRESENTATION');
+
+      const destPos = new THREE.Vector3(Math.cos(orbitAngle) * 16.5, 6.2, Math.sin(orbitAngle) * 16.5);
+      animateCameraTo(destPos, new THREE.Vector3(0, 2.2, 0), 1.6);
+    }
+
+    // --- Activar ESTADO 2: Recorrido Guiado Cinemático ---
+    function startGuidedTour(startIndex = 0) {
+      currentState = 'TOUR';
+      controls.enabled = false;
+      presentationOverlay.classList.add('hidden-state');
+      freeRoamHint.classList.remove('visible');
+      updateDockActiveButton('TOUR');
+      goToTourStop(startIndex);
+    }
+
+    function goToTourStop(index) {
+      if (index >= TOUR_STOPS.length) {
+        // Al finalizar las 4 paradas, pasa automáticamente al Estado 3 (Exploración Libre)
+        enableFreeExploration();
+        return;
+      }
+      if (index < 0) index = 0;
+
+      currentStopIndex = index;
+      tourStepTimer = 0;
+      const stop = TOUR_STOPS[index];
+
+      plaqueStep.textContent = stop.step;
+      plaqueCoords.textContent = stop.coords;
+      plaqueTitle.textContent = stop.title;
+      plaqueDesc.textContent = stop.desc;
+      tourProgressFill.style.width = '0%';
+      tourPlaque.classList.add('active');
+
+      animateCameraTo(stop.camPos, stop.lookAt, 1.9);
+    }
+
+    // --- Activar ESTADO 3: Exploración Libre del Exterior ---
+    function enableFreeExploration(keepPlaque = false) {
+      currentState = 'FREE';
+      presentationOverlay.classList.add('hidden-state');
+      if (!keepPlaque) tourPlaque.classList.remove('active');
+      freeRoamHint.classList.add('visible');
+      updateDockActiveButton('FREE');
+
+      animateCameraTo(
+        new THREE.Vector3(11.5, 5.2, 13.5),
+        new THREE.Vector3(0, 2.0, 0),
+        1.4,
+        () => { controls.enabled = true; }
+      );
+      controls.enabled = true;
+    }
+
+    // Acercarse a un sello dorado (Hotspot) en el exterior
+    function focusHotspotStop(index) {
+      currentState = 'FREE';
+      presentationOverlay.classList.add('hidden-state');
+      freeRoamHint.classList.add('visible');
+      updateDockActiveButton('FREE');
+
+      const stop = TOUR_STOPS[index];
+      plaqueStep.textContent = stop.step;
+      plaqueCoords.textContent = stop.coords;
+      plaqueTitle.textContent = stop.title;
+      plaqueDesc.textContent = stop.desc;
+      tourProgressFill.style.width = '100%';
+      tourPlaque.classList.add('active');
+
+      controls.enabled = false;
+      animateCameraTo(stop.camPos, stop.lookAt, 1.5, () => {
+        controls.enabled = true;
+      });
+    }
+
+    // Eventos de botones de cámara
+    document.getElementById('btn-start-tour').addEventListener('click', () => startGuidedTour(0));
+    document.getElementById('btn-free-explore').addEventListener('click', () => enableFreeExploration(false));
+    document.getElementById('btn-next-stop').addEventListener('click', () => goToTourStop(currentStopIndex + 1));
+    document.getElementById('btn-prev-stop').addEventListener('click', () => goToTourStop(currentStopIndex - 1));
+    document.getElementById('btn-skip-tour').addEventListener('click', () => enableFreeExploration(false));
+
+    dockBtnPresent.addEventListener('click', setPresentationMode);
+    dockBtnTour.addEventListener('click', () => startGuidedTour(0));
+    dockBtnFree.addEventListener('click', () => enableFreeExploration(false));
+
+    // Teclas WASD / Flechas para desplazamiento en Exploración Libre
+    const keyState = { w: false, a: false, s: false, d: false };
+    window.addEventListener('keydown', (e) => {
+      if (currentState !== 'FREE') return;
+      if (e.code === 'KeyW' || e.code === 'ArrowUp') keyState.w = true;
+      if (e.code === 'KeyS' || e.code === 'ArrowDown') keyState.s = true;
+      if (e.code === 'KeyA' || e.code === 'ArrowLeft') keyState.a = true;
+      if (e.code === 'KeyD' || e.code === 'ArrowRight') keyState.d = true;
+    });
+    window.addEventListener('keyup', (e) => {
+      if (e.code === 'KeyW' || e.code === 'ArrowUp') keyState.w = false;
+      if (e.code === 'KeyS' || e.code === 'ArrowDown') keyState.s = false;
+      if (e.code === 'KeyA' || e.code === 'ArrowLeft') keyState.a = false;
+      if (e.code === 'KeyD' || e.code === 'ArrowRight') keyState.d = false;
+    });
+
+    // ============================================================
+    // SELECTOR DE ATMÓSFERA DE ÉPOCA (DÍA, ATARDECER SEPIA, NOCHE DE FAROLES)
+    // ============================================================
+    const weatherBtns = document.querySelectorAll('[data-weather]');
+    weatherBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        weatherBtns.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        const mode = btn.dataset.weather;
+
+        if (mode === 'day') {
+          scene.background = makeSkyGradient('#2B3540', '#B89360');
+          scene.fog.color.setHex(0x6e583f);
+          ambientLight.color.setHex(0xffe8c2);
+          ambientLight.intensity = 0.65;
+          sunLight.color.setHex(0xffdfad);
+          sunLight.intensity = 2.2;
+          sunLight.position.set(14, 18, 10);
+          lanternLights.forEach((l) => { l.intensity = 0; l.userData.bulb.visible = false; });
+        } else if (mode === 'sunset') {
+          scene.background = makeSkyGradient('#2A1617', '#C86D3B');
+          scene.fog.color.setHex(0x593320);
+          ambientLight.color.setHex(0xffb078);
+          ambientLight.intensity = 0.5;
+          sunLight.color.setHex(0xff7b38);
+          sunLight.intensity = 2.5;
+          sunLight.position.set(-16, 7, 11);
+          lanternLights.forEach((l) => { l.intensity = 2.5; l.userData.bulb.visible = true; });
+        } else if (mode === 'night') {
+          scene.background = makeSkyGradient('#06080E', '#1A1822');
+          scene.fog.color.setHex(0x0d0c12);
+          ambientLight.color.setHex(0x405070);
+          ambientLight.intensity = 0.32;
+          sunLight.color.setHex(0x6c82a8);
+          sunLight.intensity = 0.35;
+          sunLight.position.set(8, 18, -10);
+          lanternLights.forEach((l) => { l.intensity = 9.5; l.userData.bulb.visible = true; });
+        }
+      });
+    });
+
+    function makeSkyGradient(topHex, bottomHex) {
+      const c = document.createElement('canvas');
+      c.width = 8;
+      c.height = 256;
+      const ctx = c.getContext('2d');
+      const g = ctx.createLinearGradient(0, 0, 0, 256);
+      g.addColorStop(0, topHex);
+      g.addColorStop(1, bottomHex);
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, 8, 256);
+      const tex = new THREE.CanvasTexture(c);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      return tex;
+    }
+
+    // ============================================================
+    // BUCLE PRINCIPAL DE ANIMACIÓN Y PROYECCIÓN 2D DE HOTSPOTS
+    // ============================================================
+    const clock = new THREE.Clock();
+    const projVec = new THREE.Vector3();
+    const forwardVec = new THREE.Vector3();
+    const rightVec = new THREE.Vector3();
+
+    function easeInOutCubic(t) {
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = Math.min(clock.getDelta(), 0.1);
+
+      // 1. Si hay una transición de cámara activa
+      if (camTween) {
+        camTween.elapsed += dt;
+        const t = Math.min(1, camTween.elapsed / camTween.duration);
+        const k = easeInOutCubic(t);
+
+        camera.position.lerpVectors(camTween.startPos, camTween.endPos, k);
+        controls.target.lerpVectors(camTween.startLook, camTween.endLook, k);
+        camera.lookAt(controls.target);
+
+        if (t >= 1) {
+          const cb = camTween.onComplete;
+          camTween = null;
+          if (cb) cb();
+        }
+      } else if (currentState === 'PRESENTATION') {
+        // Estado 1: Órbita lenta y majestuosa automática
+        orbitAngle += dt * 0.14;
+        camera.position.x = Math.cos(orbitAngle) * 16.5;
+        camera.position.z = Math.sin(orbitAngle) * 16.5;
+        camera.position.y = 6.2 + Math.sin(orbitAngle * 1.5) * 0.6;
+        camera.lookAt(0, 2.2, 0);
+      } else if (currentState === 'TOUR') {
+        // Estado 2: Temporizador de cada parada del recorrido guiado
+        tourStepTimer += dt;
+        const pct = Math.min(100, (tourStepTimer / TOUR_HOLD_DURATION) * 100);
+        tourProgressFill.style.width = pct + '%';
+
+        // Leve movimiento cinematográfico mientras explica la estación
+        camera.position.x += Math.sin(clock.elapsedTime * 0.6) * 0.003;
+        camera.lookAt(controls.target);
+        
+        if (tourStepTimer >= TOUR_HOLD_DURATION) {
+          goToTourStop(currentStopIndex + 1);
+        }
+      } else if (currentState === 'FREE') {
+        // Estado 3: Exploración libre con OrbitControls + WASD
+        const moveSpeed = 7.5 * dt;
+        camera.getWorldDirection(forwardVec);
+        forwardVec.y = 0;
+        forwardVec.normalize();
+        rightVec.crossVectors(forwardVec, camera.up).normalize();
+
+        if (keyState.w) {
+          camera.position.addScaledVector(forwardVec, moveSpeed);
+          controls.target.addScaledVector(forwardVec, moveSpeed);
+        }
+        if (keyState.s) {
+          camera.position.addScaledVector(forwardVec, -moveSpeed);
+          controls.target.addScaledVector(forwardVec, -moveSpeed);
+        }
+        if (keyState.d) {
+          camera.position.addScaledVector(rightVec, moveSpeed);
+          controls.target.addScaledVector(rightVec, moveSpeed);
+        }
+        if (keyState.a) {
+          camera.position.addScaledVector(rightVec, -moveSpeed);
+          controls.target.addScaledVector(rightVec, -moveSpeed);
+        }
+        controls.update();
+      }
+
+      // 2. Proyectar coordenadas 3D de los Sellos Dorados (Hotspots) a pantalla 2D
+      const showHotspots = currentState !== 'PRESENTATION';
+      hotspotElements.forEach(({ btn, worldPos }) => {
+        if (!showHotspots) {
+          btn.style.opacity = '0';
+          btn.style.pointerEvents = 'none';
+          return;
+        }
+        projVec.copy(worldPos).project(camera);
+        if (projVec.z > 1) {
+          btn.style.opacity = '0';
+          btn.style.pointerEvents = 'none';
+        } else {
+          const x = (projVec.x * 0.5 + 0.5) * window.innerWidth;
+          const y = (-(projVec.y * 0.5) + 0.5) * window.innerHeight;
+          btn.style.left = `${x}px`;
+          btn.style.top = `${y}px`;
+          btn.style.opacity = '1';
+          btn.style.pointerEvents = 'auto';
+        }
+      });
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // ============================================================
+    // INTERACCIONES DE LAS SECCIONES INFERIORES (SLIDER, TILT, TIMELINE)
+    // ============================================================
+
+    // 1. Comparador Before/After (Plano vs. Restauración)
+    const compFrame = document.getElementById('comparator-frame');
+    const compBefore = document.getElementById('comp-before');
+    const compBeforeImg = document.getElementById('comp-before-img');
+    const compHandle = document.getElementById('comp-handle');
+    let isDraggingComp = false;
+
+    function syncComparatorWidth() {
+      if (compFrame && compBeforeImg) {
+        compBeforeImg.style.width = compFrame.clientWidth + 'px';
+      }
+    }
+    window.addEventListener('resize', syncComparatorWidth);
+    syncComparatorWidth();
+
+    function moveComparator(clientX) {
+      const rect = compFrame.getBoundingClientRect();
+      const pos = Math.max(4, Math.min(96, ((clientX - rect.left) / rect.width) * 100));
+      compBefore.style.width = pos + '%';
+      compHandle.style.left = pos + '%';
+    }
+
+    compFrame.addEventListener('mousedown', (e) => { isDraggingComp = true; moveComparator(e.clientX); });
+    window.addEventListener('mousemove', (e) => { if (isDraggingComp) moveComparator(e.clientX); });
+    window.addEventListener('mouseup', () => { isDraggingComp = false; });
+
+    compFrame.addEventListener('touchstart', (e) => {
+      isDraggingComp = true;
+      moveComparator(e.touches[0].clientX);
+    }, { passive: true });
+    window.addEventListener('touchmove', (e) => {
+      if (isDraggingComp) moveComparator(e.touches[0].clientX);
+    }, { passive: true });
+    window.addEventListener('touchend', () => { isDraggingComp = false; });
+
+    // 2. Efecto Tilt 3D y Brillo de Vela en Tarjetas de Arquitectura
+    document.querySelectorAll('[data-brass-tilt]').forEach((card) => {
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        const rotY = ((x / rect.width) - 0.5) * 14;
-        const rotX = ((y / rect.height) - 0.5) * -14;
+        const rotY = ((x / rect.width) - 0.5) * 10;
+        const rotX = ((y / rect.height) - 0.5) * -10;
 
-        card.style.setProperty('--mouse-x', `${x}px`);
-        card.style.setProperty('--mouse-y', `${y}px`);
-        card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.015, 1.015, 1.015)`;
+        card.style.setProperty('--candle-x', `${x}px`);
+        card.style.setProperty('--candle-y', `${y}px`);
+        card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-3px)`;
       });
-
       card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
       });
     });
 
-    // 6. IntersectionObserver para Reveal y Contadores Animados
-    const countersStarted = new WeakSet();
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          entry.target.querySelectorAll('.counter').forEach((counter) => {
-            if (countersStarted.has(counter)) return;
-            countersStarted.add(counter);
-            const target = parseInt(counter.dataset.target, 10);
-            let current = 0;
-            const step = Math.max(1, Math.ceil(target / 55));
-            const update = () => {
-              current = Math.min(current + step, target);
-              counter.textContent = current;
-              if (current < target) requestAnimationFrame(update);
-            };
-            update();
-          });
-        }
-      });
-    }, { threshold: 0.18 });
-
-    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-
-    // 7. Selector Interactivo de Variantes / Modos (Color Theme Switcher)
-    const modeBtns = document.querySelectorAll('.mode-btn');
-    const modeTitle = document.getElementById('mode-title');
-    const modeDesc = document.getElementById('mode-desc');
-
-    modeBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        modeBtns.forEach((b) => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const root = document.documentElement;
-        root.style.setProperty('--accent-primary', btn.dataset.primary);
-        root.style.setProperty('--accent-secondary', btn.dataset.secondary);
-        root.style.setProperty('--accent-rgb', btn.dataset.rgb);
-        root.style.setProperty('--accent-sec-rgb', btn.dataset.secRgb);
-
-        accentRGB = btn.dataset.rgb;
-        secRGB = btn.dataset.secRgb;
-
-        modeTitle.textContent = btn.dataset.title;
-        modeDesc.textContent = btn.dataset.desc;
-      });
-    });
-
-    // 8. Hotspots Interactivos del Desglose Técnico
-    const hotspots = document.querySelectorAll('.bp-hotspot');
-    const bpTitle = document.getElementById('bp-title');
-    const bpDesc = document.getElementById('bp-desc');
-    const bpBar1 = document.getElementById('bp-bar-1');
-    const bpBar2 = document.getElementById('bp-bar-2');
-    const bpBar3 = document.getElementById('bp-bar-3');
-    const bpVal1 = document.getElementById('bp-val-1');
-    const bpVal2 = document.getElementById('bp-val-2');
-    const bpVal3 = document.getElementById('bp-val-3');
-
-    hotspots.forEach((spot) => {
-      const activateSpot = () => {
-        hotspots.forEach((s) => s.classList.remove('active'));
-        spot.classList.add('active');
-        bpTitle.textContent = spot.dataset.title;
-        bpDesc.textContent = spot.dataset.desc;
-
-        bpBar1.style.width = spot.dataset.b1 + '%';
-        bpVal1.textContent = spot.dataset.b1 + '%';
-        bpBar2.style.width = spot.dataset.b2 + '%';
-        bpVal2.textContent = spot.dataset.b2 + '%';
-        bpBar3.style.width = spot.dataset.b3 + '%';
-        bpVal3.textContent = spot.dataset.b3 + '%';
-      };
-      spot.addEventListener('click', activateSpot);
-      spot.addEventListener('mouseenter', activateSpot);
-    });
-
-    // 9. Acordeón Fluido de Preguntas Frecuentes
-    document.querySelectorAll('.faq-trigger').forEach((trigger) => {
-      trigger.addEventListener('click', () => {
-        const item = trigger.parentElement;
-        const content = item.querySelector('.faq-content');
-        const isOpen = item.classList.contains('open');
-
-        document.querySelectorAll('.faq-item').forEach((other) => {
-          other.classList.remove('open');
-          other.querySelector('.faq-content').style.maxHeight = null;
-        });
-
-        if (!isOpen) {
-          item.classList.add('open');
-          content.style.maxHeight = content.scrollHeight + 'px';
-        }
-      });
-    });
+    // 3. Progreso de la Línea del Tiempo al hacer Scroll
+    const timelineEl = document.getElementById('chronicle-timeline');
+    const spineFill = document.getElementById('timeline-spine-fill');
+    window.addEventListener('scroll', () => {
+      if (!timelineEl || !spineFill) return;
+      const rect = timelineEl.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const progress = Math.max(0, Math.min(1, (vh * 0.65 - rect.top) / rect.height));
+      spineFill.style.height = (progress * 100) + '%';
+    }, { passive: true });
   </script>
 </body>
 </html>

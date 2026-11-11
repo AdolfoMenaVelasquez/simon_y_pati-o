@@ -1,12 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Palacio de Simón I. Patiño — Uncía · Edificio Patrimonial (1899–1905)</title>
-  <meta name="description" content="Explora en 3D el exterior del Palacio de Simón I. Patiño en Uncía, Potosí. Recorrido guiado cinematográfico, exploración libre y archivo histórico de principios del siglo XX." />
+  <title>Palacio de SimÃ³n I. PatiÃ±o â€” UncÃ­a Â· Edificio Patrimonial (1899â€“1905)</title>
+  <meta name="description" content="Explora en 3D el exterior del Palacio de SimÃ³n I. PatiÃ±o en UncÃ­a, PotosÃ­. Recorrido por la entrada, la torre escocesa, la Planta DiÃ©sel Miraflores y vista general." />
 
-  <!-- Tipografías Clásicas de Época: Cinzel, Playfair Display, Cormorant Garamond y Libre Baskerville -->
+  <!-- TipografÃ­as ClÃ¡sicas de Ã‰poca -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -23,19 +23,18 @@
 
   <style>
     /* ============================================================
-       DIRECCIÓN DE ARTE: ESTÉTICA DE ÉPOCA / VINTAGE PATRIMONIAL
+       DIRECCIÃ“N DE ARTE: ESTÃ‰TICA DE Ã‰POCA / VINTAGE PATRIMONIAL
        ============================================================ */
     :root {
       --bg-mahogany: #120D08;
       --bg-charcoal: #1C150E;
       --surface-leather: #261C14;
       --surface-parchment: rgba(244, 236, 216, 0.07);
-      --surface-plaque: rgba(24, 17, 11, 0.92);
+      --surface-plaque: rgba(24, 17, 11, 0.94);
 
       --gold-bright: #DFC07A;
       --gold-vintage: #C5A059;
       --bronze-burnished: #9A7B3E;
-      --bronze-dark: #5C4622;
 
       --text-ivory: #F5EFE6;
       --text-sepia: #D0C4B0;
@@ -47,15 +46,10 @@
       --font-label: 'Libre Baskerville', serif;
 
       --border-double: 3px double rgba(197, 160, 89, 0.45);
-      --border-fine: 1px solid rgba(197, 160, 89, 0.32);
       --ease-vintage: cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html {
       scroll-behavior: smooth;
@@ -71,117 +65,84 @@
       line-height: 1.6;
     }
 
-    ::selection {
-      background: var(--gold-vintage);
-      color: var(--bg-mahogany);
-    }
+    ::selection { background: var(--gold-vintage); color: var(--bg-mahogany); }
+    a { color: inherit; text-decoration: none; }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    /* ============================================================
-       OVERLAY GLOBAL: GRANO DE PELÍCULA SEPIA Y VIÑETA CLÁSICA
-       ============================================================ */
+    /* Grano de pelÃ­cula sepia y viÃ±eta */
     .vintage-film-overlay {
       position: fixed;
       inset: 0;
       pointer-events: none;
       z-index: 900;
       background:
-        radial-gradient(circle at 50% 50%, transparent 55%, rgba(8, 5, 3, 0.72) 100%),
+        radial-gradient(circle at 50% 50%, transparent 58%, rgba(8, 5, 3, 0.68) 100%),
         repeating-linear-gradient(0deg, rgba(197, 160, 89, 0.012) 0px, rgba(197, 160, 89, 0.012) 1px, transparent 1px, transparent 3px);
     }
 
-    /* ============================================================
-       PRE-LOADER DE ÉPOCA (CONECTADO AL CARGADOR GLB REAL)
-       ============================================================ */
+    /* Pre-loader de Ã‰poca */
     #vintage-preloader {
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background:
-        radial-gradient(circle at 50% 45%, #261C14 0%, #120D08 75%);
+      background: radial-gradient(circle at 50% 45%, #261C14 0%, #120D08 75%);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       padding: 24px;
       border: 12px double rgba(197, 160, 89, 0.25);
-      transition: opacity 1.1s var(--ease-vintage), transform 1.1s var(--ease-vintage), visibility 1.1s;
+      transition: opacity 0.9s var(--ease-vintage), visibility 0.9s;
     }
-
     #vintage-preloader.curtain-open {
       opacity: 0;
-      transform: scale(1.03);
       visibility: hidden;
       pointer-events: none;
     }
-
     .preloader-crest {
-      width: 96px;
-      height: 96px;
+      width: 90px; height: 90px;
       border-radius: 50%;
       border: var(--border-double);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 24px;
-      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
       background: rgba(18, 13, 8, 0.8);
-      box-shadow: 0 0 40px rgba(197, 160, 89, 0.18);
     }
-
-    .preloader-crest svg {
-      width: 52px;
-      height: 52px;
-      stroke: var(--gold-vintage);
-      fill: none;
-    }
-
+    .preloader-crest svg { width: 48px; height: 48px; stroke: var(--gold-vintage); fill: none; }
     .preloader-eyebrow {
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       letter-spacing: 0.24em;
       color: var(--gold-vintage);
       margin-bottom: 10px;
       text-align: center;
     }
-
     .preloader-title {
       font-family: var(--font-monumental);
-      font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+      font-size: clamp(1.5rem, 3.4vw, 2.4rem);
       color: var(--text-ivory);
       letter-spacing: 0.08em;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
       text-align: center;
     }
-
     .preloader-pct {
       font-family: var(--font-editorial);
       font-style: italic;
-      font-size: 2.8rem;
+      font-size: 2.6rem;
       color: var(--gold-bright);
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
-
     .preloader-track {
-      width: min(340px, 78vw);
+      width: min(320px, 78vw);
       height: 6px;
       border: 1px solid var(--bronze-burnished);
       padding: 1px;
       background: rgba(0, 0, 0, 0.5);
     }
-
     .preloader-fill {
-      height: 100%;
-      width: 0%;
+      height: 100%; width: 0%;
       background: linear-gradient(90deg, var(--bronze-burnished), var(--gold-bright));
       transition: width 0.2s ease;
     }
-
     .preloader-status {
       margin-top: 12px;
       font-family: var(--font-chronicle);
@@ -190,133 +151,91 @@
       color: var(--text-sepia);
     }
 
-    /* ============================================================
-       NAVEGACIÓN SUPERIOR ORNAMENTAL
-       ============================================================ */
+    /* NavegaciÃ³n Superior Ornamental */
     .vintage-nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 74px;
       z-index: 200;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 clamp(18px, 4vw, 48px);
-      background: linear-gradient(180deg, rgba(18, 13, 8, 0.95) 0%, rgba(18, 13, 8, 0.72) 80%, transparent 100%);
+      background: linear-gradient(180deg, rgba(18, 13, 8, 0.95) 0%, rgba(18, 13, 8, 0.75) 80%, transparent 100%);
       border-bottom: 1px solid rgba(197, 160, 89, 0.25);
     }
-
     .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
+      display: flex; align-items: center; gap: 12px;
       font-family: var(--font-monumental);
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       letter-spacing: 0.1em;
       color: var(--text-ivory);
     }
-
     .nav-brand-emblem {
-      width: 30px;
-      height: 30px;
+      width: 30px; height: 30px;
       border: 1px solid var(--gold-vintage);
       transform: rotate(45deg);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.72rem;
-      color: var(--gold-vintage);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; color: var(--gold-vintage);
     }
-
-    .nav-brand-emblem span {
-      transform: rotate(-45deg);
-      font-weight: 700;
-    }
-
+    .nav-brand-emblem span { transform: rotate(-45deg); font-weight: 700; }
     .nav-links {
       list-style: none;
-      display: flex;
-      align-items: center;
-      gap: clamp(16px, 2.5vw, 32px);
+      display: flex; align-items: center;
+      gap: clamp(14px, 2.2vw, 28px);
     }
-
     .nav-links a {
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.76rem;
-      letter-spacing: 0.16em;
+      font-size: 0.74rem;
+      letter-spacing: 0.15em;
       color: var(--text-sepia);
       padding-bottom: 4px;
       border-bottom: 1px solid transparent;
       transition: color 0.25s ease, border-color 0.25s ease;
     }
-
-    .nav-links a:hover,
-    .nav-links a.active {
+    .nav-links a:hover, .nav-links a.active {
       color: var(--gold-bright);
       border-bottom-color: var(--gold-vintage);
     }
+    .nav-actions { display: flex; gap: 10px; align-items: center; }
 
-    .nav-actions {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    /* ============================================================
-       BOTONES CLÁSICOS CON FILIGRANA EN ESQUINAS
-       ============================================================ */
+    /* Botones de Ã‰poca */
     .btn-vintage {
       position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+      display: inline-flex; align-items: center; justify-content: center;
+      gap: 8px;
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.76rem;
-      letter-spacing: 0.18em;
-      padding: 13px 26px;
+      font-size: 0.74rem;
+      letter-spacing: 0.16em;
+      padding: 12px 22px;
       color: var(--text-ivory);
       background: rgba(38, 28, 20, 0.88);
       border: var(--border-double);
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       text-transform: uppercase;
     }
-
     .btn-vintage:hover {
-      background: rgba(197, 160, 89, 0.18);
+      background: rgba(197, 160, 89, 0.2);
       border-color: var(--gold-bright);
       color: var(--gold-bright);
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
     }
-
     .btn-vintage-gold {
       background: linear-gradient(180deg, #D5B269 0%, #9A7B3E 100%);
       color: #120D08;
       font-weight: 700;
       border: 3px double #F5EFE6;
-      box-shadow: 0 8px 28px rgba(197, 160, 89, 0.28);
     }
-
     .btn-vintage-gold:hover {
       background: linear-gradient(180deg, #E8CA88 0%, #B3904B 100%);
       color: #120D08;
-      border-color: #FFFFFF;
-      transform: translateY(-2px);
     }
-
-    .btn-sm {
-      padding: 9px 16px;
-      font-size: 0.68rem;
-      letter-spacing: 0.14em;
-    }
+    .btn-sm { padding: 8px 14px; font-size: 0.66rem; letter-spacing: 0.13em; }
 
     /* ============================================================
-       HERO 3D VIEWPORT (100VW, 100VH) + 3 ESTADOS DE CÁMARA
+       HERO 3D VIEWPORT (100VW, 100VH)
        ============================================================ */
     .hero-stage-3d {
       position: relative;
@@ -329,8 +248,7 @@
     #exterior-canvas-container {
       position: absolute;
       inset: 0;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       z-index: 1;
     }
 
@@ -341,368 +259,342 @@
       outline: none;
     }
 
-    /* Marco Ornamental Perimetral del Visor */
     .stage-ornamental-frame {
       position: absolute;
       inset: 16px;
       top: 82px;
-      border: 1px solid rgba(197, 160, 89, 0.24);
+      border: 1px solid rgba(197, 160, 89, 0.22);
       pointer-events: none;
       z-index: 5;
     }
-
     .corner-filigree {
       position: absolute;
-      width: 28px;
-      height: 28px;
+      width: 26px; height: 26px;
       stroke: var(--gold-vintage);
       fill: none;
       opacity: 0.8;
+      pointer-events: none;
     }
     .cf-tl { top: 4px; left: 4px; }
     .cf-tr { top: 4px; right: 4px; transform: scaleX(-1); }
     .cf-bl { bottom: 4px; left: 4px; transform: scaleY(-1); }
     .cf-br { bottom: 4px; right: 4px; transform: scale(-1, -1); }
 
-    /* ------------------------------------------------------------
-       ESTADO 1: PRESENTACIÓN GENERAL (SPLIT LAYOUT)
-       ------------------------------------------------------------ */
-    .state-presentation-overlay {
+    /* Aviso superior de controles libres */
+    .free-roam-hint {
       position: absolute;
-      inset: 0;
-      z-index: 10;
+      top: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 18;
+      background: rgba(18, 13, 8, 0.86);
+      border: 1px solid rgba(197, 160, 89, 0.4);
+      padding: 6px 16px;
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--gold-bright);
       pointer-events: none;
-      display: grid;
-      grid-template-columns: minmax(280px, 430px) 1fr minmax(280px, 410px);
-      align-items: center;
-      padding: 90px clamp(24px, 4.5vw, 64px) 100px;
-      background:
-        linear-gradient(90deg, rgba(18,13,8,0.82) 0%, transparent 32%, transparent 68%, rgba(18,13,8,0.82) 100%),
-        linear-gradient(0deg, rgba(18,13,8,0.85) 0%, transparent 28%);
-      transition: opacity 0.75s var(--ease-vintage), transform 0.75s var(--ease-vintage);
+      text-align: center;
     }
 
-    .state-presentation-overlay.hidden-state {
+    /* PresentaciÃ³n Lateral Izquierda */
+    .hero-left-banner {
+      position: absolute;
+      left: clamp(26px, 4.5vw, 60px);
+      bottom: 112px;
+      max-width: 450px;
+      z-index: 14;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(18, 13, 8, 0.86) 0%, rgba(18, 13, 8, 0.48) 85%, transparent 100%);
+      padding: 22px 26px;
+      border-left: 3px double var(--gold-vintage);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+    }
+    .hero-left-banner.dimmed {
       opacity: 0;
-      transform: scale(0.98);
+      transform: translateY(12px);
       pointer-events: none !important;
     }
-
-    .state-presentation-overlay.hidden-state * {
-      pointer-events: none !important;
-    }
-
-    .split-col-left {
-      pointer-events: auto;
-      padding: 28px;
-      background: rgba(18, 13, 8, 0.68);
-      border: var(--border-double);
-      backdrop-filter: blur(6px);
-      position: relative;
-    }
-
-    .era-badge {
-      display: inline-block;
+    .hero-left-banner * { pointer-events: none; }
+    .hero-left-banner a,
+    .hero-left-banner button { pointer-events: auto; }
+    .hero-left-banner .eyebrow {
       font-family: var(--font-label);
       font-variant: small-caps;
       font-size: 0.72rem;
       letter-spacing: 0.2em;
-      color: var(--gold-vintage);
-      border-bottom: 1px solid rgba(197, 160, 89, 0.4);
-      padding-bottom: 6px;
-      margin-bottom: 14px;
-    }
-
-    .split-col-left h1 {
-      font-family: var(--font-monumental);
-      font-size: clamp(2rem, 3.4vw, 3.2rem);
-      font-weight: 700;
-      line-height: 1.08;
-      color: var(--text-ivory);
-      margin-bottom: 14px;
-      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.9);
-    }
-
-    .split-col-left h1 span {
-      display: block;
-      font-family: var(--font-editorial);
-      font-style: italic;
-      font-weight: 400;
-      font-size: 0.65em;
       color: var(--gold-bright);
-      margin-top: 6px;
+      margin-bottom: 6px;
+      display: block;
     }
-
-    .split-col-left .lema {
-      font-size: 1.15rem;
+    .hero-left-banner h1 {
+      font-family: var(--font-monumental);
+      font-size: clamp(2rem, 4vw, 3.1rem);
+      line-height: 1.06;
+      color: var(--text-ivory);
+      margin-bottom: 10px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95);
+    }
+    .hero-left-banner p {
+      font-size: 1.08rem;
       color: var(--text-sepia);
-      margin-bottom: 22px;
-      font-style: italic;
+      line-height: 1.55;
+      margin-bottom: 16px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
     }
-
-    .split-col-right {
-      grid-column: 3;
-      pointer-events: auto;
-      padding: 28px;
-      background: rgba(18, 13, 8, 0.68);
-      border: var(--border-double);
-      backdrop-filter: blur(6px);
-      text-align: right;
-    }
-
-    .split-col-right h2 {
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-size: 0.82rem;
-      letter-spacing: 0.2em;
-      color: var(--gold-vintage);
-      margin-bottom: 12px;
-    }
-
-    .split-col-right p {
-      font-size: 1.12rem;
-      color: var(--text-sepia);
-      margin-bottom: 18px;
-      line-height: 1.65;
-    }
-
-    .split-actions {
+    .hero-left-actions {
       display: flex;
+      gap: 10px;
       flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 18px;
     }
 
-    .split-col-right .split-actions {
-      justify-content: flex-end;
-    }
-
-    /* ------------------------------------------------------------
-       ESTADO 2: PLACA DE BRONCE / PERGAMINO (RECORRIDO GUIADO)
-       ------------------------------------------------------------ */
+    /* Placa de Bronce de EstaciÃ³n Activa (con soporte para imagen) */
     .tour-plaque-card {
       position: absolute;
-      bottom: 105px;
-      left: 50%;
-      transform: translateX(-50%) translateY(30px);
-      width: min(620px, 92vw);
+      bottom: 112px;
+      left: clamp(26px, 4.5vw, 60px);
+      width: min(470px, 90vw);
       background: var(--surface-plaque);
       border: 4px double var(--gold-vintage);
-      padding: 26px 32px;
+      padding: 20px 24px;
       z-index: 25;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.88);
       opacity: 0;
       visibility: hidden;
-      transition: all 0.55s var(--ease-vintage);
+      transform: translateY(20px);
+      transition: all 0.4s var(--ease-vintage);
     }
-
     .tour-plaque-card.active {
       opacity: 1;
       visibility: visible;
-      transform: translateX(-50%) translateY(0);
+      transform: translateY(0);
     }
-
     .plaque-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid rgba(197, 160, 89, 0.3);
-      padding-bottom: 8px;
-      margin-bottom: 12px;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.72rem;
-      letter-spacing: 0.18em;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
       color: var(--gold-vintage);
     }
-
+    .plaque-close {
+      background: none;
+      border: none;
+      color: var(--gold-bright);
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
     .tour-plaque-card h3 {
       font-family: var(--font-monumental);
-      font-size: 1.55rem;
+      font-size: 1.35rem;
       color: var(--text-ivory);
       margin-bottom: 8px;
     }
-
-    .tour-plaque-card p {
-      font-size: 1.12rem;
-      color: var(--text-sepia);
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
-
-    .tour-progress-bar {
+    #plaque-img {
       width: 100%;
-      height: 3px;
-      background: rgba(197, 160, 89, 0.2);
-      margin-bottom: 16px;
-      overflow: hidden;
+      max-height: 155px;
+      object-fit: cover;
+      border: 2px double var(--gold-vintage);
+      margin-bottom: 10px;
+      display: none;
     }
-
-    .tour-progress-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--gold-bright);
-      transition: width 0.1s linear;
+    .tour-plaque-card p {
+      font-size: 1.05rem;
+      color: var(--text-sepia);
+      line-height: 1.55;
+      margin-bottom: 14px;
     }
-
     .plaque-controls {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    /* ------------------------------------------------------------
-       ESTADO 3: BARRA INFERIOR DE EXPLORACIÓN LIBRE Y ATMÓSFERAS
-       ------------------------------------------------------------ */
-    .vintage-compass-dock {
-      position: absolute;
-      bottom: 22px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 30;
-      background: rgba(18, 13, 8, 0.92);
-      border: var(--border-double);
-      padding: 10px 18px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: max-content;
-      max-width: 95vw;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
-    }
-
-    .dock-divider {
-      width: 1px;
-      height: 26px;
-      background: rgba(197, 160, 89, 0.35);
-    }
-
-    .dock-group {
-      display: flex;
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
     }
 
-    .dock-label {
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-size: 0.68rem;
-      letter-spacing: 0.15em;
-      color: var(--text-muted);
-      margin-right: 4px;
-    }
-
-    .dock-btn {
-      background: rgba(38, 28, 20, 0.75);
-      border: 1px solid rgba(197, 160, 89, 0.35);
-      color: var(--text-sepia);
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-size: 0.68rem;
-      letter-spacing: 0.12em;
-      padding: 8px 13px;
-      cursor: pointer;
-      transition: all 0.25s ease;
-    }
-
-    .dock-btn:hover,
-    .dock-btn.active {
-      background: rgba(197, 160, 89, 0.22);
-      border-color: var(--gold-bright);
-      color: var(--gold-bright);
-    }
-
-    /* ------------------------------------------------------------
-       MARCADORES 3D PROYECTADOS A 2D (SELLOS DORADOS EN FACHADA)
-       ------------------------------------------------------------ */
+    /* Sellos Dorados 3D proyectados a 2D (Puntos 1, 2, 3, 4) */
     #hotspots-layer {
       position: absolute;
       inset: 0;
       pointer-events: none;
-      z-index: 15;
+      z-index: 16;
       overflow: hidden;
     }
-
     .seal-hotspot {
       position: absolute;
-      width: 36px;
-      height: 36px;
+      width: 38px; height: 38px;
       border-radius: 50%;
-      background: radial-gradient(circle, #D5B269 0%, #8C6930 100%);
+      background: radial-gradient(circle, #E5C882 0%, #8C6930 100%);
       border: 2px double #120D08;
-      box-shadow: 0 0 0 2px var(--gold-vintage), 0 6px 18px rgba(0,0,0,0.85);
+      box-shadow: 0 0 0 2px var(--gold-vintage), 0 6px 18px rgba(0,0,0,0.9);
       color: #120D08;
       font-family: var(--font-monumental);
       font-weight: 800;
-      font-size: 0.78rem;
+      font-size: 0.85rem;
       display: flex;
       align-items: center;
       justify-content: center;
       transform: translate(-50%, -50%);
       cursor: pointer;
       pointer-events: auto;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s ease;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
     }
-
-    .seal-hotspot:hover {
+    .seal-hotspot:hover,
+    .seal-hotspot.active {
       transform: translate(-50%, -50%) scale(1.22);
-      box-shadow: 0 0 0 4px var(--gold-bright), 0 0 25px rgba(223, 192, 122, 0.8);
+      background: radial-gradient(circle, #FFF3D1 0%, #D5B269 100%);
+      box-shadow: 0 0 0 4px var(--gold-bright), 0 0 26px rgba(223, 192, 122, 0.9);
     }
-
     .seal-tooltip {
       position: absolute;
       bottom: 44px;
       left: 50%;
       transform: translateX(-50%);
       white-space: nowrap;
-      background: rgba(18, 13, 8, 0.94);
+      background: rgba(18, 13, 8, 0.95);
       border: 1px solid var(--gold-vintage);
       color: var(--text-ivory);
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.66rem;
-      letter-spacing: 0.14em;
+      font-size: 0.65rem;
+      letter-spacing: 0.13em;
       padding: 4px 10px;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.2s ease;
     }
+    .seal-hotspot:hover .seal-tooltip { opacity: 1; }
 
-    .seal-hotspot:hover .seal-tooltip {
-      opacity: 1;
-    }
-
-    /* Aviso sutil si el usuario explora libremente */
-    .free-roam-hint {
+    /* Barra Inferior de Estaciones y AtmÃ³sfera 3D */
+    .vintage-compass-dock {
       position: absolute;
-      top: 94px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
-      z-index: 20;
-      background: rgba(18, 13, 8, 0.85);
-      border: 1px solid rgba(197, 160, 89, 0.4);
-      padding: 7px 18px;
+      z-index: 30;
+      background: rgba(18, 13, 8, 0.93);
+      border: var(--border-double);
+      padding: 9px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: max-content;
+      max-width: 96vw;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.85);
+    }
+    .dock-divider {
+      width: 1px;
+      height: 24px;
+      background: rgba(197, 160, 89, 0.35);
+    }
+    .dock-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .dock-label {
       font-family: var(--font-label);
       font-variant: small-caps;
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
-      color: var(--gold-bright);
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      margin-right: 2px;
     }
-
-    .free-roam-hint.visible {
-      opacity: 1;
+    .dock-btn {
+      background: rgba(38, 28, 20, 0.78);
+      border: 1px solid rgba(197, 160, 89, 0.35);
+      color: var(--text-sepia);
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.65rem;
+      letter-spacing: 0.11em;
+      padding: 7px 11px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .dock-btn:hover,
+    .dock-btn.active {
+      background: rgba(197, 160, 89, 0.24);
+      border-color: var(--gold-bright);
+      color: var(--gold-bright);
     }
 
     /* ============================================================
-       SECCIÓN 1 POST-SCROLL: CINTA HISTÓRICA (MARQUEE CLÁSICO)
+       PANEL EDITOR DE ÃNGULOS, PUNTOS Y MODELOS .GLB (TECLA P)
+       ============================================================ */
+    .editor-toggle-btn {
+      position: absolute;
+      top: 88px;
+      right: 26px;
+      z-index: 40;
+      background: rgba(24, 17, 11, 0.94);
+      border: 2px double var(--gold-vintage);
+      color: var(--gold-bright);
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      padding: 8px 14px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.7);
+    }
+    .editor-toggle-btn:hover { background: rgba(197, 160, 89, 0.22); }
+
+    .editor-drawer {
+      position: absolute;
+      top: 130px;
+      right: 26px;
+      z-index: 40;
+      width: min(350px, 92vw);
+      max-height: calc(100vh - 220px);
+      overflow-y: auto;
+      background: rgba(18, 13, 8, 0.96);
+      border: 3px double var(--gold-vintage);
+      padding: 16px;
+      color: var(--text-ivory);
+      font-family: var(--font-body, sans-serif);
+      font-size: 0.78rem;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.9);
+    }
+    .editor-section-title {
+      font-family: var(--font-label);
+      font-variant: small-caps;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      color: var(--gold-bright);
+      border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+      padding-bottom: 4px;
+      margin: 10px 0 8px;
+    }
+    .editor-drawer select,
+    .editor-drawer input[type="text"],
+    .editor-drawer input[type="number"] {
+      width: 100%;
+      background: #0e0a06;
+      color: var(--text-ivory);
+      border: 1px solid rgba(197, 160, 89, 0.45);
+      padding: 5px 7px;
+      font-size: 0.76rem;
+      margin-top: 3px;
+    }
+    .editor-drawer input[type="range"] {
+      width: 100%;
+      accent-color: var(--gold-vintage);
+      cursor: pointer;
+    }
+
+    /* ============================================================
+       SECCIONES INFERIORES DE LA PÃGINA (POST-SCROLL)
        ============================================================ */
     .vintage-marquee {
       position: relative;
@@ -714,38 +606,25 @@
       overflow: hidden;
       display: flex;
     }
-
     .vintage-marquee-track {
       display: flex;
       white-space: nowrap;
       animation: classicMarquee 36s linear infinite;
     }
-
     .vintage-marquee-item {
       font-family: var(--font-editorial);
       font-style: italic;
       font-size: clamp(1.15rem, 2vw, 1.5rem);
       color: var(--text-ivory);
       padding: 0 28px;
-      display: inline-flex;
-      align-items: center;
-      gap: 28px;
+      display: inline-flex; align-items: center; gap: 28px;
     }
-
-    .vintage-marquee-item .fleuron {
-      color: var(--gold-vintage);
-      font-style: normal;
-      font-size: 1.1rem;
-    }
-
+    .vintage-marquee-item .fleuron { color: var(--gold-vintage); font-style: normal; }
     @keyframes classicMarquee {
       0% { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
 
-    /* ============================================================
-       CONTENEDOR EDITORIAL DE ÉPOCA (SECCIONES INFERIORES)
-       ============================================================ */
     .patrimonial-section {
       position: relative;
       z-index: 20;
@@ -753,13 +632,11 @@
       margin: 0 auto;
       padding: clamp(80px, 11vw, 130px) 24px;
     }
-
     .section-ornament-header {
       text-align: center;
       max-width: 720px;
       margin: 0 auto 60px;
     }
-
     .section-ornament-header .eyebrow {
       font-family: var(--font-label);
       font-variant: small-caps;
@@ -769,40 +646,27 @@
       display: block;
       margin-bottom: 10px;
     }
-
     .section-ornament-header h2 {
       font-family: var(--font-monumental);
       font-size: clamp(1.9rem, 3.8vw, 3rem);
       color: var(--text-ivory);
       margin-bottom: 14px;
     }
-
     .section-ornament-header p {
       font-size: 1.2rem;
       color: var(--text-sepia);
       font-style: italic;
     }
-
     .ornament-divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      margin: 16px auto 0;
-      color: var(--gold-vintage);
+      display: flex; align-items: center; justify-content: center;
+      gap: 14px; margin: 16px auto 0; color: var(--gold-vintage);
     }
-
-    .ornament-divider::before,
-    .ornament-divider::after {
-      content: "";
-      width: 80px;
-      height: 1px;
+    .ornament-divider::before, .ornament-divider::after {
+      content: ""; width: 80px; height: 1px;
       background: linear-gradient(90deg, transparent, var(--gold-vintage), transparent);
     }
 
-    /* ============================================================
-       SECCIÓN 2: COMPARADOR INTERACTIVO "PLANO ORIGINAL VS. ARQUITECTURA"
-       ============================================================ */
+    /* Comparador Before/After */
     .comparator-frame {
       position: relative;
       max-width: 980px;
@@ -814,113 +678,56 @@
       box-shadow: 0 25px 70px rgba(0, 0, 0, 0.85);
       user-select: none;
     }
-
-    .comp-layer {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .comp-layer img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    /* Vista Restaurada (Fondo) */
-    .comp-after img {
-      filter: contrast(108%) sepia(18%) brightness(95%);
-    }
-
-    /* Vista Boceto / Plano de Época (Capa recortada por el slider) */
+    .comp-layer { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .comp-layer img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .comp-after img { filter: contrast(108%) sepia(18%) brightness(95%); }
     .comp-before {
       width: 50%;
       overflow: hidden;
       border-right: 2px solid var(--gold-bright);
-      background:
-        repeating-linear-gradient(0deg, rgba(197,160,89,0.08) 0px, rgba(197,160,89,0.08) 1px, transparent 1px, transparent 24px),
-        repeating-linear-gradient(90deg, rgba(197,160,89,0.08) 0px, rgba(197,160,89,0.08) 1px, transparent 1px, transparent 24px),
-        #22170e;
+      background: #22170e;
     }
-
     .comp-before img {
-      width: 980px;
-      max-width: none;
-      height: 100%;
-      object-fit: cover;
+      width: 980px; max-width: none; height: 100%; object-fit: cover;
       filter: grayscale(100%) sepia(85%) contrast(155%) brightness(82%) invert(8%);
       mix-blend-mode: luminosity;
     }
-
-    /* Superposición de cotas técnicas sobre el plano */
     .blueprint-grid-overlay {
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background-image:
         linear-gradient(rgba(223, 192, 122, 0.14) 1px, transparent 1px),
         linear-gradient(90deg, rgba(223, 192, 122, 0.14) 1px, transparent 1px);
       background-size: 32px 32px;
       pointer-events: none;
     }
-
     .comp-badge {
-      position: absolute;
-      top: 18px;
-      padding: 6px 14px;
+      position: absolute; top: 18px; padding: 6px 14px;
       background: rgba(18, 13, 8, 0.88);
       border: 1px solid var(--gold-vintage);
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      color: var(--gold-bright);
-      z-index: 4;
+      font-family: var(--font-label); font-variant: small-caps;
+      font-size: 0.7rem; letter-spacing: 0.16em; color: var(--gold-bright); z-index: 4;
     }
-
     .comp-badge.left { left: 18px; }
     .comp-badge.right { right: 18px; }
-
     .comp-handle {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 44px;
-      transform: translateX(-50%);
-      cursor: ew-resize;
-      z-index: 6;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: absolute; top: 0; bottom: 0; left: 50%; width: 44px;
+      transform: translateX(-50%); cursor: ew-resize; z-index: 6;
+      display: flex; align-items: center; justify-content: center;
     }
-
     .comp-handle-medallion {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
+      width: 44px; height: 44px; border-radius: 50%;
       background: radial-gradient(circle, var(--gold-bright) 0%, var(--bronze-burnished) 100%);
       border: 2px solid #120D08;
       box-shadow: 0 0 0 2px var(--gold-vintage), 0 6px 20px rgba(0,0,0,0.8);
-      color: #120D08;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
+      color: #120D08; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
     }
 
-    /* ============================================================
-       SECCIÓN 3: GALERÍA DE DETALLES ARQUITECTÓNICOS (TILT 3D + LUZ DE VELA)
-       ============================================================ */
+    /* Tarjetas de Arquitectura */
     .brass-cards-grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 26px;
-      perspective: 1200px;
+      display: grid; grid-template-columns: repeat(12, 1fr);
+      gap: 26px; perspective: 1200px;
     }
-
     .brass-card {
       position: relative;
       background: linear-gradient(160deg, rgba(38, 28, 20, 0.9) 0%, rgba(20, 14, 9, 0.96) 100%);
@@ -929,260 +736,119 @@
       transform-style: preserve-3d;
       transition: transform 0.2s ease-out, border-color 0.3s ease;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 290px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      min-height: 280px;
     }
-
     .brass-span-6 { grid-column: span 6; }
-
-    /* Brillo cálido de lámpara/vela siguiendo al puntero */
     .brass-card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(
-        420px circle at var(--candle-x, 50%) var(--candle-y, 50%),
-        rgba(223, 192, 122, 0.22),
-        rgba(197, 160, 89, 0.06) 45%,
-        transparent 70%
-      );
-      opacity: 0;
-      transition: opacity 0.35s ease;
-      pointer-events: none;
+      content: ""; position: absolute; inset: 0;
+      background: radial-gradient(420px circle at var(--candle-x, 50%) var(--candle-y, 50%), rgba(223, 192, 122, 0.22), transparent 70%);
+      opacity: 0; transition: opacity 0.35s ease; pointer-events: none;
     }
-
-    .brass-card:hover::before {
-      opacity: 1;
-    }
-
-    .brass-card:hover {
-      border-color: var(--gold-bright);
-    }
-
+    .brass-card:hover::before { opacity: 1; }
+    .brass-card:hover { border-color: var(--gold-bright); }
     .card-catalog-num {
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-size: 0.72rem;
-      letter-spacing: 0.2em;
-      color: var(--gold-vintage);
-      margin-bottom: 14px;
-      display: block;
+      font-family: var(--font-label); font-variant: small-caps;
+      font-size: 0.72rem; letter-spacing: 0.2em; color: var(--gold-vintage);
+      margin-bottom: 12px; display: block;
     }
-
     .brass-card h3 {
-      font-family: var(--font-monumental);
-      font-size: 1.5rem;
-      color: var(--text-ivory);
-      margin-bottom: 12px;
+      font-family: var(--font-monumental); font-size: 1.45rem;
+      color: var(--text-ivory); margin-bottom: 10px;
     }
-
-    .brass-card p {
-      font-size: 1.14rem;
-      color: var(--text-sepia);
-      line-height: 1.65;
-    }
-
+    .brass-card p { font-size: 1.12rem; color: var(--text-sepia); line-height: 1.65; }
     .brass-card-footer {
-      margin-top: 22px;
-      padding-top: 12px;
+      margin-top: 20px; padding-top: 12px;
       border-top: 1px solid rgba(197, 160, 89, 0.22);
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-size: 0.68rem;
-      letter-spacing: 0.14em;
-      color: var(--text-muted);
+      display: flex; justify-content: space-between;
+      font-family: var(--font-label); font-variant: small-caps;
+      font-size: 0.68rem; letter-spacing: 0.14em; color: var(--text-muted);
     }
 
-    /* ============================================================
-       SECCIÓN 4: LÍNEA DEL TIEMPO PATRIMONIAL (CRÓNICA DE LA ÉPOCA)
-       ============================================================ */
+    /* LÃ­nea del Tiempo */
     .chronicle-timeline {
-      position: relative;
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 20px 0;
+      position: relative; max-width: 960px; margin: 0 auto; padding: 20px 0;
     }
-
     .timeline-spine {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      width: 2px;
-      background: rgba(197, 160, 89, 0.2);
-      transform: translateX(-50%);
+      position: absolute; top: 0; bottom: 0; left: 50%; width: 2px;
+      background: rgba(197, 160, 89, 0.2); transform: translateX(-50%);
     }
-
     .timeline-spine-fill {
-      width: 100%;
-      height: 0%;
+      width: 100%; height: 0%;
       background: linear-gradient(180deg, var(--gold-bright), var(--bronze-burnished));
-      box-shadow: 0 0 12px rgba(223, 192, 122, 0.5);
       transition: height 0.15s linear;
     }
-
     .chronicle-entry {
-      position: relative;
-      display: flex;
-      justify-content: flex-start;
-      width: 50%;
-      padding: 0 44px 52px 0;
-      text-align: right;
+      position: relative; display: flex; justify-content: flex-start;
+      width: 50%; padding: 0 44px 48px 0; text-align: right;
     }
-
     .chronicle-entry:nth-child(even) {
-      margin-left: 50%;
-      padding: 0 0 52px 44px;
-      text-align: left;
+      margin-left: 50%; padding: 0 0 48px 44px; text-align: left;
     }
-
     .chronicle-node {
-      position: absolute;
-      top: 6px;
-      right: -9px;
-      width: 18px;
-      height: 18px;
-      transform: rotate(45deg);
-      background: var(--bg-mahogany);
-      border: 2px solid var(--gold-vintage);
-      z-index: 2;
+      position: absolute; top: 6px; right: -9px; width: 18px; height: 18px;
+      transform: rotate(45deg); background: var(--bg-mahogany);
+      border: 2px solid var(--gold-vintage); z-index: 2;
     }
-
-    .chronicle-entry:nth-child(even) .chronicle-node {
-      right: auto;
-      left: -9px;
-    }
-
+    .chronicle-entry:nth-child(even) .chronicle-node { right: auto; left: -9px; }
     .chronicle-card {
-      background: var(--surface-parchment);
-      border: var(--border-double);
-      padding: 24px 28px;
-      width: 100%;
+      background: var(--surface-parchment); border: var(--border-double);
+      padding: 22px 26px; width: 100%;
     }
-
     .chronicle-year {
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-size: 0.78rem;
-      letter-spacing: 0.22em;
-      color: var(--gold-bright);
-      display: block;
-      margin-bottom: 6px;
+      font-family: var(--font-label); font-variant: small-caps;
+      font-size: 0.76rem; letter-spacing: 0.2em; color: var(--gold-bright);
+      display: block; margin-bottom: 6px;
     }
-
     .chronicle-card h3 {
-      font-family: var(--font-monumental);
-      font-size: 1.35rem;
-      margin-bottom: 8px;
-      color: var(--text-ivory);
+      font-family: var(--font-monumental); font-size: 1.3rem;
+      margin-bottom: 8px; color: var(--text-ivory);
     }
+    .chronicle-card p { font-size: 1.08rem; color: var(--text-sepia); line-height: 1.6; }
 
-    .chronicle-card p {
-      font-size: 1.1rem;
-      color: var(--text-sepia);
-      line-height: 1.6;
-    }
-
-    /* ============================================================
-       FOOTER MONUMENTAL GRABADO EN ORO VIEJO
-       ============================================================ */
+    /* Footer Monumental */
     .vintage-footer {
-      position: relative;
-      z-index: 20;
-      background: #0d0905;
+      position: relative; z-index: 20; background: #0d0905;
       border-top: 4px double rgba(197, 160, 89, 0.4);
-      padding: 70px 24px 36px;
-      text-align: center;
-      overflow: hidden;
+      padding: 70px 24px 36px; text-align: center; overflow: hidden;
     }
-
     .footer-nav-row {
-      max-width: 1180px;
-      margin: 0 auto 36px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      border-bottom: 1px solid rgba(197, 160, 89, 0.2);
-      padding-bottom: 24px;
-      font-family: var(--font-label);
-      font-variant: small-caps;
-      font-size: 0.75rem;
-      letter-spacing: 0.18em;
-      color: var(--text-sepia);
+      max-width: 1180px; margin: 0 auto 36px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 20px;
+      border-bottom: 1px solid rgba(197, 160, 89, 0.2); padding-bottom: 24px;
+      font-family: var(--font-label); font-variant: small-caps;
+      font-size: 0.75rem; letter-spacing: 0.18em; color: var(--text-sepia);
     }
-
     .footer-engraved-title {
       font-family: var(--font-monumental);
       font-size: clamp(2.6rem, 11vw, 10.5rem);
-      font-weight: 800;
-      line-height: 0.9;
-      letter-spacing: 0.04em;
+      font-weight: 800; line-height: 0.9; letter-spacing: 0.04em;
       background: linear-gradient(180deg, rgba(223, 192, 122, 0.55) 0%, rgba(154, 123, 62, 0.08) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin: 12px 0 24px;
-      user-select: none;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin: 12px 0 24px; user-select: none;
     }
+    .footer-credits { font-size: 0.98rem; color: var(--text-muted); font-style: italic; }
 
-    .footer-credits {
-      font-size: 0.98rem;
-      color: var(--text-muted);
-      font-style: italic;
-    }
-
-    /* ============================================================
-       RESPONSIVE DESIGN (TABLETS Y MÓVILES)
-       ============================================================ */
     @media (max-width: 980px) {
       .nav-links { display: none; }
-
-      .state-presentation-overlay {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr auto;
-        padding: 84px 18px 115px;
-      }
-
-      .split-col-right {
-        grid-column: 1;
-        text-align: left;
-      }
-
-      .split-col-right .split-actions {
-        justify-content: flex-start;
-      }
-
-      .brass-span-6 {
-        grid-column: span 12;
-      }
-
+      .brass-span-6 { grid-column: span 12; }
       .timeline-spine { left: 16px; }
-      .chronicle-entry,
-      .chronicle-entry:nth-child(even) {
-        width: 100%;
-        margin-left: 0;
-        padding: 0 0 36px 42px;
-        text-align: left;
+      .chronicle-entry, .chronicle-entry:nth-child(even) {
+        width: 100%; margin-left: 0; padding: 0 0 36px 42px; text-align: left;
       }
-      .chronicle-node,
-      .chronicle-entry:nth-child(even) .chronicle-node {
-        left: 7px;
-        right: auto;
+      .chronicle-node, .chronicle-entry:nth-child(even) .chronicle-node {
+        left: 7px; right: auto;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- OVERLAY DE GRANO DE PELÍCULA SEPIA Y VIÑETA -->
+  <!-- OVERLAY DE PELÃCULA SEPIA Y VIÃ‘ETA -->
   <div class="vintage-film-overlay"></div>
 
-  <!-- DEFINICIÓN DE FILIGRANA SVG REUTILIZABLE -->
+  <!-- FILIGRANA SVG REUTILIZABLE -->
   <svg width="0" height="0" style="position:absolute">
     <defs>
       <g id="filigree-corner">
@@ -1193,7 +859,7 @@
     </defs>
   </svg>
 
-  <!-- PRE-LOADER DE ÉPOCA (CONECTADO AL MODELO .GLB REAL) -->
+  <!-- PRE-LOADER DE Ã‰POCA -->
   <div id="vintage-preloader">
     <div class="preloader-crest">
       <svg viewBox="0 0 64 64">
@@ -1202,32 +868,32 @@
         <circle cx="32" cy="32" r="6" stroke-width="1.5"/>
       </svg>
     </div>
-    <p class="preloader-eyebrow">Patrimonio Histórico Arquitectónico · Uncía, Potosí</p>
-    <h1 class="preloader-title">PALACIO DE SIMÓN I. PATIÑO</h1>
+    <p class="preloader-eyebrow">Patrimonio HistÃ³rico ArquitectÃ³nico Â· UncÃ­a, PotosÃ­</p>
+    <h1 class="preloader-title">PALACIO DE SIMÃ“N I. PATIÃ‘O</h1>
     <div class="preloader-pct" id="preloader-pct">0%</div>
     <div class="preloader-track">
       <div class="preloader-fill" id="preloader-fill"></div>
     </div>
-    <p class="preloader-status" id="preloader-status">Restaurando geometría tridimensional (casa-exterior.glb)…</p>
+    <p class="preloader-status" id="preloader-status">Cargando arquitectura 3D (casa-exterior.glb)â€¦</p>
   </div>
 
-  <!-- BARRA DE NAVEGACIÓN ORNAMENTAL -->
+  <!-- NAVEGACIÃ“N SUPERIOR ORNAMENTAL -->
   <nav class="vintage-nav">
     <a href="./index.html" class="nav-brand">
       <span class="nav-brand-emblem"><span>SP</span></span>
-      <span>PALACIO PATIÑO · UNCÍA</span>
+      <span>PALACIO PATIÃ‘O Â· UNCÃA</span>
     </a>
 
     <ul class="nav-links">
       <li><a href="#visor-exterior" class="active">Exterior 3D</a></li>
-      <li><a href="#plano-comparador">Plano y Restauración</a></li>
+      <li><a href="#plano-comparador">Plano y RestauraciÃ³n</a></li>
       <li><a href="#detalles-arquitectura">Arquitectura</a></li>
-      <li><a href="#cronica-historica">Crónica (1892–1952)</a></li>
-      <li><a href="./historia.html">Colección 3D (.GLB)</a></li>
+      <li><a href="#cronica-historica">CrÃ³nica (1892â€“1952)</a></li>
+      <li><a href="./historia.html">ColecciÃ³n 3D (.GLB)</a></li>
     </ul>
 
     <div class="nav-actions">
-      <a href="./interior.html" class="btn-vintage btn-sm">Entrar a los 73 Ambientes →</a>
+      <a href="./interior.html" class="btn-vintage btn-sm">Entrar a los 73 Ambientes â†’</a>
     </div>
   </nav>
 
@@ -1236,10 +902,7 @@
        ============================================================ -->
   <section class="hero-stage-3d" id="visor-exterior">
 
-    <!-- Lienzo WebGL de Three.js -->
     <div id="exterior-canvas-container"></div>
-
-    <!-- Capa de Hotspots 3D proyectados a 2D (Sellos Dorados) -->
     <div id="hotspots-layer"></div>
 
     <!-- Marco Ornamental Perimetral -->
@@ -1250,165 +913,215 @@
       <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
     </div>
 
-    <!-- Aviso de controles en Modo Exploración Libre -->
-    <div class="free-roam-hint" id="free-roam-hint">
-      Arrastra para girar · Rueda para acercar · Clic derecho o WASD para desplazarte · Toca los sellos dorados
+    <div class="free-roam-hint">
+      Arrastra para girar Â· Rueda para acercar Â· WASD / Flechas / Q / E para moverte libremente Â· Toca los sellos 1 â€“ 4
     </div>
 
-    <!-- ESTADO 1: PRESENTACIÓN GENERAL (SPLIT LAYOUT) -->
-    <div class="state-presentation-overlay" id="presentation-overlay">
-      <div class="split-col-left">
-        <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
-        <span class="era-badge">Principios del Siglo XX · Residencia 1899 – 1905</span>
-        <h1>
-          El Palacio de Simón I. Patiño
-          <span>Sector Miraflores · Uncía, Potosí</span>
-        </h1>
-        <p class="lema">
-          «La primera mansión de 73 ambientes que el Rey del Estaño prometió y edificó para su esposa Albina Rodríguez Ocampo al pie de La Salvadora.»
-        </p>
-        <div class="split-actions">
-          <button type="button" class="btn-vintage btn-vintage-gold" id="btn-start-tour">
-            [ Iniciar Recorrido Guiado ]
-          </button>
-          <button type="button" class="btn-vintage" id="btn-free-explore">
-            Explorar Exterior Libremente
-          </button>
-        </div>
+    <!-- BOTÃ“N Y PANEL EDITOR DE ÃNGULOS, PUNTOS Y MODELOS (TECLA P) -->
+    <button type="button" class="editor-toggle-btn" id="btn-toggle-editor">
+      ðŸ› ï¸ Ãngulos y Puntos (P)
+    </button>
+
+    <div class="editor-drawer" id="editor-drawer" hidden>
+      <div class="editor-section-title" style="margin-top:0;">1. Editar Punto de EstaciÃ³n (1 al 4) y Ãngulo</div>
+
+      <label style="display:block; margin-bottom:6px;">
+        <span>Seleccionar Punto:</span>
+        <select id="ed-select-stop"></select>
+      </label>
+
+      <div style="display:flex; gap:6px; margin-bottom:8px;">
+        <button type="button" class="dock-btn" id="ed-btn-click-seal" style="flex:1; border-style:dashed;">
+          ðŸ“ Mover sello con clic en 3D
+        </button>
+        <button type="button" class="dock-btn active" id="ed-btn-capture-cam" style="flex:1;">
+          ðŸ“¸ Guardar mi Ãngulo Actual
+        </button>
       </div>
 
-      <div class="split-col-right">
-        <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
-        <svg class="corner-filigree cf-bl"><use href="#filigree-corner"/></svg>
-        <h2>Monumento Patrimonial del Estaño</h2>
-        <p>
-          Coronado por una torre de estilo escocés y fachada color mostaza, este inmueble albergó cristales de Venecia, tapices de Bolonia, un carruaje inglés de 1870 y la vista directa a los motores diésel alemanes de 1901, gemelos del Titanic.
-        </p>
-        <div class="split-actions">
-          <a href="./interior.html" class="btn-vintage btn-sm">Recorrido Interior 1ra Persona</a>
-          <a href="./historia.html" class="btn-vintage btn-sm">Museo de Piezas 3D</a>
-        </div>
+      <label style="display:block; margin-bottom:5px;">
+        <span>Giro Horizontal / Yaw (<strong id="ed-lbl-yaw">0Â°</strong>):</span>
+        <input type="range" id="ed-rng-yaw" min="-180" max="180" step="1" value="0">
+      </label>
+
+      <label style="display:block; margin-bottom:5px;">
+        <span>Picado Vertical / Pitch (<strong id="ed-lbl-pitch">12Â°</strong>):</span>
+        <input type="range" id="ed-rng-pitch" min="-15" max="80" step="1" value="12">
+      </label>
+
+      <label style="display:block; margin-bottom:5px;">
+        <span>Distancia de CÃ¡mara (<strong id="ed-lbl-dist">5.0m</strong>):</span>
+        <input type="range" id="ed-rng-dist" min="1.2" max="24" step="0.2" value="5.0">
+      </label>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+        <label>
+          <span>Lente FOV (<strong id="ed-lbl-fov">42Â°</strong>):</span>
+          <input type="range" id="ed-rng-fov" min="22" max="75" step="1" value="42">
+        </label>
+        <label>
+          <span>InclinaciÃ³n Roll (<strong id="ed-lbl-roll">0Â°</strong>):</span>
+          <input type="range" id="ed-rng-roll" min="-20" max="20" step="1" value="0">
+        </label>
+      </div>
+
+      <div class="editor-section-title">2. Vista de Inicio Fija</div>
+      <div style="display:flex; gap:6px; margin-bottom:8px;">
+        <button type="button" class="dock-btn" id="ed-btn-save-home" style="flex:1;">
+          ðŸ“Œ Fijar Vista Actual como Inicio
+        </button>
+        <button type="button" class="dock-btn" id="ed-btn-reset">
+          Restaurar
+        </button>
+      </div>
+
+      <div class="editor-section-title">3. Colocar Modelos .GLB en el Exterior</div>
+      <label style="display:block; margin-bottom:6px;">
+        <select id="ed-select-prop"></select>
+      </label>
+      <label style="display:flex; align-items:center; gap:8px; margin-bottom:6px; cursor:pointer;">
+        <input type="checkbox" id="ed-chk-prop" style="accent-color:var(--gold-vintage);">
+        <span>Mostrar este modelo en el exterior</span>
+      </label>
+      <button type="button" class="dock-btn" id="ed-btn-click-prop" style="width:100%; margin-bottom:8px; border-style:dashed;">
+        ðŸ“ Ubicar modelo haciendo clic en el mapa
+      </button>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;">
+        <label>
+          <span>RotaciÃ³n (<strong id="ed-lbl-prot">0Â°</strong>):</span>
+          <input type="range" id="ed-rng-prot" min="-180" max="180" step="5" value="0">
+        </label>
+        <label>
+          <span>TamaÃ±o (<strong id="ed-lbl-pscale">2.5m</strong>):</span>
+          <input type="range" id="ed-rng-pscale" min="0.5" max="10" step="0.1" value="2.5">
+        </label>
+      </div>
+
+      <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="ed-btn-copy" style="width:100%;">
+        ðŸ“‹ Copiar ConfiguraciÃ³n para el CÃ³digo
+      </button>
+      <p id="ed-msg" style="text-align:center; color:var(--gold-bright); font-size:0.72rem; margin-top:6px;"></p>
+    </div>
+
+    <!-- PRESENTACIÃ“N IZQUIERDA EN VISTA DE INICIO -->
+    <div class="hero-left-banner" id="hero-left-banner">
+      <span class="eyebrow">UncÃ­a Â· PotosÃ­, Bolivia (1899 â€“ 1905)</span>
+      <h1>La Casa de SimÃ³n I. PatiÃ±o</h1>
+      <p>
+        La primera residencia que el Rey del EstaÃ±o levantÃ³ en el pueblo donde comenzÃ³ su fortuna. RecÃ³rrela libremente o explora sus 4 estaciones patrimoniales.
+      </p>
+      <div class="hero-left-actions">
+        <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="btn-start-tour">
+          â–¶ Iniciar Recorrido (1 â€“ 4)
+        </button>
+        <a href="./historia.html" class="btn-vintage btn-sm">Conoce su Historia</a>
+        <a href="./interior.html" class="btn-vintage btn-sm">Recorre el Interior</a>
       </div>
     </div>
 
-    <!-- ESTADO 2: PLACA DE BRONCE DEL RECORRIDO GUIADO -->
+    <!-- PLACA DE BRONCE DE CADA ESTACIÃ“N (CON SOPORTE PARA IMAGEN OPCIONAL) -->
     <div class="tour-plaque-card" id="tour-plaque">
       <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
       <svg class="corner-filigree cf-tr"><use href="#filigree-corner"/></svg>
       <div class="plaque-header">
-        <span id="plaque-step">ESTACIÓN I DE IV · RECORRIDO EXTERIOR</span>
-        <span id="plaque-coords">MIRAFLORES · UNCÍA</span>
+        <span id="plaque-step">PUNTO DE INTERACCIÃ“N 1 DE 4</span>
+        <button type="button" class="plaque-close" id="btn-close-plaque" title="Cerrar placa">âœ•</button>
       </div>
-      <h3 id="plaque-title">Fachada Principal Mostaza</h3>
-      <p id="plaque-desc">Descripción histórica del punto arquitectónico.</p>
-      <div class="tour-progress-bar">
-        <div class="tour-progress-fill" id="tour-progress-fill"></div>
-      </div>
+      <h3 id="plaque-title">1. Entrada Principal y Letrero Azul</h3>
+      <img id="plaque-img" src="" alt="FotografÃ­a de estaciÃ³n exterior" onerror="this.style.display='none'" />
+      <p id="plaque-desc">DescripciÃ³n histÃ³rica de la estaciÃ³n.</p>
       <div class="plaque-controls">
-        <button type="button" class="btn-vintage btn-sm" id="btn-prev-stop">← Anterior</button>
-        <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="btn-next-stop">Siguiente Estación →</button>
-        <button type="button" class="btn-vintage btn-sm" id="btn-skip-tour">Saltar a Exploración Libre</button>
+        <button type="button" class="btn-vintage btn-sm" id="btn-prev-stop">â† Anterior</button>
+        <button type="button" class="btn-vintage btn-sm" id="btn-home-view">Vista Inicio</button>
+        <button type="button" class="btn-vintage btn-vintage-gold btn-sm" id="btn-next-stop">Siguiente Punto â†’</button>
       </div>
     </div>
 
-    <!-- ESTADO 3: BARRA DE HERRAMIENTAS Y SELECTOR DE ATMÓSFERA DE ÉPOCA -->
+    <!-- BARRA INFERIOR CON ACCESO DIRECTO A LOS 4 PUNTOS Y ATMÃ“SFERAS -->
     <div class="vintage-compass-dock">
       <div class="dock-group">
-        <span class="dock-label">Cámara:</span>
-        <button type="button" class="dock-btn active" id="dock-btn-present">Vista General</button>
-        <button type="button" class="dock-btn" id="dock-btn-tour">Recorrido Guiado</button>
-        <button type="button" class="dock-btn" id="dock-btn-free">Exploración Libre</button>
+        <span class="dock-label">Estaciones:</span>
+        <button type="button" class="dock-btn active" id="dock-home">ðŸ  Inicio</button>
+        <button type="button" class="dock-btn" data-goto-stop="0">1. Entrada</button>
+        <button type="button" class="dock-btn" data-goto-stop="1">2. La Torre</button>
+        <button type="button" class="dock-btn" data-goto-stop="2">3. Planta DiÃ©sel</button>
+        <button type="button" class="dock-btn" data-goto-stop="3">4. Vista General</button>
+        <button type="button" class="dock-btn" id="dock-tour">â–¶ Recorrido Guiado</button>
       </div>
 
       <div class="dock-divider"></div>
 
       <div class="dock-group">
-        <span class="dock-label">Atmósfera 3D:</span>
-        <button type="button" class="dock-btn active" data-weather="day">Luz de Día Clásica</button>
+        <span class="dock-label">AtmÃ³sfera 3D:</span>
+        <button type="button" class="dock-btn active" data-weather="day">Luz de DÃ­a ClÃ¡sica</button>
         <button type="button" class="dock-btn" data-weather="sunset">Atardecer Sepia</button>
         <button type="button" class="dock-btn" data-weather="night">Noche de Faroles</button>
       </div>
-
-      <div class="dock-divider"></div>
-
-      <a href="#plano-comparador" class="dock-btn">Deslizar a la Historia ↓</a>
     </div>
 
   </section>
 
-  <!-- ============================================================
-       SECCIÓN 1 POST-SCROLL: CINTA HISTÓRICA (MARQUEE CLÁSICO)
-       ============================================================ -->
+  <!-- CINTA HISTÃ“RICA -->
   <div class="vintage-marquee">
     <div class="vintage-marquee-track">
       <div class="vintage-marquee-item">
-        <span>Edificado entre 1899 y 1905 en Miraflores, Uncía</span> <span class="fleuron">⚜</span>
-        <span>73 Ambientes con Cristales de Venecia y Tapices de Bolonia</span> <span class="fleuron">⚜</span>
-        <span>Motores Diésel Alemanes de 1901 · Gemelos del Titanic</span> <span class="fleuron">⚜</span>
-        <span>Carruaje Inglés de 1870 y Capilla Privada</span> <span class="fleuron">⚜</span>
-        <span>Cuna del Primer Sindicato Minero de Bolivia (1 de Mayo de 1923)</span> <span class="fleuron">⚜</span>
+        <span>Edificado entre 1899 y 1905 en Miraflores, UncÃ­a</span> <span class="fleuron">âšœ</span>
+        <span>73 Ambientes con Cristales de Venecia y Tapices de Bolonia</span> <span class="fleuron">âšœ</span>
+        <span>Motores DiÃ©sel Alemanes de 1901 Â· Gemelos del Titanic</span> <span class="fleuron">âšœ</span>
+        <span>Carruaje InglÃ©s de 1870 y Capilla Privada</span> <span class="fleuron">âšœ</span>
+        <span>Cuna del Primer Sindicato Minero de Bolivia (1 de Mayo de 1923)</span> <span class="fleuron">âšœ</span>
       </div>
       <div class="vintage-marquee-item">
-        <span>Edificado entre 1899 y 1905 en Miraflores, Uncía</span> <span class="fleuron">⚜</span>
-        <span>73 Ambientes con Cristales de Venecia y Tapices de Bolonia</span> <span class="fleuron">⚜</span>
-        <span>Motores Diésel Alemanes de 1901 · Gemelos del Titanic</span> <span class="fleuron">⚜</span>
-        <span>Carruaje Inglés de 1870 y Capilla Privada</span> <span class="fleuron">⚜</span>
-        <span>Cuna del Primer Sindicato Minero de Bolivia (1 de Mayo de 1923)</span> <span class="fleuron">⚜</span>
+        <span>Edificado entre 1899 y 1905 en Miraflores, UncÃ­a</span> <span class="fleuron">âšœ</span>
+        <span>73 Ambientes con Cristales de Venecia y Tapices de Bolonia</span> <span class="fleuron">âšœ</span>
+        <span>Motores DiÃ©sel Alemanes de 1901 Â· Gemelos del Titanic</span> <span class="fleuron">âšœ</span>
+        <span>Carruaje InglÃ©s de 1870 y Capilla Privada</span> <span class="fleuron">âšœ</span>
+        <span>Cuna del Primer Sindicato Minero de Bolivia (1 de Mayo de 1923)</span> <span class="fleuron">âšœ</span>
       </div>
     </div>
   </div>
 
-  <!-- ============================================================
-       SECCIÓN 2: COMPARADOR INTERACTIVO "PLANO ORIGINAL VS. ARQUITECTURA"
-       ============================================================ -->
+  <!-- SECCIÃ“N COMPARADOR PLANO VS. ARQUITECTURA (CONECTADO A NUEVAS IMÃGENES CON FALLBACK A 1.JPG) -->
   <section class="patrimonial-section" id="plano-comparador">
     <div class="section-ornament-header">
-      <span class="eyebrow">Archivo de Restauración · AECI & Municipio de Uncía</span>
-      <h2>Trazo Arquitectónico vs. Conservación Patrimonial</h2>
-      <p>Arrastra el medallón central para contrastar el grabado arquitectónico de época con la estructura del inmueble en Miraflores.</p>
-      <div class="ornament-divider">⚜</div>
+      <span class="eyebrow">Archivo de RestauraciÃ³n Â· AECI & Municipio de UncÃ­a</span>
+      <h2>Trazo ArquitectÃ³nico vs. ConservaciÃ³n Patrimonial</h2>
+      <p>Arrastra el medallÃ³n central para contrastar el grabado arquitectÃ³nico de Ã©poca con la estructura del inmueble en Miraflores.</p>
+      <div class="ornament-divider">âšœ</div>
     </div>
 
     <div class="comparator-frame" id="comparator-frame">
-      <!-- Derecha: Fotografía Restaurada -->
+      <!-- Lado Derecho: FotografÃ­a Actual (fachada-actual.jpg o respaldo 1.jpg) -->
       <div class="comp-layer comp-after">
         <img
-          src="./img/1.jpg"
-          onerror="this.src='https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=85'"
-          alt="Vista restaurada del Palacio de Simón I. Patiño"
+          id="comp-after-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700' viewBox='0 0 1200 700'><rect width='1200' height='700' fill='%2318110b'/><g stroke='%23c5a059' stroke-width='1.5' fill='none' opacity='0.55'><rect x='60' y='60' width='1080' height='580'/><rect x='72' y='72' width='1056' height='556'/><line x1='60' y1='520' x2='1140' y2='520'/><rect x='340' y='300' width='520' height='220'/><rect x='760' y='170' width='140' height='350'/><polygon points='745,170 830,95 915,170'/><polygon points='320,300 550,220 760,300'/><rect x='140' y='340' width='180' height='180'/></g></svg>"
+          alt="Vista restaurada del Palacio de SimÃ³n I. PatiÃ±o"
         />
       </div>
-
-      <!-- Izquierda: Boceto / Grabado Antiguo -->
+      <!-- Lado Izquierdo: Plano/Foto de 1899 (plano-1899.jpg o respaldo 1.jpg) -->
       <div class="comp-layer comp-before" id="comp-before">
         <img
           id="comp-before-img"
-          src="./img/1.jpg"
-          onerror="this.src='https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=85'"
-          alt="Plano y grabado de época del Palacio"
+          src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1200' height='700' viewBox='0 0 1200 700'><rect width='1200' height='700' fill='%2318110b'/><g stroke='%23c5a059' stroke-width='1.5' fill='none' opacity='0.55'><rect x='60' y='60' width='1080' height='580'/><rect x='72' y='72' width='1056' height='556'/><line x1='60' y1='520' x2='1140' y2='520'/><rect x='340' y='300' width='520' height='220'/><rect x='760' y='170' width='140' height='350'/><polygon points='745,170 830,95 915,170'/><polygon points='320,300 550,220 760,300'/><rect x='140' y='340' width='180' height='180'/></g></svg>"
+          alt="Plano y grabado de Ã©poca del Palacio"
         />
         <div class="blueprint-grid-overlay"></div>
       </div>
-
-      <span class="comp-badge left">Grabado y Trazo de Época (1899)</span>
+      <span class="comp-badge left">Grabado y Trazo de Ã‰poca (1899)</span>
       <span class="comp-badge right">Registro Patrimonial Actual</span>
-
       <div class="comp-handle" id="comp-handle">
-        <div class="comp-handle-medallion">↔</div>
+        <div class="comp-handle-medallion">â†”</div>
       </div>
     </div>
   </section>
 
-  <!-- ============================================================
-       SECCIÓN 3: GALERÍA DE DETALLES ARQUITECTÓNICOS (TILT 3D + LUZ DE VELA)
-       ============================================================ -->
+  <!-- SECCIÃ“N DETALLES ARQUITECTÃ“NICOS -->
   <section class="patrimonial-section" id="detalles-arquitectura">
     <div class="section-ornament-header">
-      <span class="eyebrow">Inspección de Elementos Constructivos</span>
-      <h2>Detalles Arquitectónicos del Palacio</h2>
-      <p>Cuatro registros monumentales que definieron el esplendor europeo en medio de la serranía minera del norte de Potosí.</p>
-      <div class="ornament-divider">⚜</div>
+      <span class="eyebrow">InspecciÃ³n de Elementos Constructivos</span>
+      <h2>Detalles ArquitectÃ³nicos del Palacio</h2>
+      <p>Cuatro registros monumentales que definieron el esplendor europeo en medio de la serranÃ­a minera del norte de PotosÃ­.</p>
+      <div class="ornament-divider">âšœ</div>
     </div>
 
     <div class="brass-cards-grid">
@@ -1416,156 +1129,121 @@
         <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
         <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
         <div>
-          <span class="card-catalog-num">Registro N.º 01 · Fachada y Torreón</span>
-          <h3>Torre de Estilo Escocés y Muros Mostaza</h3>
-          <p>
-            La volumetría exterior destaca por su fachada en tono mostaza coronada por una torre de inspiración escocesa, desde la cual se dominaba el paisaje industrial del ingenio Miraflores y el camino hacia el cerro Juan del Valle.
-          </p>
+          <span class="card-catalog-num">Registro N.Âº 01 Â· Fachada y TorreÃ³n</span>
+          <h3>Torre de Estilo EscocÃ©s y Muros Mostaza</h3>
+          <p>La volumetrÃ­a exterior destaca por su fachada en tono mostaza coronada por una torre de inspiraciÃ³n escocesa, desde la cual se dominaba el paisaje industrial del ingenio Miraflores.</p>
         </div>
-        <div class="brass-card-footer">
-          <span>Sector: Miraflores Norte</span>
-          <span>Época: 1899 – 1905</span>
-        </div>
+        <div class="brass-card-footer"><span>Sector: Miraflores Norte</span><span>Ã‰poca: 1899 â€“ 1905</span></div>
       </article>
 
       <article class="brass-card brass-span-6" data-brass-tilt>
         <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
         <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
         <div>
-          <span class="card-catalog-num">Registro N.º 02 · Cielos Rasos e Iluminación</span>
-          <h3>Cristales de Venecia y Salón Rojo Guindo</h3>
-          <p>
-            Como si del coliseo de Roma se tratara, los techos estuvieron cubiertos por cristales italianos procedentes de Venecia con murales de sus canales, iluminando el salón de fiestas cuyos muros rojo guindo contrastaban con arcos blancos.
-          </p>
+          <span class="card-catalog-num">Registro N.Âº 02 Â· Cielos Rasos e IluminaciÃ³n</span>
+          <h3>Cristales de Venecia y SalÃ³n Rojo Guindo</h3>
+          <p>Los techos estuvieron cubiertos por cristales italianos procedentes de Venecia con murales de sus canales, iluminando el salÃ³n de fiestas cuyos muros rojo guindo contrastaban con arcos blancos.</p>
         </div>
-        <div class="brass-card-footer">
-          <span>Origen: Venecia, Italia</span>
-          <span>Ambientes: 73 Salas</span>
-        </div>
+        <div class="brass-card-footer"><span>Origen: Venecia, Italia</span><span>Ambientes: 73 Salas</span></div>
       </article>
 
       <article class="brass-card brass-span-6" data-brass-tilt>
         <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
         <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
         <div>
-          <span class="card-catalog-num">Registro N.º 03 · Reliquias de Transporte</span>
-          <h3>El Carruaje Inglés de 1870 y la Capilla</h3>
-          <p>
-            En una sala contigua a la capilla privada —que aún conserva sus bancas originales de madera— descansa el carruaje inglés rehabilitado de 1870 en el que Simón I. Patiño paseaba por Uncía junto a su esposa Albina.
-          </p>
+          <span class="card-catalog-num">Registro N.Âº 03 Â· Reliquias de Transporte</span>
+          <h3>El Carruaje InglÃ©s de 1870 y la Capilla</h3>
+          <p>En una sala contigua a la capilla privada descansa el carruaje inglÃ©s rehabilitado de 1870 en el que SimÃ³n I. PatiÃ±o paseaba por UncÃ­a junto a su esposa Albina.</p>
         </div>
-        <div class="brass-card-footer">
-          <span>Manufactura: Inglaterra, 1870</span>
-          <span>Modelo 3D: carruaje.glb</span>
-        </div>
+        <div class="brass-card-footer"><span>Manufactura: Inglaterra, 1870</span><span>ColecciÃ³n 3D: historia.html</span></div>
       </article>
 
       <article class="brass-card brass-span-6" data-brass-tilt>
         <svg class="corner-filigree cf-tl"><use href="#filigree-corner"/></svg>
         <svg class="corner-filigree cf-br"><use href="#filigree-corner"/></svg>
         <div>
-          <span class="card-catalog-num">Registro N.º 04 · Complejo Energético</span>
+          <span class="card-catalog-num">Registro N.Âº 04 Â· Complejo EnergÃ©tico</span>
           <h3>Los Motores Alemanes Gemelos del Titanic</h3>
-          <p>
-            Desde los ventanales del palacio se divisan los galpones de calamina donde en 1901 se instalaron los motores diésel alemanes que electrificaron Uncía; sus dos únicos gemelos de fábrica reposan en el océano bajo el casco del Titanic desde 1912.
-          </p>
+          <p>Junto al palacio se levanta la Planta DiÃ©sel Miraflores, donde en 1901 se instalaron los motores alemanes que electrificaron UncÃ­a; sus dos Ãºnicos gemelos reposan bajo el casco del Titanic desde 1912.</p>
         </div>
-        <div class="brass-card-footer">
-          <span>Instalación: Año 1901</span>
-          <span>Origen: Casa Diesel, Alemania</span>
-        </div>
+        <div class="brass-card-footer"><span>InstalaciÃ³n: AÃ±o 1901</span><span>Origen: Casa Diesel, Alemania</span></div>
       </article>
     </div>
   </section>
 
-  <!-- ============================================================
-       SECCIÓN 4: LÍNEA DEL TIEMPO PATRIMONIAL (CRÓNICA DE LA ÉPOCA)
-       ============================================================ -->
+  <!-- SECCIÃ“N CRÃ“NICA HISTÃ“RICA -->
   <section class="patrimonial-section" id="cronica-historica">
     <div class="section-ornament-header">
-      <span class="eyebrow">Crónica Documental · Siglos XVI al XX</span>
-      <h2>Efemérides del Palacio y de Uncía</h2>
+      <span class="eyebrow">CrÃ³nica Documental Â· Siglos XVI al XX</span>
+      <h2>EfemÃ©rides del Palacio y de UncÃ­a</h2>
       <p>De la promesa junto a una bocamina en el monte Llallagua al nacimiento del sindicalismo minero boliviano.</p>
-      <div class="ornament-divider">⚜</div>
+      <div class="ornament-divider">âšœ</div>
     </div>
 
     <div class="chronicle-timeline" id="chronicle-timeline">
-      <div class="timeline-spine">
-        <div class="timeline-spine-fill" id="timeline-spine-fill"></div>
-      </div>
+      <div class="timeline-spine"><div class="timeline-spine-fill" id="timeline-spine-fill"></div></div>
 
       <div class="chronicle-entry">
         <div class="chronicle-node"></div>
         <div class="chronicle-card">
-          <span class="chronicle-year">Año 1564 · Bautizo Colonial</span>
-          <h3>Juan del Valle y la Moneda de «Ínfimo Valor»</h3>
-          <p>El español Juan del Valle explora los cerros buscando plata superficial. Al no hallarla, nombra al paraje «Uncía» (antigua moneda romana de mínimo valor), sin sospechar la fortuna de estaño que guardaban sus entrañas.</p>
+          <span class="chronicle-year">AÃ±o 1564 Â· Bautizo Colonial</span>
+          <h3>Juan del Valle y la Moneda de Â«Ãnfimo ValorÂ»</h3>
+          <p>El espaÃ±ol Juan del Valle explora los cerros buscando plata superficial. Al no hallarla, nombra al paraje Â«UncÃ­aÂ» (moneda romana de mÃ­nimo valor).</p>
         </div>
       </div>
 
       <div class="chronicle-entry">
         <div class="chronicle-node"></div>
         <div class="chronicle-card">
-          <span class="chronicle-year">1892 – 1898 · La Promesa en la Bocamina</span>
-          <h3>Albina Rodríguez Vende sus Alhajas</h3>
-          <p>Tras asociarse con Sergio Ortiz en La Salvadora, Patiño recibe en la cima del cerro a su esposa Albina, quien vendió sus joyas en Oruro para apoyarlo. Conmovido, le promete: «¡Algún día te construiré un palacio!».</p>
+          <span class="chronicle-year">1892 â€“ 1898 Â· La Promesa en la Bocamina</span>
+          <h3>Albina RodrÃ­guez Vende sus Alhajas</h3>
+          <p>PatiÃ±o recibe en la cima del cerro a su esposa Albina, quien vendiÃ³ sus joyas en Oruro para apoyarlo. Conmovido, le promete: Â«Â¡AlgÃºn dÃ­a te construirÃ© un palacio!Â».</p>
         </div>
       </div>
 
       <div class="chronicle-entry">
         <div class="chronicle-node"></div>
         <div class="chronicle-card">
-          <span class="chronicle-year">1899 – 1905 · Esplendor en Miraflores</span>
-          <h3>Los Siete Años de Residencia de la Familia Patiño</h3>
-          <p>Se levanta el palacio de 73 ambientes con capilla, farmacia, salón de fiestas y jardines franceses de Bolonia en sus muros, junto a la instalación en 1901 de los colosales motores diésel alemanes.</p>
+          <span class="chronicle-year">1899 â€“ 1905 Â· Esplendor en Miraflores</span>
+          <h3>Los Siete AÃ±os de Residencia de la Familia PatiÃ±o</h3>
+          <p>Se levanta el palacio de 73 ambientes con capilla, farmacia, salÃ³n de fiestas y jardines franceses de Bolonia, junto a los motores diÃ©sel alemanes de 1901.</p>
         </div>
       </div>
 
       <div class="chronicle-entry">
         <div class="chronicle-node"></div>
         <div class="chronicle-card">
-          <span class="chronicle-year">1 de Mayo de 1923 · Gesta Obrera</span>
+          <span class="chronicle-year">1 de Mayo de 1923 Â· Gesta Obrera</span>
           <h3>Cuna del Sindicalismo Minero en Bolivia</h3>
-          <p>En una Uncía cosmopolita donde se hablaban 15 idiomas, 5.000 mineros marchan a la plaza Alonso de Ibáñez y fundan el primer sindicato minero del país exigiendo la jornada de 8 horas.</p>
-        </div>
-      </div>
-
-      <div class="chronicle-entry">
-        <div class="chronicle-node"></div>
-        <div class="chronicle-card">
-          <span class="chronicle-year">1924 – Presente · Mito y Restauración</span>
-          <h3>El Traslado a Catavi y la Melodía Nocturna</h3>
-          <p>Tras el traslado administrativo a Catavi en 1924 y el paso a COMIBOL en 1952, el inmueble hoy se preserva como joya turística, mientras la leyenda local asegura que de noche aún resuenan el piano y el brindis de Patiño.</p>
+          <p>En una UncÃ­a cosmopolita donde se hablaban 15 idiomas, 5.000 mineros marchan a la plaza Alonso de IbÃ¡Ã±ez y fundan el primer sindicato minero del paÃ­s.</p>
         </div>
       </div>
     </div>
 
     <div style="text-align:center; margin-top:32px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
-      <a href="./interior.html" class="btn-vintage btn-vintage-gold">Caminar por el Interior 3D (WASD) →</a>
+      <a href="./interior.html" class="btn-vintage btn-vintage-gold">Caminar por el Interior 3D (WASD) â†’</a>
       <a href="./historia.html" class="btn-vintage">Inspeccionar Reliquias 3D en Detalle</a>
     </div>
   </section>
 
-  <!-- ============================================================
-       FOOTER MONUMENTAL
-       ============================================================ -->
+  <!-- FOOTER MONUMENTAL -->
   <footer class="vintage-footer">
     <div class="footer-nav-row">
-      <span>UNCÍA · PROVINCIA RAFAEL BUSTILLO · POTOSÍ, BOLIVIA</span>
+      <span>UNCÃA Â· PROVINCIA RAFAEL BUSTILLO Â· POTOSÃ, BOLIVIA</span>
       <div style="display:flex; gap:24px; flex-wrap:wrap;">
         <a href="#visor-exterior">Visor Exterior 3D</a>
         <a href="./interior.html">Recorrido Interior</a>
-        <a href="./historia.html">Galería de Modelos GLB</a>
+        <a href="./historia.html">GalerÃ­a de Modelos GLB</a>
       </div>
     </div>
-    <div class="footer-engraved-title">PALACIO PATIÑO</div>
+    <div class="footer-engraved-title">PALACIO PATIÃ‘O</div>
     <p class="footer-credits">
-      Reconstrucción Patrimonial Tridimensional · Casa Museo de Simón I. Patiño en Uncía — Desarrollado con Three.js / WebGL
+      ReconstrucciÃ³n Patrimonial Tridimensional Â· Casa Museo de SimÃ³n I. PatiÃ±o en UncÃ­a
     </p>
   </footer>
 
   <!-- ============================================================
-       MOTOR THREE.JS: CARGA DE .GLB, 3 ESTADOS DE CÁMARA, HOTSPOTS Y CLIMAS
+       MOTOR THREE.JS: VISTA FIJA + 4 ESTACIONES CON FOTOS + CATÃLOGO GLB
        ============================================================ -->
   <script type="module">
     import * as THREE from 'three';
@@ -1574,40 +1252,123 @@
     import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
     import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
-    // Rutas a tus modelos .glb reales en tu repositorio
-    const HOUSE_GLB_URL    = new URL('./models/casa-exterior.glb', import.meta.url).href;
-    const CARRIAGE_GLB_URL = new URL('./models/carruaje.glb', import.meta.url).href;
+    const HOUSE_GLB_URL = new URL('./models/casa-exterior.glb', import.meta.url).href;
     const HOUSE_TARGET_SIZE = 14;
 
-    // Referencias DOM del Pre-loader
+    // ============================================================
+    // 1. VISTA INICIAL FIJA (ENTRADA DEL LETRERO AZUL + TORRE ESCOCESA)
+    // ============================================================
+    let INITIAL_VIEW = {
+      position: { x: 1.95, y: 1.55, z: 6.15 },
+      target:   { x: 2.35, y: 1.50, z: 1.20 },
+      fov: 42,
+      rollDeg: 0
+    };
+
+    // ============================================================
+    // 2. LOS 4 PUNTOS DE INTERACCIÃ“N CON FOTOS OPCIONALES
+    // ============================================================
+    let TOUR_STOPS = [
+      {
+        id: 'stop-1',
+        number: '1',
+        shortLabel: '1. Entrada Â· Letrero Azul',
+        step: 'ESTACIÃ“N I DE IV Â· INGRESO PRINCIPAL',
+        title: '1. Entrada Principal â€” Letrero Â«Casa SimÃ³n PatiÃ±oÂ»',
+        desc: 'Punto de acceso principal al recinto amurallado del palacio en la zona de Miraflores, donde se conserva la seÃ±alÃ©tica patrimonial de ingreso junto a la reja perimetral.',
+        target: { x: 3.35, y: 1.15, z: 2.35 },
+        yawDeg: -10,
+        pitchDeg: 6,
+        distance: 3.8,
+        fov: 40,
+        rollDeg: 0
+      },
+      {
+        id: 'stop-2',
+        number: '2',
+        shortLabel: '2. Torre Escocesa',
+        step: 'ESTACIÃ“N II DE IV Â· TORREÃ“N Y ARQUERÃA',
+        title: '2. La Torre de Estilo EscocÃ©s y GalerÃ­a',
+        desc: 'Coronando la fachada color mostaza se alza la torre de inspiraciÃ³n escocesa y la galerÃ­a de ventanales arqueados que iluminaban los 73 ambientes y los techos de cristal veneciano.',
+        target: { x: 2.55, y: 2.35, z: 0.95 },
+        yawDeg: -8,
+        pitchDeg: 4,
+        distance: 5.6,
+        fov: 40,
+        rollDeg: 0
+      },
+      {
+        id: 'stop-3',
+        number: '3',
+        shortLabel: '3. Planta DiÃ©sel Miraflores',
+        step: 'ESTACIÃ“N III DE IV Â· COMPLEJO ENERGÃ‰TICO (1901)',
+        title: '3. Planta DiÃ©sel Miraflores (Motores del Titanic)',
+        desc: 'Edificio industrial contiguo al palacio donde en 1901 se instalaron los motores alemanes que electrificaron La Salvadora y UncÃ­a; sus dos Ãºnicos motores gemelos naufragaron en el Titanic en 1912.',
+        target: { x: -4.15, y: 1.35, z: -0.55 },
+        yawDeg: -26,
+        pitchDeg: 10,
+        distance: 5.8,
+        fov: 42,
+        rollDeg: 0
+      },
+      {
+        id: 'stop-4',
+        number: '4',
+        shortLabel: '4. Vista General Completa',
+        step: 'ESTACIÃ“N IV DE IV Â· PANORÃMICA DEL COMPLEJO',
+        title: '4. Vista General del Palacio y Planta Miraflores',
+        desc: 'Perspectiva integral del conjunto histÃ³rico en el sector norte de UncÃ­a: a la izquierda la Planta DiÃ©sel Miraflores, al centro los salones del palacio y a la derecha la torre escocesa y la entrada.',
+        target: { x: -0.25, y: 1.65, z: 0.50 },
+        yawDeg: 0,
+        pitchDeg: 11,
+        distance: 11.8,
+        fov: 45,
+        rollDeg: 0
+      }
+    ];
+
+    // ============================================================
+    // 3. CATÃLOGO DE MODELOS .GLB (ACTUALES + NUEVOS RECOMENDADOS)
+    // ============================================================
+    let EXTERIOR_PROPS = [
+      { id: 'carruaje',              name: 'Carruaje InglÃ©s (1870)',       file: 'carruaje.glb',              enabled: false, position: { x: 5.2,  y: 0, z: 3.2 }, rotationDeg: -45, scale: 2.4 },
+      { id: 'planta_miraflores',     name: 'Planta DiÃ©sel (Detalle)',      file: 'planta_miraflores.glb',     enabled: false, position: { x: -6.5, y: 0, z: 2.5 }, rotationDeg: 0,   scale: 3.0 },
+      { id: 'el_tio',                name: 'El TÃ­o de la Mina',            file: 'el_tio.glb',                enabled: false, position: { x: 2.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.5 },
+      { id: 'traje_patino',          name: 'Traje de SimÃ³n I. PatiÃ±o',     file: 'traje_patino.glb',          enabled: false, position: { x: 1.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.7 },
+      { id: 'camara_cine',           name: 'CÃ¡mara de Cine',               file: 'camara_cine.glb',           enabled: false, position: { x: 3.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.4 },
+      { id: 'piano_antiguo',         name: 'Piano Antiguo',                file: 'piano_antiguo.glb',         enabled: false, position: { x: 0.0,  y: 0, z: 4.0 }, rotationDeg: 0,   scale: 1.6 },
+      { id: 'farol_colonial',        name: 'Farol Colonial de Hierro',     file: 'farol_colonial.glb',        enabled: false, position: { x: 3.6,  y: 0, z: 3.0 }, rotationDeg: 0,   scale: 2.2 },
+      { id: 'motor_diesel_1901',     name: 'Motor DiÃ©sel AlemÃ¡n (1901)',   file: 'motor_diesel_1901.glb',     enabled: false, position: { x: -4.5, y: 0, z: 2.5 }, rotationDeg: 0,   scale: 2.5 },
+      { id: 'llave_gigante_mineral', name: 'Llave Gigante / Casiterita',   file: 'llave_gigante_mineral.glb', enabled: false, position: { x: -3.0, y: 0, z: 3.0 }, rotationDeg: 0,   scale: 1.2 }
+    ];
+
+    try {
+      const savedHome = JSON.parse(localStorage.getItem('patino_vintage_home_v3'));
+      if (savedHome) INITIAL_VIEW = savedHome;
+      const savedStops = JSON.parse(localStorage.getItem('patino_vintage_stops_v3'));
+      if (Array.isArray(savedStops) && savedStops.length === 4) TOUR_STOPS = savedStops;
+    } catch (_) {}
+
+    // Referencias DOM
     const preloaderEl     = document.getElementById('vintage-preloader');
     const preloaderPct    = document.getElementById('preloader-pct');
     const preloaderFill   = document.getElementById('preloader-fill');
-    const preloaderStatus = document.getElementById('preloader-status');
 
-    // Referencias DOM de Estados e Interfaz
-    const container           = document.getElementById('exterior-canvas-container');
-    const hotspotsLayer       = document.getElementById('hotspots-layer');
-    const presentationOverlay = document.getElementById('presentation-overlay');
-    const tourPlaque          = document.getElementById('tour-plaque');
-    const plaqueStep          = document.getElementById('plaque-step');
-    const plaqueCoords        = document.getElementById('plaque-coords');
-    const plaqueTitle         = document.getElementById('plaque-title');
-    const plaqueDesc          = document.getElementById('plaque-desc');
-    const tourProgressFill    = document.getElementById('tour-progress-fill');
-    const freeRoamHint        = document.getElementById('free-roam-hint');
+    const container      = document.getElementById('exterior-canvas-container');
+    const hotspotsLayer  = document.getElementById('hotspots-layer');
+    const heroLeftBanner = document.getElementById('hero-left-banner');
+    const tourPlaque     = document.getElementById('tour-plaque');
+    const plaqueStep     = document.getElementById('plaque-step');
+    const plaqueTitle    = document.getElementById('plaque-title');
+    const plaqueImg      = document.getElementById('plaque-img');
+    const plaqueDesc     = document.getElementById('plaque-desc');
 
-    const dockBtnPresent = document.getElementById('dock-btn-present');
-    const dockBtnTour    = document.getElementById('dock-btn-tour');
-    const dockBtnFree    = document.getElementById('dock-btn-free');
-
-    // ---------- Escena, Cámara y Renderizador ----------
+    // ---------- Escena, CÃ¡mara y Renderizador ----------
     const scene = new THREE.Scene();
     scene.background = makeSkyGradient('#2B3540', '#B89360');
-    scene.fog = new THREE.Fog(0x6e583f, 22, 95);
+    scene.fog = new THREE.Fog(0x6e583f, 24, 110);
 
-    const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 400);
-    camera.position.set(14, 6.5, 15);
+    const camera = new THREE.PerspectiveCamera(INITIAL_VIEW.fov || 42, window.innerWidth / window.innerHeight, 0.1, 400);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -1619,18 +1380,62 @@
     renderer.toneMappingExposure = 1.05;
     container.appendChild(renderer.domElement);
 
-    // ---------- OrbitControls (para Exploración Libre) ----------
+    // ---------- Controles Libres ----------
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.06;
-    controls.maxPolarAngle = Math.PI * 0.485;
-    controls.minDistance = 3;
-    controls.maxDistance = 48;
-    controls.target.set(0, 2.2, 0);
-    controls.enabled = false; // Inicia en Estado 1 (Órbita de Presentación)
+    controls.enablePan = true;
+    controls.screenSpacePanning = true;
+    controls.maxPolarAngle = Math.PI * 0.492;
+    controls.minDistance = 0.5;
+    controls.maxDistance = 85;
+    controls.enabled = true;
 
-    // ---------- Iluminación de Época y Faroles Nocturnos ----------
-    const ambientLight = new THREE.AmbientLight(0xffe8c2, 0.65);
+    let currentRollDeg = 0;
+
+    function applyInitialViewInstant() {
+      camera.position.set(INITIAL_VIEW.position.x, INITIAL_VIEW.position.y, INITIAL_VIEW.position.z);
+      controls.target.set(INITIAL_VIEW.target.x, INITIAL_VIEW.target.y, INITIAL_VIEW.target.z);
+      camera.fov = INITIAL_VIEW.fov || 42;
+      camera.updateProjectionMatrix();
+      currentRollDeg = INITIAL_VIEW.rollDeg || 0;
+      controls.update();
+    }
+            applyInitialViewInstant();
+        renderer.render(scene, camera);
+        try {
+          const snap = renderer.domElement.toDataURL('image/jpeg', 0.92);
+          const afterImg = document.getElementById('comp-after-img');
+          const beforeImg = document.getElementById('comp-before-img');
+          if (afterImg) afterImg.src = snap;
+          if (beforeImg) beforeImg.src = snap;
+        } catch (_) {}
+
+    function computePosFromAngles(target, yawDeg, pitchDeg, distance) {
+      const yaw = THREE.MathUtils.degToRad(yawDeg);
+      const pitch = THREE.MathUtils.degToRad(pitchDeg);
+      const cosP = Math.cos(pitch);
+      return new THREE.Vector3(
+        target.x + distance * Math.sin(yaw) * cosP,
+        target.y + distance * Math.sin(pitch),
+        target.z + distance * Math.cos(yaw) * cosP
+      );
+    }
+
+    function extractAnglesFromCam(camPos, targetPos) {
+      const off = new THREE.Vector3().subVectors(camPos, targetPos);
+      const distance = Math.max(0.5, off.length());
+      const pitch = Math.asin(THREE.MathUtils.clamp(off.y / distance, -0.99, 0.99));
+      const yaw = Math.atan2(off.x, off.z);
+      return {
+        yawDeg: Math.round(THREE.MathUtils.radToDeg(yaw)),
+        pitchDeg: Math.round(THREE.MathUtils.radToDeg(pitch)),
+        distance: Number(distance.toFixed(2))
+      };
+    }
+
+    // ---------- IluminaciÃ³n y Terreno ----------
+    const ambientLight = new THREE.AmbientLight(0xffe8c2, 0.7);
     scene.add(ambientLight);
 
     const hemiLight = new THREE.HemisphereLight(0xdce4ec, 0x6b5335, 0.85);
@@ -1647,36 +1452,21 @@
     sunLight.shadow.bias = -0.0004;
     scene.add(sunLight);
 
-    // Faroles cálidos (PointLights) que se encienden en el modo "Noche de Faroles"
-    const lanternGroup = new THREE.Group();
     const lanternLights = [];
-    const lanternCoords = [
-      { x: -5.5, y: 2.6, z: 5.5 },
-      { x:  5.5, y: 2.6, z: 5.5 },
-      { x: -5.5, y: 2.6, z: -5.5 },
-      { x:  6.8, y: 2.4, z: 2.2 }
-    ];
-
-    lanternCoords.forEach((pos) => {
-      const pLight = new THREE.PointLight(0xff9d3b, 0, 16, 1.8);
+    [
+      { x: 3.4, y: 2.2, z: 2.5 },
+      { x: 0.0, y: 2.5, z: 2.2 },
+      { x: -4.2, y: 2.4, z: 0.5 },
+      { x: 3.2, y: 3.8, z: 1.0 }
+    ].forEach((pos) => {
+      const pLight = new THREE.PointLight(0xff9d3b, 0, 14, 1.8);
       pLight.position.set(pos.x, pos.y, pos.z);
-      lanternGroup.add(pLight);
+      scene.add(pLight);
       lanternLights.push(pLight);
-
-      const bulb = new THREE.Mesh(
-        new THREE.SphereGeometry(0.12, 12, 12),
-        new THREE.MeshBasicMaterial({ color: 0xffcf70 })
-      );
-      bulb.position.copy(pLight.position);
-      bulb.visible = false;
-      pLight.userData.bulb = bulb;
-      lanternGroup.add(bulb);
     });
-    scene.add(lanternGroup);
 
-    // ---------- Terreno Andino y Cerros de Uncía ----------
     const ground = new THREE.Mesh(
-      new THREE.CircleGeometry(65, 64),
+      new THREE.CircleGeometry(70, 64),
       new THREE.MeshStandardMaterial({ color: 0x6e583b, roughness: 0.96 })
     );
     ground.rotation.x = -Math.PI / 2;
@@ -1684,11 +1474,11 @@
     scene.add(ground);
 
     const courtyard = new THREE.Mesh(
-      new THREE.CircleGeometry(9.5, 48),
+      new THREE.CircleGeometry(10, 48),
       new THREE.MeshStandardMaterial({ color: 0x8a7b65, roughness: 0.92 })
     );
     courtyard.rotation.x = -Math.PI / 2;
-    courtyard.position.y = 0.02;
+    courtyard.position.y = 0.01;
     courtyard.receiveShadow = true;
     scene.add(courtyard);
 
@@ -1705,40 +1495,25 @@
       scene.add(hill);
     }
 
-    // ---------- Configuración de GLTFLoader con Draco y Meshopt ----------
+    // ---------- Cargador GLTF con Draco y Meshopt ----------
     const dracoLoader = new DRACOLoader();
     dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/draco/');
-
     const gltfLoader = new GLTFLoader();
     gltfLoader.setDRACOLoader(dracoLoader);
     gltfLoader.setMeshoptDecoder(MeshoptDecoder);
 
-    function setPreloaderProgress(pct, text) {
-      const clamped = Math.min(100, Math.max(0, Math.round(pct)));
-      preloaderPct.textContent = clamped + '%';
-      preloaderFill.style.width = clamped + '%';
-      if (text) preloaderStatus.textContent = text;
-    }
+    const surfaceMeshes = [ground, courtyard];
+    const loadedProps = new Map();
 
-    function openPreloaderCurtain() {
-      setPreloaderProgress(100, '¡Monumento listo para su inspección!');
-      setTimeout(() => {
-        preloaderEl.classList.add('curtain-open');
-      }, 350);
-    }
-
-    // Utilidades de centrado y escala del modelo .glb
     function normalizeAndCenterModel(obj, targetHorizontal) {
       obj.updateMatrixWorld(true);
       const box = new THREE.Box3().setFromObject(obj);
       const size = box.getSize(new THREE.Vector3());
       const maxHoriz = Math.max(size.x, size.z);
       if (maxHoriz > 0 && targetHorizontal) {
-        const scale = targetHorizontal / maxHoriz;
-        obj.scale.multiplyScalar(scale);
+        obj.scale.multiplyScalar(targetHorizontal / maxHoriz);
         obj.updateMatrixWorld(true);
       }
-
       const finalBox = new THREE.Box3().setFromObject(obj);
       const center = finalBox.getCenter(new THREE.Vector3());
       obj.position.x -= center.x;
@@ -1750,272 +1525,489 @@
         if (n.isMesh) {
           n.castShadow = true;
           n.receiveShadow = true;
+          if (n.material) {
+            (Array.isArray(n.material) ? n.material : [n.material]).forEach((m) => {
+              m.side = THREE.DoubleSide;
+            });
+          }
+          surfaceMeshes.push(n);
         }
       });
-
-      return new THREE.Box3().setFromObject(obj);
     }
 
-    // Fallback arquitectónico si el modelo tardara o no estuviese en local
-    function createFallbackPalace() {
-      const g = new THREE.Group();
-      const wallM = new THREE.MeshStandardMaterial({ color: 0xd8b878, roughness: 0.85 });
-      const roofM = new THREE.MeshStandardMaterial({ color: 0x6b3529, roughness: 0.8 });
-      const body = new THREE.Mesh(new THREE.BoxGeometry(9, 4.2, 7), wallM);
-      body.position.y = 2.1;
-      g.add(body);
-      const tower = new THREE.Mesh(new THREE.BoxGeometry(2.6, 6.5, 2.6), wallM);
-      tower.position.set(3.2, 3.25, 2.2);
-      g.add(tower);
-      const spire = new THREE.Mesh(new THREE.ConeGeometry(2.1, 2.6, 4), roofM);
-      spire.position.set(3.2, 7.8, 2.2);
-      spire.rotation.y = Math.PI / 4;
-      g.add(spire);
-      return g;
-    }
-
-    // ---------- Carga del Palacio Exterior y del Carruaje Inglés ----------
+    // Cargar Ãºnicamente casa-exterior.glb al inicio (sin el carruaje)
     gltfLoader.load(
       HOUSE_GLB_URL,
       (gltf) => {
         const palace = gltf.scene;
-        const houseBox = normalizeAndCenterModel(palace, HOUSE_TARGET_SIZE);
+        normalizeAndCenterModel(palace, HOUSE_TARGET_SIZE);
         scene.add(palace);
-        openPreloaderCurtain();
-
-        // Cargar el carruaje inglés de 1870 junto al palacio
-        gltfLoader.load(
-          CARRIAGE_GLB_URL,
-          (carGltf) => {
-            const carriage = carGltf.scene;
-            const houseSize = houseBox.getSize(new THREE.Vector3());
-            normalizeAndCenterModel(carriage, Math.max(houseSize.x, houseSize.z) * 0.22);
-            carriage.rotation.y = -Math.PI / 3;
-            carriage.position.x = houseBox.max.x + 2.8;
-            carriage.position.z = houseBox.max.z * 0.45;
-            scene.add(carriage);
-          },
-          undefined,
-          () => {}
-        );
+                applyInitialViewInstant();
+        renderer.render(scene, camera);
+        try {
+          const snap = renderer.domElement.toDataURL('image/jpeg', 0.92);
+          const afterImg = document.getElementById('comp-after-img');
+          const beforeImg = document.getElementById('comp-before-img');
+          if (afterImg) afterImg.src = snap;
+          if (beforeImg) beforeImg.src = snap;
+        } catch (_) {}
+        preloaderPct.textContent = '100%';
+        preloaderFill.style.width = '100%';
+        setTimeout(() => preloaderEl.classList.add('curtain-open'), 300);
       },
       (xhr) => {
         if (xhr.lengthComputable && xhr.total > 0) {
-          setPreloaderProgress((xhr.loaded / xhr.total) * 100, 'Descargando arquitectura 3D (casa-exterior.glb)…');
-        } else {
-          const mb = (xhr.loaded / 1048576).toFixed(1);
-          setPreloaderProgress(Math.min(92, xhr.loaded / 350000), `Cargando modelo patrimonial (${mb} MB)…`);
+          const pct = Math.min(99, Math.round((xhr.loaded / xhr.total) * 100));
+          preloaderPct.textContent = pct + '%';
+          preloaderFill.style.width = pct + '%';
         }
       },
       (err) => {
-        console.warn('Usando palacio de respaldo:', err);
-        const fallback = createFallbackPalace();
-        normalizeAndCenterModel(fallback, HOUSE_TARGET_SIZE);
-        scene.add(fallback);
-        openPreloaderCurtain();
+        console.error('Error cargando casa-exterior.glb:', err);
+        preloaderEl.classList.add('curtain-open');
       }
     );
 
-    // ============================================================
-    // SISTEMA DE 3 ESTADOS DE CÁMARA + 4 PARADAS DEL RECORRIDO GUIADO
-    // ============================================================
-    const TOUR_STOPS = [
-      {
-        step: 'ESTACIÓN I DE IV · FACHADA PRINCIPAL',
-        coords: 'SECTOR MIRAFLORES · UNCÍA',
-        title: 'La Fachada Mostaza y la Promesa a Albina',
-        desc: 'Levantada entre 1899 y 1905 tras el hallazgo de la gran veta en La Salvadora. Cumplió la promesa que Simón I. Patiño hizo a su esposa Albina Rodríguez Ocampo cuando ella vendió sus joyas en Oruro.',
-        camPos: new THREE.Vector3(0.5, 4.2, 13.5),
-        lookAt: new THREE.Vector3(0, 2.3, 0),
-        hotspotPos: new THREE.Vector3(0, 2.6, 4.8),
-        shortLabel: 'I. Fachada Principal'
-      },
-      {
-        step: 'ESTACIÓN II DE IV · TORREÓN Y MIRADOR',
-        coords: 'ESTILO ESCOCÉS · PRINCIPIOS S. XX',
-        title: 'La Torre de Estilo Escocés y Techos Venecianos',
-        desc: 'Coronando el inmueble se alza su emblemática torre escocesa. En su interior, los techos lucían cristales italianos traídos de Venecia con murales románticos de sus canales.',
-        camPos: new THREE.Vector3(10.5, 6.8, 9.5),
-        lookAt: new THREE.Vector3(1.5, 3.4, 0.5),
-        hotspotPos: new THREE.Vector3(3.2, 4.8, 2.2),
-        shortLabel: 'II. Torre Escocesa'
-      },
-      {
-        step: 'ESTACIÓN III DE IV · PATIO DEL CARRUAJE',
-        coords: 'MANUFACTURA INGLESA · AÑO 1870',
-        title: 'El Carruaje Inglés de 1870 y la Capilla',
-        desc: 'Junto al ala lateral y la capilla privada descansa el carruaje inglés original de 1870 en el que la familia Patiño recorría las calles de Uncía antes del ferrocarril Machacamarca–Uncía.',
-        camPos: new THREE.Vector3(11.8, 3.2, 5.2),
-        lookAt: new THREE.Vector3(5.8, 1.4, 2.2),
-        hotspotPos: new THREE.Vector3(6.2, 1.6, 2.4),
-        shortLabel: 'III. Carruaje de 1870'
-      },
-      {
-        step: 'ESTACIÓN IV DE IV · PERSPECTIVA INDUSTRIAL',
-        coords: 'INGENIO MIRAFLORES · MOTORES 1901',
-        title: 'Galpones de los Motores Gemelos del Titanic',
-        desc: 'Desde este ángulo del palacio se divisaban las oficinas administrativas y los galpones que alojaban los motores diésel alemanes de 1901, cuyos dos gemelos naufragaron en el Titanic en 1912.',
-        camPos: new THREE.Vector3(-12.5, 5.8, -10.5),
-        lookAt: new THREE.Vector3(0, 2.2, 0),
-        hotspotPos: new THREE.Vector3(-4.5, 3.0, -3.5),
-        shortLabel: 'IV. Vista Miraflores'
+    async function spawnOrUpdateProp(def) {
+      let entry = loadedProps.get(def.id);
+      if (!def.enabled) {
+        if (entry) entry.holder.visible = false;
+        return;
       }
-    ];
+      if (!entry) {
+        try {
+          const url = new URL(`./models/${def.file}`, import.meta.url).href;
+          const gltf = await new Promise((res, rej) => gltfLoader.load(url, res, undefined, rej));
+          const raw = gltf.scene;
+          const holder = new THREE.Group();
+          holder.add(raw);
+          scene.add(holder);
+          entry = { holder, raw };
+          loadedProps.set(def.id, entry);
+        } catch (err) {
+          console.warn(`El archivo models/${def.file} aÃºn no estÃ¡ en la carpeta models/.`);
+          return;
+        }
+      }
+      entry.holder.visible = true;
+      entry.raw.scale.set(1, 1, 1);
+      entry.raw.position.set(0, 0, 0);
+      normalizeAndCenterModel(entry.raw, def.scale);
+      entry.holder.position.set(def.position.x, def.position.y, def.position.z);
+      entry.holder.rotation.y = THREE.MathUtils.degToRad(def.rotationDeg || 0);
+    }
 
-    // Crear marcadores (Sellos Dorados 3D -> 2D) sobre el modelo
-    const hotspotElements = TOUR_STOPS.map((stop, index) => {
+    // ============================================================
+    // SELLOS DORADOS (1, 2, 3, 4) Y VUELO DINÃMICO DE CÃMARA
+    // ============================================================
+    let activeStopIndex = -1;
+    let autoTourInterval = null;
+    let camTween = null;
+
+    const hotspotDomList = TOUR_STOPS.map((stop, index) => {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'seal-hotspot';
-      btn.innerHTML = `<span>${index + 1}</span><span class="seal-tooltip">${stop.shortLabel}</span>`;
+      btn.innerHTML = `<span>${stop.number}</span><span class="seal-tooltip">${stop.shortLabel}</span>`;
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        focusHotspotStop(index);
+        stopAutoTour();
+        goToStation(index);
       });
       hotspotsLayer.appendChild(btn);
-      return { btn, worldPos: stop.hotspotPos.clone() };
+      return { btn, stop };
     });
 
-    // Variables de estado de cámara
-    let currentState = 'PRESENTATION'; // 'PRESENTATION' | 'TOUR' | 'FREE'
-    let orbitAngle = 0.65;
-    let currentStopIndex = 0;
-    let tourStepTimer = 0;
-    const TOUR_HOLD_DURATION = 5.5; // segundos por estación en modo automático
-
-    // Interpolación suave de cámara (Tween sin librerías externas)
-    let camTween = null;
-    function animateCameraTo(targetPos, targetLook, duration = 1.8, onComplete = null) {
+    function flyCameraTo(destPos, destTarget, destFov, destRoll, duration = 1.4) {
       camTween = {
         startPos: camera.position.clone(),
-        startLook: controls.target.clone(),
-        endPos: targetPos.clone(),
-        endLook: targetLook.clone(),
+        startTarget: controls.target.clone(),
+        startFov: camera.fov,
+        startRoll: currentRollDeg,
+        endPos: destPos.clone(),
+        endTarget: destTarget.clone(),
+        endFov: destFov,
+        endRoll: destRoll,
         elapsed: 0,
-        duration,
-        onComplete
+        duration
       };
     }
 
-    function updateDockActiveButton(mode) {
-      [dockBtnPresent, dockBtnTour, dockBtnFree].forEach((b) => b.classList.remove('active'));
-      if (mode === 'PRESENTATION') dockBtnPresent.classList.add('active');
-      if (mode === 'TOUR') dockBtnTour.classList.add('active');
-      if (mode === 'FREE') dockBtnFree.classList.add('active');
-    }
-
-    // --- Activar ESTADO 1: Presentación General ---
-    function setPresentationMode() {
-      currentState = 'PRESENTATION';
-      controls.enabled = false;
-      presentationOverlay.classList.remove('hidden-state');
-      tourPlaque.classList.remove('active');
-      freeRoamHint.classList.remove('visible');
-      updateDockActiveButton('PRESENTATION');
-
-      const destPos = new THREE.Vector3(Math.cos(orbitAngle) * 16.5, 6.2, Math.sin(orbitAngle) * 16.5);
-      animateCameraTo(destPos, new THREE.Vector3(0, 2.2, 0), 1.6);
-    }
-
-    // --- Activar ESTADO 2: Recorrido Guiado Cinemático ---
-    function startGuidedTour(startIndex = 0) {
-      currentState = 'TOUR';
-      controls.enabled = false;
-      presentationOverlay.classList.add('hidden-state');
-      freeRoamHint.classList.remove('visible');
-      updateDockActiveButton('TOUR');
-      goToTourStop(startIndex);
-    }
-
-    function goToTourStop(index) {
-      if (index >= TOUR_STOPS.length) {
-        // Al finalizar las 4 paradas, pasa automáticamente al Estado 3 (Exploración Libre)
-        enableFreeExploration();
-        return;
-      }
-      if (index < 0) index = 0;
-
-      currentStopIndex = index;
-      tourStepTimer = 0;
-      const stop = TOUR_STOPS[index];
-
-      plaqueStep.textContent = stop.step;
-      plaqueCoords.textContent = stop.coords;
-      plaqueTitle.textContent = stop.title;
-      plaqueDesc.textContent = stop.desc;
-      tourProgressFill.style.width = '0%';
-      tourPlaque.classList.add('active');
-
-      animateCameraTo(stop.camPos, stop.lookAt, 1.9);
-    }
-
-    // --- Activar ESTADO 3: Exploración Libre del Exterior ---
-    function enableFreeExploration(keepPlaque = false) {
-      currentState = 'FREE';
-      presentationOverlay.classList.add('hidden-state');
-      if (!keepPlaque) tourPlaque.classList.remove('active');
-      freeRoamHint.classList.add('visible');
-      updateDockActiveButton('FREE');
-
-      animateCameraTo(
-        new THREE.Vector3(11.5, 5.2, 13.5),
-        new THREE.Vector3(0, 2.0, 0),
-        1.4,
-        () => { controls.enabled = true; }
-      );
-      controls.enabled = true;
-    }
-
-    // Acercarse a un sello dorado (Hotspot) en el exterior
-    function focusHotspotStop(index) {
-      currentState = 'FREE';
-      presentationOverlay.classList.add('hidden-state');
-      freeRoamHint.classList.add('visible');
-      updateDockActiveButton('FREE');
-
-      const stop = TOUR_STOPS[index];
-      plaqueStep.textContent = stop.step;
-      plaqueCoords.textContent = stop.coords;
-      plaqueTitle.textContent = stop.title;
-      plaqueDesc.textContent = stop.desc;
-      tourProgressFill.style.width = '100%';
-      tourPlaque.classList.add('active');
-
-      controls.enabled = false;
-      animateCameraTo(stop.camPos, stop.lookAt, 1.5, () => {
-        controls.enabled = true;
+    function updateActiveButtonsUI() {
+      document.getElementById('dock-home').classList.toggle('active', activeStopIndex === -1 && !autoTourInterval);
+      document.querySelectorAll('[data-goto-stop]').forEach((b) => {
+        const idx = parseInt(b.dataset.gotoStop, 10);
+        b.classList.toggle('active', activeStopIndex === idx);
+      });
+      hotspotDomList.forEach(({ btn }, idx) => {
+        btn.classList.toggle('active', activeStopIndex === idx);
       });
     }
 
-    // Eventos de botones de cámara
-    document.getElementById('btn-start-tour').addEventListener('click', () => startGuidedTour(0));
-    document.getElementById('btn-free-explore').addEventListener('click', () => enableFreeExploration(false));
-    document.getElementById('btn-next-stop').addEventListener('click', () => goToTourStop(currentStopIndex + 1));
-    document.getElementById('btn-prev-stop').addEventListener('click', () => goToTourStop(currentStopIndex - 1));
-    document.getElementById('btn-skip-tour').addEventListener('click', () => enableFreeExploration(false));
+    function goToStation(index, duration = 1.45) {
+      if (index < 0 || index >= TOUR_STOPS.length) {
+        goToInitialHomeView();
+        return;
+      }
+      activeStopIndex = index;
+      const stop = TOUR_STOPS[index];
 
-    dockBtnPresent.addEventListener('click', setPresentationMode);
-    dockBtnTour.addEventListener('click', () => startGuidedTour(0));
-    dockBtnFree.addEventListener('click', () => enableFreeExploration(false));
+      heroLeftBanner.classList.add('dimmed');
+      plaqueStep.textContent = stop.step;
+      plaqueTitle.textContent = stop.title;
+      plaqueDesc.textContent = stop.desc;
 
-    // Teclas WASD / Flechas para desplazamiento en Exploración Libre
-    const keyState = { w: false, a: false, s: false, d: false };
-    window.addEventListener('keydown', (e) => {
-      if (currentState !== 'FREE') return;
-      if (e.code === 'KeyW' || e.code === 'ArrowUp') keyState.w = true;
-      if (e.code === 'KeyS' || e.code === 'ArrowDown') keyState.s = true;
-      if (e.code === 'KeyA' || e.code === 'ArrowLeft') keyState.a = true;
-      if (e.code === 'KeyD' || e.code === 'ArrowRight') keyState.d = true;
+      if (plaqueImg) {
+        if (stop.image) {
+          plaqueImg.style.display = 'block';
+          plaqueImg.src = stop.image;
+        } else {
+          plaqueImg.style.display = 'none';
+        }
+      }
+
+      tourPlaque.classList.add('active');
+
+      const targetVec = new THREE.Vector3(stop.target.x, stop.target.y, stop.target.z);
+      const camPos = computePosFromAngles(targetVec, stop.yawDeg, stop.pitchDeg, stop.distance);
+      flyCameraTo(camPos, targetVec, stop.fov || 40, stop.rollDeg || 0, duration);
+
+      if (edSelectStop) {
+        edSelectStop.value = String(index);
+        syncEditorStopUI();
+      }
+      updateActiveButtonsUI();
+    }
+
+    function goToInitialHomeView() {
+      stopAutoTour();
+      activeStopIndex = -1;
+      tourPlaque.classList.remove('active');
+      heroLeftBanner.classList.remove('dimmed');
+
+      flyCameraTo(
+        new THREE.Vector3(INITIAL_VIEW.position.x, INITIAL_VIEW.position.y, INITIAL_VIEW.position.z),
+        new THREE.Vector3(INITIAL_VIEW.target.x, INITIAL_VIEW.target.y, INITIAL_VIEW.target.z),
+        INITIAL_VIEW.fov || 42,
+        INITIAL_VIEW.rollDeg || 0,
+        1.35
+      );
+      updateActiveButtonsUI();
+    }
+
+    function startAutoTour() {
+      if (autoTourInterval) {
+        stopAutoTour();
+        return;
+      }
+      document.getElementById('dock-tour').classList.add('active');
+      document.getElementById('dock-tour').textContent = 'â¸ Pausar Recorrido';
+      goToStation(0);
+      autoTourInterval = setInterval(() => {
+        const next = (activeStopIndex + 1) % TOUR_STOPS.length;
+        goToStation(next);
+      }, 5200);
+    }
+
+    function stopAutoTour() {
+      if (autoTourInterval) {
+        clearInterval(autoTourInterval);
+        autoTourInterval = null;
+      }
+      const tBtn = document.getElementById('dock-tour');
+      if (tBtn) {
+        tBtn.classList.remove('active');
+        tBtn.textContent = 'â–¶ Recorrido Guiado';
+      }
+    }
+
+    document.getElementById('btn-start-tour').addEventListener('click', () => goToStation(0));
+    document.getElementById('dock-home').addEventListener('click', goToInitialHomeView);
+    document.getElementById('dock-tour').addEventListener('click', startAutoTour);
+    document.getElementById('btn-close-plaque').addEventListener('click', () => {
+      tourPlaque.classList.remove('active');
+      heroLeftBanner.classList.remove('dimmed');
     });
-    window.addEventListener('keyup', (e) => {
-      if (e.code === 'KeyW' || e.code === 'ArrowUp') keyState.w = false;
-      if (e.code === 'KeyS' || e.code === 'ArrowDown') keyState.s = false;
-      if (e.code === 'KeyA' || e.code === 'ArrowLeft') keyState.a = false;
-      if (e.code === 'KeyD' || e.code === 'ArrowRight') keyState.d = false;
+    document.getElementById('btn-home-view').addEventListener('click', goToInitialHomeView);
+    document.getElementById('btn-prev-stop').addEventListener('click', () => {
+      stopAutoTour();
+      goToStation((activeStopIndex - 1 + TOUR_STOPS.length) % TOUR_STOPS.length);
+    });
+    document.getElementById('btn-next-stop').addEventListener('click', () => {
+      stopAutoTour();
+      goToStation((activeStopIndex + 1) % TOUR_STOPS.length);
+    });
+
+    document.querySelectorAll('[data-goto-stop]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        stopAutoTour();
+        goToStation(parseInt(btn.dataset.gotoStop, 10));
+      });
     });
 
     // ============================================================
-    // SELECTOR DE ATMÓSFERA DE ÉPOCA (DÍA, ATARDECER SEPIA, NOCHE DE FAROLES)
+    // MOVIMIENTO LIBRE CON TECLADO (WASD / FLECHAS / Q / E / SHIFT)
+    // ============================================================
+    const keyState = { w: false, a: false, s: false, d: false, up: false, down: false, fast: false };
+
+    window.addEventListener('keydown', (e) => {
+      if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+      if (e.code === 'KeyP') {
+        editorDrawer.hidden = !editorDrawer.hidden;
+        return;
+      }
+      if (e.code === 'KeyW' || e.code === 'ArrowUp')    keyState.w = true;
+      if (e.code === 'KeyS' || e.code === 'ArrowDown')  keyState.s = true;
+      if (e.code === 'KeyA' || e.code === 'ArrowLeft')  keyState.a = true;
+      if (e.code === 'KeyD' || e.code === 'ArrowRight') keyState.d = true;
+      if (e.code === 'KeyE' || e.code === 'Space')      keyState.up = true;
+      if (e.code === 'KeyQ')                            keyState.down = true;
+      if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') keyState.fast = true;
+    });
+
+    window.addEventListener('keyup', (e) => {
+      if (e.code === 'KeyW' || e.code === 'ArrowUp')    keyState.w = false;
+      if (e.code === 'KeyS' || e.code === 'ArrowDown')  keyState.s = false;
+      if (e.code === 'KeyA' || e.code === 'ArrowLeft')  keyState.a = false;
+      if (e.code === 'KeyD' || e.code === 'ArrowRight') keyState.d = false;
+      if (e.code === 'KeyE' || e.code === 'Space')      keyState.up = false;
+      if (e.code === 'KeyQ')                            keyState.down = false;
+      if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') keyState.fast = false;
+    });
+
+    // ============================================================
+    // LÃ“GICA DEL EDITOR DE ÃNGULOS Y PUNTOS (TECLA P)
+    // ============================================================
+    const editorDrawer     = document.getElementById('editor-drawer');
+    const btnToggleEditor  = document.getElementById('btn-toggle-editor');
+    const edSelectStop     = document.getElementById('ed-select-stop');
+    const edBtnClickSeal   = document.getElementById('ed-btn-click-seal');
+    const edBtnCaptureCam  = document.getElementById('ed-btn-capture-cam');
+    const edRngYaw         = document.getElementById('ed-rng-yaw');
+    const edRngPitch       = document.getElementById('ed-rng-pitch');
+    const edRngDist        = document.getElementById('ed-rng-dist');
+    const edRngFov         = document.getElementById('ed-rng-fov');
+    const edRngRoll        = document.getElementById('ed-rng-roll');
+    const edLblYaw         = document.getElementById('ed-lbl-yaw');
+    const edLblPitch       = document.getElementById('ed-lbl-pitch');
+    const edLblDist        = document.getElementById('ed-lbl-dist');
+    const edLblFov         = document.getElementById('ed-lbl-fov');
+    const edLblRoll        = document.getElementById('ed-lbl-roll');
+    const edSelectProp     = document.getElementById('ed-select-prop');
+    const edChkProp        = document.getElementById('ed-chk-prop');
+    const edBtnClickProp   = document.getElementById('ed-btn-click-prop');
+    const edRngProt        = document.getElementById('ed-rng-prot');
+    const edRngPscale      = document.getElementById('ed-rng-pscale');
+    const edLblProt        = document.getElementById('ed-lbl-prot');
+    const edLblPscale      = document.getElementById('ed-lbl-pscale');
+    const edMsg            = document.getElementById('ed-msg');
+
+    let clickTargetMode = null;
+    const raycaster = new THREE.Raycaster();
+    const mouseNDC = new THREE.Vector2();
+
+    btnToggleEditor.addEventListener('click', () => {
+      editorDrawer.hidden = !editorDrawer.hidden;
+      if (editorDrawer.hidden) clickTargetMode = null;
+    });
+
+    function flashMsg(txt) {
+      edMsg.textContent = txt;
+      setTimeout(() => { if (edMsg.textContent === txt) edMsg.textContent = ''; }, 3500);
+    }
+
+    TOUR_STOPS.forEach((s, idx) => {
+      const opt = document.createElement('option');
+      opt.value = String(idx);
+      opt.textContent = s.shortLabel;
+      edSelectStop.appendChild(opt);
+    });
+
+    function syncEditorStopUI() {
+      const idx = parseInt(edSelectStop.value, 10) || 0;
+      const st = TOUR_STOPS[idx];
+      if (!st) return;
+      edRngYaw.value = st.yawDeg;
+      edRngPitch.value = st.pitchDeg;
+      edRngDist.value = st.distance;
+      edRngFov.value = st.fov || 40;
+      edRngRoll.value = st.rollDeg || 0;
+
+      edLblYaw.textContent = `${st.yawDeg}Â°`;
+      edLblPitch.textContent = `${st.pitchDeg}Â°`;
+      edLblDist.textContent = `${st.distance}m`;
+      edLblFov.textContent = `${st.fov || 40}Â°`;
+      edLblRoll.textContent = `${st.rollDeg || 0}Â°`;
+    }
+    syncEditorStopUI();
+
+    edSelectStop.addEventListener('change', () => {
+      syncEditorStopUI();
+      goToStation(parseInt(edSelectStop.value, 10), 0.9);
+    });
+
+    function onStopAngleSliderInput() {
+      const idx = parseInt(edSelectStop.value, 10) || 0;
+      const st = TOUR_STOPS[idx];
+      if (!st) return;
+
+      st.yawDeg = parseFloat(edRngYaw.value) || 0;
+      st.pitchDeg = parseFloat(edRngPitch.value) || 0;
+      st.distance = parseFloat(edRngDist.value) || 5;
+      st.fov = parseFloat(edRngFov.value) || 40;
+      st.rollDeg = parseFloat(edRngRoll.value) || 0;
+
+      syncEditorStopUI();
+
+      camTween = null;
+      activeStopIndex = idx;
+      const tVec = new THREE.Vector3(st.target.x, st.target.y, st.target.z);
+      camera.position.copy(computePosFromAngles(tVec, st.yawDeg, st.pitchDeg, st.distance));
+      controls.target.copy(tVec);
+      camera.fov = st.fov;
+      camera.updateProjectionMatrix();
+      currentRollDeg = st.rollDeg;
+      controls.update();
+
+      localStorage.setItem('patino_vintage_stops_v3', JSON.stringify(TOUR_STOPS));
+      updateActiveButtonsUI();
+    }
+
+    [edRngYaw, edRngPitch, edRngDist, edRngFov, edRngRoll].forEach((r) => {
+      r.addEventListener('input', onStopAngleSliderInput);
+    });
+
+    edBtnCaptureCam.addEventListener('click', () => {
+      const idx = parseInt(edSelectStop.value, 10) || 0;
+      const st = TOUR_STOPS[idx];
+      const angles = extractAnglesFromCam(camera.position, new THREE.Vector3(st.target.x, st.target.y, st.target.z));
+      st.yawDeg = angles.yawDeg;
+      st.pitchDeg = angles.pitchDeg;
+      st.distance = angles.distance;
+      syncEditorStopUI();
+      localStorage.setItem('patino_vintage_stops_v3', JSON.stringify(TOUR_STOPS));
+      flashMsg(`Â¡Ãngulo guardado en Punto ${st.number}!`);
+    });
+
+    EXTERIOR_PROPS.forEach((p) => {
+      const opt = document.createElement('option');
+      opt.value = p.id;
+      opt.textContent = `${p.name} (${p.file})`;
+      edSelectProp.appendChild(opt);
+    });
+
+    function getSelectedProp() {
+      return EXTERIOR_PROPS.find((p) => p.id === edSelectProp.value) || EXTERIOR_PROPS[0];
+    }
+
+    function syncEditorPropUI() {
+      const p = getSelectedProp();
+      edChkProp.checked = p.enabled;
+      edRngProt.value = p.rotationDeg;
+      edRngPscale.value = p.scale;
+      edLblProt.textContent = `${p.rotationDeg}Â°`;
+      edLblPscale.textContent = `${p.scale}m`;
+    }
+    syncEditorPropUI();
+
+    edSelectProp.addEventListener('change', syncEditorPropUI);
+    [edChkProp, edRngProt, edRngPscale].forEach((el) => {
+      el.addEventListener('input', () => {
+        const p = getSelectedProp();
+        p.enabled = edChkProp.checked;
+        p.rotationDeg = parseFloat(edRngProt.value) || 0;
+        p.scale = parseFloat(edRngPscale.value) || 2;
+        syncEditorPropUI();
+        spawnOrUpdateProp(p);
+      });
+    });
+
+    edBtnClickSeal.addEventListener('click', () => {
+      clickTargetMode = clickTargetMode === 'SEAL' ? null : 'SEAL';
+      edBtnClickSeal.textContent = clickTargetMode === 'SEAL'
+        ? 'ðŸŽ¯ Haz clic sobre el modelo 3Dâ€¦'
+        : 'ðŸ“ Mover sello con clic en 3D';
+    });
+
+    edBtnClickProp.addEventListener('click', () => {
+      clickTargetMode = clickTargetMode === 'PROP' ? null : 'PROP';
+      edBtnClickProp.textContent = clickTargetMode === 'PROP'
+        ? 'ðŸŽ¯ Haz clic donde colocar el modeloâ€¦'
+        : 'ðŸ“ Ubicar modelo haciendo clic en el mapa';
+    });
+
+    renderer.domElement.addEventListener('pointerdown', (e) => {
+      if (!clickTargetMode || e.button !== 0) return;
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouseNDC.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouseNDC.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(mouseNDC, camera);
+      const hits = raycaster.intersectObjects(surfaceMeshes, true);
+      if (hits.length > 0) {
+        const pt = hits[0].point;
+        if (clickTargetMode === 'SEAL') {
+          const idx = parseInt(edSelectStop.value, 10) || 0;
+          const st = TOUR_STOPS[idx];
+          st.target = { x: Number(pt.x.toFixed(2)), y: Number(pt.y.toFixed(2)), z: Number(pt.z.toFixed(2)) };
+          const angles = extractAnglesFromCam(camera.position, pt);
+          st.yawDeg = angles.yawDeg;
+          st.pitchDeg = angles.pitchDeg;
+          st.distance = angles.distance;
+          syncEditorStopUI();
+          localStorage.setItem('patino_vintage_stops_v3', JSON.stringify(TOUR_STOPS));
+          goToStation(idx, 0.8);
+          flashMsg(`Sello ${st.number} movido a (${st.target.x}, ${st.target.y}, ${st.target.z})`);
+        } else if (clickTargetMode === 'PROP') {
+          const p = getSelectedProp();
+          p.enabled = true;
+          p.position = { x: Number(pt.x.toFixed(2)), y: Number(pt.y.toFixed(2)), z: Number(pt.z.toFixed(2)) };
+          syncEditorPropUI();
+          spawnOrUpdateProp(p);
+          flashMsg(`${p.name} colocado.`);
+        }
+        clickTargetMode = null;
+        edBtnClickSeal.textContent = 'ðŸ“ Mover sello con clic en 3D';
+        edBtnClickProp.textContent = 'ðŸ“ Ubicar modelo haciendo clic en el mapa';
+      }
+    });
+
+    document.getElementById('ed-btn-save-home').addEventListener('click', () => {
+      INITIAL_VIEW = {
+        position: {
+          x: Number(camera.position.x.toFixed(2)),
+          y: Number(camera.position.y.toFixed(2)),
+          z: Number(camera.position.z.toFixed(2))
+        },
+        target: {
+          x: Number(controls.target.x.toFixed(2)),
+          y: Number(controls.target.y.toFixed(2)),
+          z: Number(controls.target.z.toFixed(2))
+        },
+        fov: Math.round(camera.fov),
+        rollDeg: Math.round(currentRollDeg)
+      };
+      localStorage.setItem('patino_vintage_home_v3', JSON.stringify(INITIAL_VIEW));
+      flashMsg('Â¡Vista actual fijada como Inicio!');
+    });
+
+    document.getElementById('ed-btn-reset').addEventListener('click', () => {
+      localStorage.removeItem('patino_vintage_home_v3');
+      localStorage.removeItem('patino_vintage_stops_v3');
+      location.reload();
+    });
+
+    document.getElementById('ed-btn-copy').addEventListener('click', () => {
+      const code =
+        `let INITIAL_VIEW = ${JSON.stringify(INITIAL_VIEW, null, 2)};\n\n` +
+        `let TOUR_STOPS = ${JSON.stringify(TOUR_STOPS, null, 2)};\n\n` +
+        `let EXTERIOR_PROPS = ${JSON.stringify(EXTERIOR_PROPS, null, 2)};`;
+      navigator.clipboard.writeText(code);
+      flashMsg('Â¡ConfiguraciÃ³n copiada al portapapeles!');
+    });
+
+    // ============================================================
+    // SELECTOR DE ATMÃ“SFERA 3D
     // ============================================================
     const weatherBtns = document.querySelectorAll('[data-weather]');
     weatherBtns.forEach((btn) => {
@@ -2023,42 +2015,34 @@
         weatherBtns.forEach((b) => b.classList.remove('active'));
         btn.classList.add('active');
         const mode = btn.dataset.weather;
-
         if (mode === 'day') {
           scene.background = makeSkyGradient('#2B3540', '#B89360');
           scene.fog.color.setHex(0x6e583f);
-          ambientLight.color.setHex(0xffe8c2);
-          ambientLight.intensity = 0.65;
+          ambientLight.intensity = 0.7;
           sunLight.color.setHex(0xffdfad);
           sunLight.intensity = 2.2;
-          sunLight.position.set(14, 18, 10);
-          lanternLights.forEach((l) => { l.intensity = 0; l.userData.bulb.visible = false; });
+          lanternLights.forEach((l) => { l.intensity = 0; });
         } else if (mode === 'sunset') {
           scene.background = makeSkyGradient('#2A1617', '#C86D3B');
           scene.fog.color.setHex(0x593320);
-          ambientLight.color.setHex(0xffb078);
           ambientLight.intensity = 0.5;
           sunLight.color.setHex(0xff7b38);
           sunLight.intensity = 2.5;
-          sunLight.position.set(-16, 7, 11);
-          lanternLights.forEach((l) => { l.intensity = 2.5; l.userData.bulb.visible = true; });
+          lanternLights.forEach((l) => { l.intensity = 2.5; });
         } else if (mode === 'night') {
           scene.background = makeSkyGradient('#06080E', '#1A1822');
           scene.fog.color.setHex(0x0d0c12);
-          ambientLight.color.setHex(0x405070);
-          ambientLight.intensity = 0.32;
+          ambientLight.intensity = 0.35;
           sunLight.color.setHex(0x6c82a8);
           sunLight.intensity = 0.35;
-          sunLight.position.set(8, 18, -10);
-          lanternLights.forEach((l) => { l.intensity = 9.5; l.userData.bulb.visible = true; });
+          lanternLights.forEach((l) => { l.intensity = 9.0; });
         }
       });
     });
 
     function makeSkyGradient(topHex, bottomHex) {
       const c = document.createElement('canvas');
-      c.width = 8;
-      c.height = 256;
+      c.width = 8; c.height = 256;
       const ctx = c.getContext('2d');
       const g = ctx.createLinearGradient(0, 0, 0, 256);
       g.addColorStop(0, topHex);
@@ -2071,7 +2055,7 @@
     }
 
     // ============================================================
-    // BUCLE PRINCIPAL DE ANIMACIÓN Y PROYECCIÓN 2D DE HOTSPOTS
+    // BUCLE PRINCIPAL Y PROYECCIÃ“N 2D DE LOS 4 SELLOS DORADOS
     // ============================================================
     const clock = new THREE.Clock();
     const projVec = new THREE.Vector3();
@@ -2086,87 +2070,53 @@
       requestAnimationFrame(animate);
       const dt = Math.min(clock.getDelta(), 0.1);
 
-      // 1. Si hay una transición de cámara activa
       if (camTween) {
         camTween.elapsed += dt;
         const t = Math.min(1, camTween.elapsed / camTween.duration);
         const k = easeInOutCubic(t);
 
         camera.position.lerpVectors(camTween.startPos, camTween.endPos, k);
-        controls.target.lerpVectors(camTween.startLook, camTween.endLook, k);
-        camera.lookAt(controls.target);
+        controls.target.lerpVectors(camTween.startTarget, camTween.endTarget, k);
+        camera.position.y += Math.sin(t * Math.PI) * 0.45;
 
-        if (t >= 1) {
-          const cb = camTween.onComplete;
-          camTween = null;
-          if (cb) cb();
-        }
-      } else if (currentState === 'PRESENTATION') {
-        // Estado 1: Órbita lenta y majestuosa automática
-        orbitAngle += dt * 0.14;
-        camera.position.x = Math.cos(orbitAngle) * 16.5;
-        camera.position.z = Math.sin(orbitAngle) * 16.5;
-        camera.position.y = 6.2 + Math.sin(orbitAngle * 1.5) * 0.6;
-        camera.lookAt(0, 2.2, 0);
-      } else if (currentState === 'TOUR') {
-        // Estado 2: Temporizador de cada parada del recorrido guiado
-        tourStepTimer += dt;
-        const pct = Math.min(100, (tourStepTimer / TOUR_HOLD_DURATION) * 100);
-        tourProgressFill.style.width = pct + '%';
+        camera.fov = THREE.MathUtils.lerp(camTween.startFov, camTween.endFov, k);
+        camera.updateProjectionMatrix();
+        currentRollDeg = THREE.MathUtils.lerp(camTween.startRoll, camTween.endRoll, k);
+        controls.update();
 
-        // Leve movimiento cinematográfico mientras explica la estación
-        camera.position.x += Math.sin(clock.elapsedTime * 0.6) * 0.003;
-        camera.lookAt(controls.target);
-        
-        if (tourStepTimer >= TOUR_HOLD_DURATION) {
-          goToTourStop(currentStopIndex + 1);
-        }
-      } else if (currentState === 'FREE') {
-        // Estado 3: Exploración libre con OrbitControls + WASD
-        const moveSpeed = 7.5 * dt;
-        camera.getWorldDirection(forwardVec);
-        forwardVec.y = 0;
-        forwardVec.normalize();
-        rightVec.crossVectors(forwardVec, camera.up).normalize();
+        if (t >= 1) camTween = null;
+      } else {
+        if (keyState.w || keyState.s || keyState.a || keyState.d || keyState.up || keyState.down) {
+          const moveSpeed = (keyState.fast ? 14.0 : 6.0) * dt;
+          camera.getWorldDirection(forwardVec);
+          forwardVec.y = 0;
+          if (forwardVec.lengthSq() > 0) forwardVec.normalize();
+          rightVec.crossVectors(forwardVec, camera.up).normalize();
 
-        if (keyState.w) {
-          camera.position.addScaledVector(forwardVec, moveSpeed);
-          controls.target.addScaledVector(forwardVec, moveSpeed);
-        }
-        if (keyState.s) {
-          camera.position.addScaledVector(forwardVec, -moveSpeed);
-          controls.target.addScaledVector(forwardVec, -moveSpeed);
-        }
-        if (keyState.d) {
-          camera.position.addScaledVector(rightVec, moveSpeed);
-          controls.target.addScaledVector(rightVec, moveSpeed);
-        }
-        if (keyState.a) {
-          camera.position.addScaledVector(rightVec, -moveSpeed);
-          controls.target.addScaledVector(rightVec, -moveSpeed);
+          if (keyState.w) { camera.position.addScaledVector(forwardVec, moveSpeed); controls.target.addScaledVector(forwardVec, moveSpeed); }
+          if (keyState.s) { camera.position.addScaledVector(forwardVec, -moveSpeed); controls.target.addScaledVector(forwardVec, -moveSpeed); }
+          if (keyState.d) { camera.position.addScaledVector(rightVec, moveSpeed); controls.target.addScaledVector(rightVec, moveSpeed); }
+          if (keyState.a) { camera.position.addScaledVector(rightVec, -moveSpeed); controls.target.addScaledVector(rightVec, -moveSpeed); }
+          if (keyState.up)   { camera.position.y += moveSpeed; controls.target.y += moveSpeed; }
+          if (keyState.down) { camera.position.y -= moveSpeed; controls.target.y -= moveSpeed; }
         }
         controls.update();
       }
 
-      // 2. Proyectar coordenadas 3D de los Sellos Dorados (Hotspots) a pantalla 2D
-      const showHotspots = currentState !== 'PRESENTATION';
-      hotspotElements.forEach(({ btn, worldPos }) => {
-        if (!showHotspots) {
-          btn.style.opacity = '0';
-          btn.style.pointerEvents = 'none';
-          return;
-        }
-        projVec.copy(worldPos).project(camera);
+      if (Math.abs(currentRollDeg) > 0.05) {
+        camera.rotation.z += THREE.MathUtils.degToRad(currentRollDeg);
+      }
+
+      hotspotDomList.forEach(({ btn, stop }) => {
+        projVec.set(stop.target.x, stop.target.y, stop.target.z).project(camera);
         if (projVec.z > 1) {
-          btn.style.opacity = '0';
-          btn.style.pointerEvents = 'none';
+          btn.style.display = 'none';
         } else {
           const x = (projVec.x * 0.5 + 0.5) * window.innerWidth;
           const y = (-(projVec.y * 0.5) + 0.5) * window.innerHeight;
+          btn.style.display = 'flex';
           btn.style.left = `${x}px`;
           btn.style.top = `${y}px`;
-          btn.style.opacity = '1';
-          btn.style.pointerEvents = 'auto';
         }
       });
 
@@ -2180,11 +2130,7 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
 
-    // ============================================================
-    // INTERACCIONES DE LAS SECCIONES INFERIORES (SLIDER, TILT, TIMELINE)
-    // ============================================================
-
-    // 1. Comparador Before/After (Plano vs. Restauración)
+    // Comparador Before/After, Tilt 3D y LÃ­nea de Tiempo
     const compFrame = document.getElementById('comparator-frame');
     const compBefore = document.getElementById('comp-before');
     const compBeforeImg = document.getElementById('comp-before-img');
@@ -2192,9 +2138,7 @@
     let isDraggingComp = false;
 
     function syncComparatorWidth() {
-      if (compFrame && compBeforeImg) {
-        compBeforeImg.style.width = compFrame.clientWidth + 'px';
-      }
+      if (compFrame && compBeforeImg) compBeforeImg.style.width = compFrame.clientWidth + 'px';
     }
     window.addEventListener('resize', syncComparatorWidth);
     syncComparatorWidth();
@@ -2205,21 +2149,13 @@
       compBefore.style.width = pos + '%';
       compHandle.style.left = pos + '%';
     }
-
     compFrame.addEventListener('mousedown', (e) => { isDraggingComp = true; moveComparator(e.clientX); });
     window.addEventListener('mousemove', (e) => { if (isDraggingComp) moveComparator(e.clientX); });
     window.addEventListener('mouseup', () => { isDraggingComp = false; });
-
-    compFrame.addEventListener('touchstart', (e) => {
-      isDraggingComp = true;
-      moveComparator(e.touches[0].clientX);
-    }, { passive: true });
-    window.addEventListener('touchmove', (e) => {
-      if (isDraggingComp) moveComparator(e.touches[0].clientX);
-    }, { passive: true });
+    compFrame.addEventListener('touchstart', (e) => { isDraggingComp = true; moveComparator(e.touches[0].clientX); }, { passive: true });
+    window.addEventListener('touchmove', (e) => { if (isDraggingComp) moveComparator(e.touches[0].clientX); }, { passive: true });
     window.addEventListener('touchend', () => { isDraggingComp = false; });
 
-    // 2. Efecto Tilt 3D y Brillo de Vela en Tarjetas de Arquitectura
     document.querySelectorAll('[data-brass-tilt]').forEach((card) => {
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
@@ -2227,7 +2163,6 @@
         const y = e.clientY - rect.top;
         const rotY = ((x / rect.width) - 0.5) * 10;
         const rotX = ((y / rect.height) - 0.5) * -10;
-
         card.style.setProperty('--candle-x', `${x}px`);
         card.style.setProperty('--candle-y', `${y}px`);
         card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-3px)`;
@@ -2237,14 +2172,12 @@
       });
     });
 
-    // 3. Progreso de la Línea del Tiempo al hacer Scroll
     const timelineEl = document.getElementById('chronicle-timeline');
     const spineFill = document.getElementById('timeline-spine-fill');
     window.addEventListener('scroll', () => {
       if (!timelineEl || !spineFill) return;
       const rect = timelineEl.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const progress = Math.max(0, Math.min(1, (vh * 0.65 - rect.top) / rect.height));
+      const progress = Math.max(0, Math.min(1, (window.innerHeight * 0.65 - rect.top) / rect.height));
       spineFill.style.height = (progress * 100) + '%';
     }, { passive: true });
   </script>
